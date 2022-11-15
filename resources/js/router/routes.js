@@ -1,49 +1,44 @@
-import Home from '../src/pages/Home.vue';
-import MarketAdd from '../src/pages/marketplace/pages/router/Add.vue';
-import Marketplace from '../src/pages/marketplace/pages/Marketplace.vue';
-import MarketAll from '../src/pages/marketplace/pages/router/All.vue';
-import Marketdetail from '../src/pages/marketplace/pages/router/Detail.vue';
-import MarketEdit from '../src/pages/marketplace/pages/router/EditPage.vue';
-import ConfirmEdit from '../src/pages/marketplace/pages/router/ConfirmEdit.vue';
+import Registrasi from '../src/pages/registrasi'
+import login from '../src/pages/login'
+import admin from '../src/pages/admin'
+import user from '../src/pages/user'
+import homepage from '../src/pages/homepage'
 
-const routes = [
-    {
-        path: '/',
-        component: Home,
-        name: 'home'
-    },
-    {
-        path: '/marketplace/detail/:id',
-        component: Marketdetail,
-        name: 'marketdetail'
-    },
-    {
-        path: '/marketplace',
-        component: Marketplace,
-        name: 'marketplace',
-        children: [
-            {
-                path: 'all',
-                component: MarketAll,
-                name: 'marketall'
-            },
-            {
-                path: 'add',
-                component: MarketAdd,
-                name: 'marketadd'
-            },
-            {
-                path: 'edit',
-                component: MarketEdit,
-                name: 'marketedit'
-            },
-            {
-                path: 'confirm-edit/:id',
-                component: ConfirmEdit,
-                name: 'confirmedit'
-            }
-        ]
+const routes = [{
+    path: '/',
+    component: homepage,
+    name: 'homepage'
+  },
+  {
+    path: '/registrasi',
+    component: Registrasi,
+    name: 'registrasi'
+  },
+  {
+    path: '/login',
+    component: login,
+    name: 'login'
+  },
+  {
+    path: '/admin',
+    component: admin,
+    name: 'admin',
+    meta: {
+      requiresAuth: true,
+      isAdmin: true
     }
+  },
+  {
+    path: '/user',
+    component: user,
+    name: 'user',
+    meta: {
+      requiresAuth: true,
+      isUser: true
+    }
+  },
+
+
 ]
 
 export default routes;
