@@ -1,8 +1,8 @@
-import Registrasi from '../src/pages/registrasi'
-import login from '../src/pages/login'
-import admin from '../src/pages/admin'
-import user from '../src/pages/user'
-import homepage from '../src/pages/homepage'
+import Registrasi from '../src/pages/Registrasi'
+import login from '../src/pages/Login'
+import admin from '../src/pages/Admin'
+import user from '../src/pages/User'
+import homepage from '../src/pages/Homepage'
 
 const routes = [{
     path: '/',
