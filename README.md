@@ -17,7 +17,7 @@
 - Go to http://localhost:8000/
 
 ```shell
-cd file
+cd laravel-merdeka-rafieakmal_pt_6
 composer install
 php artisan key:generate
 php artisan migrate

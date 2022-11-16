@@ -1,49 +1,30 @@
-import Home from '../src/pages/Home.vue';
-import MarketAdd from '../src/pages/marketplace/pages/router/Add.vue';
-import Marketplace from '../src/pages/marketplace/pages/Marketplace.vue';
-import MarketAll from '../src/pages/marketplace/pages/router/All.vue';
-import Marketdetail from '../src/pages/marketplace/pages/router/Detail.vue';
-import MarketEdit from '../src/pages/marketplace/pages/router/EditPage.vue';
-import ConfirmEdit from '../src/pages/marketplace/pages/router/ConfirmEdit.vue';
+import Homepage from '../src/components/Homepage.vue';
+import Investree from '../src/components/Investree.vue';
+import Post from '../src/components/Post.vue';
+import Create from '../src/components/Create.vue';
+
 
 const routes = [
     {
-        path: '/',
-        component: Home,
-        name: 'home'
-    },
+        path: "/",
+        name: "Homepage",
+        component: Homepage,
+      },
     {
-        path: '/marketplace/detail/:id',
-        component: Marketdetail,
-        name: 'marketdetail'
-    },
+        path: "/Post",
+        name: "Post",
+        component: Post,
+      },
     {
-        path: '/marketplace',
-        component: Marketplace,
-        name: 'marketplace',
-        children: [
-            {
-                path: 'all',
-                component: MarketAll,
-                name: 'marketall'
-            },
-            {
-                path: 'add',
-                component: MarketAdd,
-                name: 'marketadd'
-            },
-            {
-                path: 'edit',
-                component: MarketEdit,
-                name: 'marketedit'
-            },
-            {
-                path: 'confirm-edit/:id',
-                component: ConfirmEdit,
-                name: 'confirmedit'
-            }
-        ]
-    }
+        path: "/Investree",
+        name: "Investree",
+        component: Investree,
+      },
+    {
+        path: "/Create",
+        name: "Create",
+        component: Create,
+      },
 ]
 
 export default routes;
