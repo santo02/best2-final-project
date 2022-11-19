@@ -1,34 +1,20 @@
 <template>
-  <div>
-    <router-view @loggedIn="setUser"></router-view>
+  <div class="app">
+
+    <NavBar/>
+    <router-view/>
+    <footers/>
+
   </div>
 </template>
+ 
 
 <script>
+import NavBar from './components/NavBar.vue';
+import Footers from './components/Footer.vue';
+
 export default {
-  data() {
-    return {
-      user: null,
-      isLoggedIn: false
-    }
-  },
-  mounted() {
-    this.setUser()
-  },
-  
-  methods: {
-    setUser() {
-      this.user = JSON.parse(localStorage.getItem('user'))
-      this.isLoggedIn = localStorage.getItem('token') != null
-
-    },
-    logout() {
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-      this.setUser()
-
-      this.$router.push('/login')
-    }
-  }
+  components: {NavBar, Footers },
+  name: 'app'
 }
 </script>
