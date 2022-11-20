@@ -37,8 +37,6 @@ const routes = [{
       isUser: true
     }
   },
-
-
 ]
 
 export default routes;
