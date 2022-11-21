@@ -16,6 +16,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Events\RouteMatched;
+use Illuminate\Routing\Events\Routing;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -372,7 +373,7 @@ class Router implements BindingRegistrar, RegistrarContract
      *
      * @param  array  $attributes
      * @param  \Closure|array|string  $routes
-     * @return void
+     * @return $this
      */
     public function group(array $attributes, $routes)
     {
@@ -386,6 +387,8 @@ class Router implements BindingRegistrar, RegistrarContract
 
             array_pop($this->groupStack);
         }
+
+        return $this;
     }
 
     /**
@@ -674,6 +677,8 @@ class Router implements BindingRegistrar, RegistrarContract
      */
     protected function findRoute($request)
     {
+        $this->events->dispatch(new Routing($request));
+
         $this->current = $route = $this->routes->match($request);
 
         $route->setContainer($this->container);
@@ -692,9 +697,7 @@ class Router implements BindingRegistrar, RegistrarContract
      */
     protected function runRoute(Request $request, Route $route)
     {
-        $request->setRouteResolver(function () use ($route) {
-            return $route;
-        });
+        $request->setRouteResolver(fn () => $route);
 
         $this->events->dispatch(new RouteMatched($route, $request));
 
@@ -720,11 +723,9 @@ class Router implements BindingRegistrar, RegistrarContract
         return (new Pipeline($this->container))
                         ->send($request)
                         ->through($middleware)
-                        ->then(function ($request) use ($route) {
-                            return $this->prepareResponse(
-                                $request, $route->run()
-                            );
-                        });
+                        ->then(fn ($request) => $this->prepareResponse(
+                            $request, $route->run()
+                        ));
     }
 
     /**
@@ -772,9 +773,9 @@ class Router implements BindingRegistrar, RegistrarContract
 
             $reflection = new ReflectionClass($name);
 
-            return collect($excluded)->contains(function ($exclude) use ($reflection) {
-                return class_exists($exclude) && $reflection->isSubclassOf($exclude);
-            });
+            return collect($excluded)->contains(
+                fn ($exclude) => class_exists($exclude) && $reflection->isSubclassOf($exclude)
+            );
         })->values();
 
         return $this->sortMiddleware($middleware);
@@ -1001,6 +1002,32 @@ class Router implements BindingRegistrar, RegistrarContract
     }
 
     /**
+     * Remove the given middleware from the specified group.
+     *
+     * @param  string  $group
+     * @param  string  $middleware
+     * @return $this
+     */
+    public function removeMiddlewareFromGroup($group, $middleware)
+    {
+        if (! $this->hasMiddlewareGroup($group)) {
+            return $this;
+        }
+
+        $reversedMiddlewaresArray = array_flip($this->middlewareGroups[$group]);
+
+        if (! array_key_exists($middleware, $reversedMiddlewaresArray)) {
+            return $this;
+        }
+
+        $middlewareKey = $reversedMiddlewaresArray[$middleware];
+
+        unset($this->middlewareGroups[$group][$middlewareKey]);
+
+        return $this;
+    }
+
+    /**
      * Flush the router's middleware groups.
      *
      * @return $this
@@ -1152,7 +1179,7 @@ class Router implements BindingRegistrar, RegistrarContract
     /**
      * Check if a route with the given name exists.
      *
-     * @param  string  $name
+     * @param  string|array  $name
      * @return bool
      */
     public function has($name)
@@ -1366,6 +1393,10 @@ class Router implements BindingRegistrar, RegistrarContract
 
         if ($method === 'middleware') {
             return (new RouteRegistrar($this))->attribute($method, is_array($parameters[0]) ? $parameters[0] : $parameters);
+        }
+
+        if ($method !== 'where' && Str::startsWith($method, 'where')) {
+            return (new RouteRegistrar($this))->{$method}(...$parameters);
         }
 
         return (new RouteRegistrar($this))->attribute($method, array_key_exists(0, $parameters) ? $parameters[0] : true);
