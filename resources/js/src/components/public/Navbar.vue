@@ -13,8 +13,15 @@
                         <li class="nav-item">
                             <router-link
                                 class="nav-link"
-                                :to="{name: 'article-page'}" >
+                                :to="{name: 'home'}" >
                                 Home
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link
+                                class="nav-link"
+                                :to="{name: 'add-blog'}" >
+                                Add Blog
                             </router-link>
                         </li>
                     </ul><a class="btn btn-primary border rounded-0" role="button" href="/login">Masuk</a>

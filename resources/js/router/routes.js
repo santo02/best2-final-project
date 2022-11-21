@@ -4,9 +4,29 @@ import Admin from '../src/pages/Admin'
 import User from '../src/pages/User'
 import ArticlePage from '../src/pages/Articlepage'
 import DetailArticle from '../src/pages/DetailArticlePage'
+import HomePage from '../src/pages/Homepage'
+import Company from '../src/pages/Company'
+import AddBlog from '../src/pages/AddBlog'
 
-const routes = [{
+
+const routes = [
+  {
     path: '/',
+    component: HomePage,
+    name: 'home',
+  },
+  {
+    path: "/company",
+    component: Company,
+    name: 'company',
+  },
+  {
+    path: "/add-blog",
+    component: AddBlog,
+    name: 'add-blog',
+  },
+  {
+    path: '/article',
     component: ArticlePage,
     name: 'article-page',
   },
@@ -48,3 +68,4 @@ const routes = [{
 ]
 
 export default routes;
+
