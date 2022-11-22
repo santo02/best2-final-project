@@ -1,64 +1,66 @@
 <template>
-    <div class="home">
-      <div class="container">
-        <Carousel/>
-  
-        <div class="row mt-4">
-          <div class="col" style="text-align:center">
-            <h2>Perusahaan</h2>
-          </div>
-          <div class="col">
-            <router-link to="/company" class="btn btn-primary float-right">Lihat Semua</router-link>
-          </div>
-        </div>
-  
-        <div class="row mb-4">
-          <div class="col-md-4 mt-4">
-            <CardCompany/>
-          </div>
-          <div class="col-md-4 mt-4">
-            <CardCompany/>
-          </div>
-          <div class="col-md-4 mt-4">
-            <CardCompany/>
-          </div>
-          <div class="col-md-4 mt-4">
-            <CardCompany/>
-          </div>
-        </div>
+  <div class="home">
+    <div class="container">
+      <Carousel />
 
+      <div class="row mt-4">
+        <div class="col" style="text-align:center">
+          <h2>Perusahaan</h2>
+        </div>
+        <div class="col">
+          <router-link to="/company" class="btn btn-primary float-right">Lihat Semua</router-link>
+        </div>
       </div>
+
+      <div class="container">
+        <div class="  row m-4 justify-content-md-center">
+          <div class="col-md-4 mt-4">
+            <CardCompany />
+          </div>
+          <div class="col-md-4 mt-4">
+            <CardCompany />
+          </div>
+          <div class="col-md-4 mt-4">
+            <CardCompany />
+          </div>
+          <div class="col-md-4 mt-4">
+            <CardCompany />
+          </div>
+        </div>
+      </div>
+
     </div>
+  </div>
 </template>
-  
-  <script>
 
-  import Carousel from "./Carousel.vue";
-  import CardCompany from "./CardCompany.vue";
-  import axios from "axios";
+<script>
 
-  
-  export default {
-    name: "Homepage",
-    components: {
+import Carousel from "./Carousel.vue";
+import CardCompany from "./CardCompany.vue";
+import axios from "axios";
+
+
+export default {
+  name: "Homepage",
+  components: {
     Carousel,
     CardCompany
+  },
+  data() {
+    return {
+      companys: [],
+    };
+  },
+  methods: {
+    setCompanys(data) {
+      this.companys = data;
     },
-    data() {
-      return {
-        companys: [],
-      };
-    },
-    methods: {
-      setCompanys(data) {
-        this.companys = data;
-      },
-    },
-    mounted() {
-      axios
-        .get("")
-        .then((response) => this.setCompanys(response.data))
-        .catch((error) => console.log(error))
-    },
-  };
-  </script>
+  },
+  mounted() {
+    axios
+      .get("")
+      .then((response) => this.setCompanys(response.data))
+      .catch((error) => console.log(error))
+  },
+};
+</script>

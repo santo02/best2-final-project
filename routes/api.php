@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MarketController;
-
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,14 +19,8 @@ use App\Http\Controllers\Api\MarketController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::POST('/registrasi', [UserController::class, 'registrasi']);
+Route::POST('/login', [UserController::class, 'login']);
+Route::GET('/user', [UserController::class, 'GetUser']);
 
 
-Route::controller(MarketController::class)->group(function () {
-    Route::get('/marketplaces', 'index');
-    Route::get('/marketplaces/risk', 'getRisk');
-    Route::get('/marketplaces/find/{id}', 'find');
-    Route::delete('/marketplaces/delete/{id}', 'destroy');
-    Route::post('/marketplaces/add', 'store');
-    Route::post('/marketplaces/update', 'update');
-    Route::post('/marketplaces/calc', 'calculateImbaHasil');
-});

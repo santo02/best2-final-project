@@ -12,7 +12,7 @@
     import Footers from '../components/homepage/Footer.vue'
     export default {
         metaInfo: {
-        title: 'KMN || HomePage',
+        title: 'KMN || Homepage',
         },
         components: { NavBar, Footers, HomePage },
         name: 'home'

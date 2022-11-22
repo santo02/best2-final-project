@@ -12,7 +12,7 @@
 
 
             <form style="width: 25rem;" @submit.prevent="SubmitForm">
-              <p class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;  font-weight: bold; font-size: 40px;">Create
+              <p class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;  font-weight: bold; font-size: 35px;">Create
                 account </p>
               <div v-if="errors" class="alert alert-danger" role="alert">
                 <div v-for="(v, k) in errors" :key="k">
@@ -27,26 +27,26 @@
               </div>
               <div class="form-outline mb-4">
                 <input type="text" v-model="user.username" class="form-control form-control-md" placeholder="Username"
-                  style="background-color: #D9D9D9; margin-top: 30px;" />
+                  style="background-color: #D9D9D9; margin-top: 20px;" />
               </div>
               <div class="form-outline mb-4">
                 <input type="email" id="form2Example18" v-model="user.email" class="form-control form-control-md"
-                  placeholder="Email" style="background-color: #D9D9D9;margin-top: 30px" />
+                  placeholder="Email" style="background-color: #D9D9D9;margin-top: 20px" />
               </div>
 
               <div class="form-outline mt-4 mb-4">
                 <input type="password" id="form2Example28" v-model="user.password" class="form-control form-control-md"
-                  placeholder="Password" style="background-color: #D9D9D9; margin-top: 30px;" />
+                  placeholder="Password" style="background-color: #D9D9D9; margin-top: 20px;" />
               </div>
               <div class="form-outline mt-4 mb-4">
                 <input type="password" id="form2Example28" v-model="user.password_confirmation"
                   class="form-control form-control-md" placeholder="Confirm FPassword"
-                  style="background-color: #D9D9D9; margin-top: 30px;" />
+                  style="background-color: #D9D9D9; margin-top: 20px;" />
               </div>
 
               <div class="pt-1 mb-4">
                 <button class="btn rounded-4 btn-info btn-md btn-block" type="submit"
-                  style="background-color: #1050E6; letter-spacing: 2px; margin-top: 30px;">Sign Up</button>
+                  style="background-color: #1050E6; letter-spacing: 2px; margin-top: 20px;">Sign Up</button>
               </div>
 
             </form>
@@ -65,7 +65,7 @@
 <script>
 export default {
   metaInfo: {
-      title: 'KMN || Login',
+      title: 'KMN || Registration',
     },
   data() {
     return {
