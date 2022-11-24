@@ -460,10 +460,8 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
     /**
      * Filter the items, removing any items that don't match the given type(s).
      *
-     * @template TWhereInstanceOf
-     *
-     * @param  class-string<TWhereInstanceOf>|array<array-key, class-string<TWhereInstanceOf>>  $type
-     * @return static<TKey, TWhereInstanceOf>
+     * @param  class-string|array<array-key, class-string>  $type
+     * @return static
      */
     public function whereInstanceOf($type);
 
@@ -719,7 +717,7 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
      * @template TCombineValue
      *
      * @param  \Illuminate\Contracts\Support\Arrayable<array-key, TCombineValue>|iterable<array-key, TCombineValue>  $values
-     * @return static<TValue, TCombineValue>
+     * @return static<TKey, TCombineValue>
      */
     public function combine($values);
 
@@ -735,7 +733,7 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
      * Get the min value of a given key.
      *
      * @param  (callable(TValue):mixed)|string|null  $callback
-     * @return mixed
+     * @return TValue
      */
     public function min($callback = null);
 
@@ -743,7 +741,7 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
      * Get the max value of a given key.
      *
      * @param  (callable(TValue):mixed)|string|null  $callback
-     * @return mixed
+     * @return TValue
      */
     public function max($callback = null);
 
@@ -982,7 +980,7 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
     /**
      * Sort the collection using the given callback.
      *
-     * @param  array<array-key, (callable(TValue, TValue): mixed)|(callable(TValue, TKey): mixed)|string|array{string, string}>|(callable(TValue, TKey): mixed)|string  $callback
+     * @param  array<array-key, (callable(TValue, TKey): mixed)|array<array-key, string>|(callable(TValue, TKey): mixed)|string  $callback
      * @param  int  $options
      * @param  bool  $descending
      * @return static
@@ -992,7 +990,7 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
     /**
      * Sort the collection in descending order using the given callback.
      *
-     * @param  array<array-key, (callable(TValue, TValue): mixed)|(callable(TValue, TKey): mixed)|string|array{string, string}>|(callable(TValue, TKey): mixed)|string  $callback
+     * @param  array<array-key, (callable(TValue, TKey): mixed)|array<array-key, string>|(callable(TValue, TKey): mixed)|string  $callback
      * @param  int  $options
      * @return static
      */
@@ -1168,7 +1166,7 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
      * @param  (callable(TValue, TKey): mixed)|string|null  $countBy
      * @return static<array-key, int>
      */
-    public function countBy($countBy = null);
+    public function countBy($callback = null);
 
     /**
      * Zip the collection together with one or more arrays.
@@ -1200,9 +1198,9 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
     /**
      * Convert the object into something JSON serializable.
      *
-     * @return mixed
+     * @return array<TKey, mixed>
      */
-    public function jsonSerialize(): mixed;
+    public function jsonSerialize(): array;
 
     /**
      * Get the collection of items as JSON.

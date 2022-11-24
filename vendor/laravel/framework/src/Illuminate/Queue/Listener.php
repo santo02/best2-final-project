@@ -157,7 +157,6 @@ class Listener
             "--memory={$options->memory}",
             "--sleep={$options->sleep}",
             "--tries={$options->maxTries}",
-            $options->force ? '--force' : null,
         ], function ($value) {
             return ! is_null($value);
         });
@@ -173,9 +172,7 @@ class Listener
     public function runProcess(Process $process, $memory)
     {
         $process->run(function ($type, $line) {
-            if (! str($line)->contains('Processing jobs from the')) {
-                $this->handleWorkerOutput($type, $line);
-            }
+            $this->handleWorkerOutput($type, $line);
         });
 
         // Once we have run the job we'll go check if the memory limit has been exceeded

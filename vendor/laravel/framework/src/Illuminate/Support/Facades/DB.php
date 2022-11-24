@@ -3,10 +3,9 @@
 namespace Illuminate\Support\Facades;
 
 /**
- * @method static \PDO getPdo()
+ * @method static \Doctrine\DBAL\Driver\PDOConnection getPdo()
  * @method static \Illuminate\Database\ConnectionInterface connection(string $name = null)
  * @method static \Illuminate\Database\Query\Builder table(string $table, string $as = null)
- * @method static \Illuminate\Database\Query\Builder query()
  * @method static \Illuminate\Database\Query\Expression raw($value)
  * @method static array getQueryLog()
  * @method static array prepareBindings(array $bindings)
@@ -34,7 +33,6 @@ namespace Illuminate\Support\Facades;
  * @method static void listen(\Closure $callback)
  * @method static void rollBack(int $toLevel = null)
  * @method static void setDefaultConnection(string $name)
- * @method static void whenQueryingForLongerThan(\DateTimeInterface|\Carbon\CarbonInterval|float|int $threshold, callable $handler)
  *
  * @see \Illuminate\Database\DatabaseManager
  * @see \Illuminate\Database\Connection

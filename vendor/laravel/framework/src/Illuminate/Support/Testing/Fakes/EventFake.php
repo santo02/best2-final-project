@@ -5,7 +5,6 @@ namespace Illuminate\Support\Testing\Fakes;
 use Closure;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ReflectsClosures;
 use PHPUnit\Framework\Assert as PHPUnit;
 use ReflectionFunction;
@@ -26,14 +25,7 @@ class EventFake implements Dispatcher
      *
      * @var array
      */
-    protected $eventsToFake = [];
-
-    /**
-     * The event types that should be dispatched instead of intercepted.
-     *
-     * @var array
-     */
-    protected $eventsToDispatch = [];
+    protected $eventsToFake;
 
     /**
      * All of the events that have been intercepted keyed by type.
@@ -57,26 +49,10 @@ class EventFake implements Dispatcher
     }
 
     /**
-     * Specify the events that should be dispatched instead of faked.
-     *
-     * @param  array|string  $eventsToDispatch
-     * @return $this
-     */
-    public function except($eventsToDispatch)
-    {
-        $this->eventsToDispatch = array_merge(
-            $this->eventsToDispatch,
-            Arr::wrap($eventsToDispatch)
-        );
-
-        return $this;
-    }
-
-    /**
      * Assert if an event has a listener attached to it.
      *
      * @param  string  $expectedEvent
-     * @param  string|array  $expectedListener
+     * @param  string  $expectedListener
      * @return void
      */
     public function assertListening($expectedEvent, $expectedListener)
@@ -84,18 +60,6 @@ class EventFake implements Dispatcher
         foreach ($this->dispatcher->getListeners($expectedEvent) as $listenerClosure) {
             $actualListener = (new ReflectionFunction($listenerClosure))
                         ->getStaticVariables()['listener'];
-
-            if (is_string($actualListener) && Str::contains($actualListener, '@')) {
-                $actualListener = Str::parseCallback($actualListener);
-
-                if (is_string($expectedListener)) {
-                    if (Str::contains($expectedListener, '@')) {
-                        $expectedListener = Str::parseCallback($expectedListener);
-                    } else {
-                        $expectedListener = [$expectedListener, 'handle'];
-                    }
-                }
-            }
 
             if ($actualListener === $expectedListener ||
                 ($actualListener instanceof Closure &&
@@ -203,11 +167,13 @@ class EventFake implements Dispatcher
             return collect();
         }
 
-        $callback = $callback ?: fn () => true;
+        $callback = $callback ?: function () {
+            return true;
+        };
 
-        return collect($this->events[$event])->filter(
-            fn ($arguments) => $callback(...$arguments)
-        );
+        return collect($this->events[$event])->filter(function ($arguments) use ($callback) {
+            return $callback(...$arguments);
+        });
     }
 
     /**
@@ -306,10 +272,6 @@ class EventFake implements Dispatcher
      */
     protected function shouldFakeEvent($eventName, $payload)
     {
-        if ($this->shouldDispatchEvent($eventName, $payload)) {
-            return false;
-        }
-
         if (empty($this->eventsToFake)) {
             return true;
         }
@@ -319,28 +281,6 @@ class EventFake implements Dispatcher
                 return $event instanceof Closure
                             ? $event($eventName, $payload)
                             : $event === $eventName;
-            })
-            ->isNotEmpty();
-    }
-
-    /**
-     * Determine whether an event should be dispatched or not.
-     *
-     * @param  string  $eventName
-     * @param  mixed  $payload
-     * @return bool
-     */
-    protected function shouldDispatchEvent($eventName, $payload)
-    {
-        if (empty($this->eventsToDispatch)) {
-            return false;
-        }
-
-        return collect($this->eventsToDispatch)
-            ->filter(function ($event) use ($eventName, $payload) {
-                return $event instanceof Closure
-                    ? $event($eventName, $payload)
-                    : $event === $eventName;
             })
             ->isNotEmpty();
     }

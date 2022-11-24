@@ -14,7 +14,7 @@
 - Run php artisan migrate
 - Run php artisan serve
 - Run npm run watch
-- Go to http://localhost:8000/
+- Go to /
 
 ```shell
 cd file

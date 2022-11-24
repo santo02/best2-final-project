@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2022 at 07:00 AM
+-- Generation Time: Nov 14, 2022 at 05:16 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -57,7 +57,6 @@ CREATE TABLE `post` (
   `post_id` int(10) NOT NULL,
   `company_id` int(10) NOT NULL,
   `title` varchar(50) NOT NULL,
-  `slug` varchar(50) NOT NULL,
   `category` varchar(50) NOT NULL,
   `post_image` varchar(150) NOT NULL,
   `post_detail` text NOT NULL,

@@ -8,23 +8,19 @@
           </div>
         </div>
   
-        <div class="row mt-3">
-          <div class="col">
-            <div class="input-group mb-3">
-              
-              <input
-                v-model="search"
-                type="text"
-                class="form-control"
-                placeholder="Cari Perusahaan"
-                aria-label="Cari"
-                aria-describedby="basic-addon1"
-                @keyup="search"
-              />
-
-            </div>
+        <div class="row">
+          <div class="col-md-10 offset-md-1" style="margin-left: 0px;">
+              <div class="card m-auto" style="max-width: 850px;width: 902.7px;">
+                  <div class="card-body">
+                      <form class="d-flex align-items-center">
+                          <i class="fas fa-search d-none d-sm-block h4 text-body m-0" style="width: 47px;"></i>
+                          <input class="form-control form-control-sm flex-shrink-1 form-control-borderless" type="search" placeholder="Search topics or keywords..." name="query">
+                          <button class="btn btn-outline-primary" type="submit" style="margin-bottom: -6px;padding-top: 0.8px;padding-bottom: 0.8px;padding-right: 12px;padding-left: 13px;">Search</button>
+                      </form>
+                  </div>
+              </div>
           </div>
-        </div>
+      </div>
   
         <div class="row mb-4">
           <div class="col-md-4 mt-4">

@@ -28,20 +28,6 @@ class Response implements ArrayAccess
     protected $decoded;
 
     /**
-     * The request cookies.
-     *
-     * @var \GuzzleHttp\Cookie\CookieJar
-     */
-    public $cookies;
-
-    /**
-     * The transfer stats for the request.
-     *
-     * \GuzzleHttp\TransferStats|null
-     */
-    public $transferStats;
-
-    /**
      * Create a new response instance.
      *
      * @param  \Psr\Http\Message\MessageInterface  $response
@@ -85,7 +71,7 @@ class Response implements ArrayAccess
     /**
      * Get the JSON decoded body of the response as an object.
      *
-     * @return object|array
+     * @return object
      */
     public function object()
     {

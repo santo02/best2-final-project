@@ -1,20 +1,20 @@
 <template>
     <div>
         <NavBar/>
-        <HomePage/>
+        <Homepage/>
         <footers/>
     </div>
 </template>
 
 <script>
-    import HomePage from '../components/homepage/Homepage.vue'
+    import Homepage from '../components/homepage/Homepage.vue'
     import NavBar from '../components/public/Navbar.vue'
     import Footers from '../components/homepage/Footer.vue'
     export default {
         metaInfo: {
-        title: 'KMN || Homepage',
+        title: 'KMN || HomePage',
         },
-        components: { NavBar, Footers, HomePage },
+        components: { NavBar, Footers, Homepage },
         name: 'home'
     }
 </script>

@@ -64,13 +64,6 @@ trait MakesHttpRequests
     protected $withCredentials = false;
 
     /**
-     * The latest test response (if any).
-     *
-     * @var \Illuminate\Testing\TestResponse|null
-     */
-    public static $latestResponse;
-
-    /**
      * Define additional headers to be sent with the request.
      *
      * @param  array  $headers
@@ -107,18 +100,6 @@ trait MakesHttpRequests
     public function withToken(string $token, string $type = 'Bearer')
     {
         return $this->withHeader('Authorization', $type.' '.$token);
-    }
-
-    /**
-     * Remove the authorization token from the request.
-     *
-     * @return $this
-     */
-    public function withoutToken()
-    {
-        unset($this->defaultHeaders['Authorization']);
-
-        return $this;
     }
 
     /**
@@ -451,7 +432,6 @@ trait MakesHttpRequests
     public function options($uri, array $data = [], array $headers = [])
     {
         $server = $this->transformHeadersToServerVars($headers);
-
         $cookies = $this->prepareCookiesForRequest();
 
         return $this->call('OPTIONS', $uri, $data, $cookies, [], $server);
@@ -468,22 +448,6 @@ trait MakesHttpRequests
     public function optionsJson($uri, array $data = [], array $headers = [])
     {
         return $this->json('OPTIONS', $uri, $data, $headers);
-    }
-
-    /**
-     * Visit the given URI with a HEAD request.
-     *
-     * @param  string  $uri
-     * @param  array  $headers
-     * @return \Illuminate\Testing\TestResponse
-     */
-    public function head($uri, array $headers = [])
-    {
-        $server = $this->transformHeadersToServerVars($headers);
-
-        $cookies = $this->prepareCookiesForRequest();
-
-        return $this->call('HEAD', $uri, [], $cookies, [], $server);
     }
 
     /**
@@ -551,7 +515,7 @@ trait MakesHttpRequests
             $response = $this->followRedirects($response);
         }
 
-        return static::$latestResponse = $this->createTestResponse($response);
+        return $this->createTestResponse($response);
     }
 
     /**
