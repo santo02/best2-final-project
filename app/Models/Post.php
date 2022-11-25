@@ -5,10 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RiskValues extends Model
+class Post extends Model
 {
-    protected $fillable = [
-        'value',
-        'id',
-    ];
+    use HasFactory;
 }
