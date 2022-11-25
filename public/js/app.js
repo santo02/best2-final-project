@@ -2230,11 +2230,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'articles',
   mounted: function mounted() {
-    console.log('Article component mounted.');
+    var _this = this;
+
+    console.log('test');
+
+    if (!this.$route.query.query) {
+      axios.get('/api/posts').then(function (response) {
+        _this.$store.commit("addArticlePost", response.data);
+
+        console.log(_this.$store.state.articlePost);
+      })["catch"](function (error) {
+        console.log(response.data.errors);
+      });
+    } else {
+      axios.get("/api/posts/search/".concat(this.$route.query.query)).then(function (response) {
+        _this.$store.commit("addArticlePost", response.data);
+      })["catch"](function (error) {
+        console.log(response.data.errors);
+      });
+    }
   },
   methods: {
-    detailPost: function detailPost() {
-      this.$router.push('/detail');
+    detailPost: function detailPost(slug) {
+      this.$router.push("/1/article/".concat(slug));
       window.scrollTo(0, 0);
     }
   }
@@ -2255,8 +2273,54 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'comment-article',
+  data: function data() {
+    return {
+      user: [],
+      isLoggedIn: false,
+      comment: {},
+      error: null,
+      message: ''
+    };
+  },
   mounted: function mounted() {
-    console.log('Comment Article component mounted.');
+    console.log(this.$route.params.slug);
+  },
+  methods: {
+    sendComment: function sendComment() {
+      var _this = this;
+
+      var message = this.comment.message;
+      this.user = JSON.parse(localStorage.getItem('user'));
+      this.isLoggedIn = localStorage.getItem('token') != null;
+
+      if (!this.user && !this.loggedIn) {
+        this.error = 'Please login first!';
+      } else if (!this.comment.message) {
+        this.error = 'Please type a comment!';
+      } else {
+        this.message = 'Berhasil upload komentar!';
+        axios.post('/api/comments/post', {
+          comment: message,
+          userId: this.user.id,
+          postId: this.$store.state.articlePost.post_id
+        }).then(function (response) {
+          _this.refreshData(_this.$store.state.articlePost.post_id);
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
+    },
+    refreshData: function refreshData(id) {
+      var _this2 = this;
+
+      axios.get("/api/comments/find/".concat(id)).then(function (response) {
+        console.log(response.data);
+
+        _this2.$store.commit("addArticleComment", response.data);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
   }
 });
 
@@ -2276,7 +2340,46 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'detail-article',
   mounted: function mounted() {
-    console.log('Detail Article component mounted.');
+    this.getPostUsingSlug(this.$route.params.slug);
+  },
+  methods: {
+    getPostUsingSlug: function getPostUsingSlug(slug) {
+      var _this = this;
+
+      axios.get("/api/posts/find/".concat(slug)).then(function (response) {
+        _this.$store.commit("addArticlePost", response.data);
+
+        _this.getRelatedArticlePost();
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    getRelatedArticlePost: function getRelatedArticlePost() {
+      var _this2 = this;
+
+      var postId = this.$store.state.articlePost.post_id;
+      var postCategory = this.$store.state.articlePost.category;
+      axios.get("/api/posts/related/".concat(postId, "/").concat(postCategory)).then(function (response) {
+        _this2.$store.commit("addRelatedArticle", response.data);
+
+        console.log(response.data);
+
+        _this2.getComments(postId);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    getComments: function getComments(id) {
+      var _this3 = this;
+
+      axios.get("/api/comments/find/".concat(id)).then(function (response) {
+        console.log(response.data);
+
+        _this3.$store.commit("addArticleComment", response.data);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
   }
 });
 
@@ -2296,7 +2399,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'related-article',
   mounted: function mounted() {
-    console.log('Related Article component mounted.');
+    console.log('Related Article is mounted');
   }
 });
 
@@ -3082,147 +3185,109 @@ var render = function render() {
       position: "static",
       width: "971px"
     }
-  }, [_vm._m(0), _vm._v(" "), _c("div", {
-    staticStyle: {
-      "padding-bottom": "10px"
-    }
-  }, [_c("div", {
-    staticClass: "card",
-    staticStyle: {
-      "border-radius": "10px",
-      "border-width": "3px",
-      "border-color": "var(--bs-card-cap-bg)"
-    }
-  }, [_c("div", {
-    staticClass: "card-body"
-  }, [_c("div", {
-    staticClass: "row"
-  }, [_vm._m(1), _vm._v(" "), _c("div", {
-    staticClass: "col"
-  }, [_vm._m(2), _vm._v(" "), _c("h5", [_vm._v("Merdeka Belajar untuk seluruh mahasiswa Indonesia")]), _vm._v(" "), _c("p", {
-    staticStyle: {
-      "margin-top": "5px"
-    }
-  }, [_vm._v("Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.")]), _vm._v(" "), _vm._m(3), _c("button", {
-    staticClass: "btn btn-outline-primary btn-sm",
-    staticStyle: {
-      "margin-top": "-15px",
-      "border-radius": "8px"
-    },
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.detailPost();
+  }, [_vm._m(0), _vm._v(" "), _vm._l(this.$store.state.articlePost, function (article) {
+    return _c("div", {
+      key: article.post_id,
+      staticStyle: {
+        "padding-bottom": "10px"
       }
-    }
-  }, [_vm._v("Detail")])])])])])]), _vm._v(" "), _c("div", {
-    staticStyle: {
-      "padding-bottom": "10px"
-    }
-  }, [_c("div", {
-    staticClass: "card",
-    staticStyle: {
-      "border-radius": "10px",
-      "border-width": "3px",
-      "border-color": "var(--bs-card-cap-bg)"
-    }
-  }, [_c("div", {
-    staticClass: "card-body"
-  }, [_c("div", {
-    staticClass: "row"
-  }, [_vm._m(4), _vm._v(" "), _c("div", {
-    staticClass: "col"
-  }, [_vm._m(5), _vm._v(" "), _c("h5", [_vm._v("Merdeka Belajar untuk seluruh mahasiswa Indonesia")]), _vm._v(" "), _c("p", {
-    staticStyle: {
-      "margin-top": "5px"
-    }
-  }, [_vm._v("Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.")]), _vm._v(" "), _vm._m(6), _c("button", {
-    staticClass: "btn btn-outline-primary btn-sm",
-    staticStyle: {
-      "margin-top": "-15px",
-      "border-radius": "8px"
-    },
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.detailPost();
+    }, [_c("div", {
+      staticClass: "card",
+      staticStyle: {
+        "border-radius": "10px",
+        "border-width": "3px",
+        "border-color": "var(--bs-card-cap-bg)"
       }
-    }
-  }, [_vm._v("Detail")])])])])])]), _vm._v(" "), _c("div", {
-    staticStyle: {
-      "padding-bottom": "10px"
-    }
-  }, [_c("div", {
-    staticClass: "card",
-    staticStyle: {
-      "border-radius": "10px",
-      "border-width": "3px",
-      "border-color": "var(--bs-card-cap-bg)"
-    }
-  }, [_c("div", {
-    staticClass: "card-body"
-  }, [_c("div", {
-    staticClass: "row"
-  }, [_vm._m(7), _vm._v(" "), _c("div", {
-    staticClass: "col"
-  }, [_vm._m(8), _vm._v(" "), _c("h5", [_vm._v("Merdeka Belajar untuk seluruh mahasiswa Indonesia")]), _vm._v(" "), _c("p", {
-    staticStyle: {
-      "margin-top": "5px"
-    }
-  }, [_vm._v("Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.")]), _vm._v(" "), _vm._m(9), _c("button", {
-    staticClass: "btn btn-outline-primary btn-sm",
-    staticStyle: {
-      "margin-top": "-15px",
-      "border-radius": "8px"
-    },
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.detailPost();
+    }, [_c("div", {
+      staticClass: "card-body"
+    }, [_c("div", {
+      staticClass: "row"
+    }, [_c("div", {
+      staticClass: "col-auto"
+    }, [_c("img", {
+      staticClass: "img-fluid",
+      attrs: {
+        src: article.post_image,
+        width: "500px"
       }
-    }
-  }, [_vm._v("Detail")])])])])])]), _vm._v(" "), _c("div", {
-    staticStyle: {
-      "padding-bottom": "10px"
-    }
-  }, [_c("div", {
-    staticClass: "card",
-    staticStyle: {
-      "border-radius": "10px",
-      "border-width": "3px",
-      "border-color": "var(--bs-card-cap-bg)"
-    }
-  }, [_c("div", {
-    staticClass: "card-body"
-  }, [_c("div", {
-    staticClass: "row"
-  }, [_vm._m(10), _vm._v(" "), _c("div", {
-    staticClass: "col"
-  }, [_vm._m(11), _vm._v(" "), _c("h5", [_vm._v("Merdeka Belajar untuk seluruh mahasiswa Indonesia")]), _vm._v(" "), _c("p", {
-    staticStyle: {
-      "margin-top": "5px"
-    }
-  }, [_vm._v("Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.")]), _vm._v(" "), _vm._m(12), _c("button", {
-    staticClass: "btn btn-outline-primary btn-sm",
-    staticStyle: {
-      "margin-top": "-15px",
-      "border-radius": "8px"
-    },
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.detailPost();
+    })]), _vm._v(" "), _c("div", {
+      staticClass: "col"
+    }, [_c("div", {
+      staticClass: "row",
+      staticStyle: {
+        "margin-bottom": "-10px",
+        "padding-top": "7px",
+        "max-height": "60px"
       }
-    }
-  }, [_vm._v("Detail")])])])])])])]), _vm._v(" "), _vm._m(13)])]);
+    }, [_c("div", {
+      staticClass: "col text-start",
+      staticStyle: {
+        width: "161.75px"
+      }
+    }, [_c("img", {
+      staticClass: "rounded-circle img-fluid",
+      attrs: {
+        src: "/assets/img/OIP.jpeg",
+        height: "30px",
+        width: "30px"
+      }
+    }), _vm._v(" "), _c("p", {
+      staticClass: "fw-normal",
+      staticStyle: {
+        "margin-top": "-27px",
+        "margin-left": "40px"
+      }
+    }, [_vm._v(_vm._s(article.username))])])]), _vm._v(" "), _c("h5", [_vm._v(_vm._s(article.title))]), _vm._v(" "), _c("p", {
+      staticStyle: {
+        "margin-top": "5px"
+      }
+    }, [_vm._v(_vm._s(article.post_detail.substring(0, 240)) + "...")]), _vm._v(" "), _c("div", {
+      staticClass: "row"
+    }, [_c("div", {
+      staticClass: "col"
+    }, [_c("img", {
+      staticClass: "img-fluid",
+      attrs: {
+        src: "/assets/img/d228d012b5f3852abb2b66d9da526801.jpg",
+        width: "20px",
+        height: "20px"
+      }
+    }), _vm._v(" "), _c("p", {
+      staticStyle: {
+        "margin-top": "-25px",
+        "margin-left": "28px"
+      }
+    }, [_vm._v(_vm._s(article.created_time))])]), _vm._v(" "), _c("div", {
+      staticClass: "col text-end"
+    }, [_c("img", {
+      staticClass: "img-fluid",
+      attrs: {
+        src: "/assets/img/category.png",
+        width: "20px",
+        height: "20px"
+      }
+    }), _vm._v(" "), _c("p", {
+      staticStyle: {
+        "margin-top": "-25px",
+        "margin-left": "0px",
+        "margin-right": "31px"
+      }
+    }, [_vm._v(_vm._s(article.category))])])]), _c("button", {
+      staticClass: "btn btn-outline-primary btn-sm",
+      staticStyle: {
+        "margin-top": "-15px",
+        "border-radius": "8px"
+      },
+      attrs: {
+        type: "button"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.detailPost(article.slug);
+        }
+      }
+    }, [_vm._v("Detail")])])])])])]);
+  })], 2), _vm._v(" "), _vm._m(1)])]);
 };
 
 var staticRenderFns = [function () {
@@ -3277,326 +3342,6 @@ var staticRenderFns = [function () {
 
   return _c("div", {
     staticClass: "col-auto"
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/MBKM_02.jpg",
-      width: "500px",
-      loading: "lazy"
-    }
-  })]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
-    staticClass: "row",
-    staticStyle: {
-      "margin-bottom": "-15px",
-      "padding-top": "7px",
-      "max-height": "60px"
-    }
-  }, [_c("div", {
-    staticClass: "col text-start",
-    staticStyle: {
-      width: "161.75px"
-    }
-  }, [_c("img", {
-    staticClass: "rounded-circle img-fluid",
-    attrs: {
-      src: "assets/img/OIP.jpeg",
-      height: "30px",
-      width: "30px"
-    }
-  }), _vm._v(" "), _c("p", {
-    staticClass: "fw-normal",
-    staticStyle: {
-      "margin-top": "-23px",
-      "margin-left": "40px"
-    }
-  }, [_vm._v("Rafie Akmal Haryanto")])])]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col"
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/d228d012b5f3852abb2b66d9da526801.jpg",
-      width: "20px",
-      height: "20px"
-    }
-  }), _vm._v(" "), _c("p", {
-    staticStyle: {
-      "margin-top": "-21px",
-      "margin-left": "28px"
-    }
-  }, [_vm._v("12 Januari 2022")])]), _vm._v(" "), _c("div", {
-    staticClass: "col text-end"
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/OIP%20(1).jpeg",
-      width: "20px",
-      height: "20px"
-    }
-  }), _vm._v(" "), _c("p", {
-    staticStyle: {
-      "margin-top": "-21px",
-      "margin-left": "0px",
-      "margin-right": "31px"
-    }
-  }, [_vm._v("20 Komentar")])])]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
-    staticClass: "col-auto"
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/Logo.png",
-      width: "500px",
-      loading: "lazy"
-    }
-  })]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
-    staticClass: "row",
-    staticStyle: {
-      "margin-bottom": "-15px",
-      "padding-top": "7px",
-      "max-height": "60px"
-    }
-  }, [_c("div", {
-    staticClass: "col text-start",
-    staticStyle: {
-      width: "161.75px"
-    }
-  }, [_c("img", {
-    staticClass: "rounded-circle img-fluid",
-    attrs: {
-      src: "assets/img/OIP.jpeg",
-      height: "30px",
-      width: "30px"
-    }
-  }), _vm._v(" "), _c("p", {
-    staticClass: "fw-normal",
-    staticStyle: {
-      "margin-top": "-23px",
-      "margin-left": "40px"
-    }
-  }, [_vm._v("Rafie Akmal Haryanto")])])]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col"
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/d228d012b5f3852abb2b66d9da526801.jpg",
-      width: "20px",
-      height: "20px"
-    }
-  }), _vm._v(" "), _c("p", {
-    staticStyle: {
-      "margin-top": "-21px",
-      "margin-left": "28px"
-    }
-  }, [_vm._v("12 Januari 2022")])]), _vm._v(" "), _c("div", {
-    staticClass: "col text-end"
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/OIP%20(1).jpeg",
-      width: "20px",
-      height: "20px"
-    }
-  }), _vm._v(" "), _c("p", {
-    staticStyle: {
-      "margin-top": "-21px",
-      "margin-left": "0px",
-      "margin-right": "31px"
-    }
-  }, [_vm._v("20 Komentar")])])]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
-    staticClass: "col-auto"
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/Investree_Campaign_My-First-september_Promo-page-1500x500_c.webp",
-      width: "500px",
-      loading: "lazy"
-    }
-  })]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
-    staticClass: "row",
-    staticStyle: {
-      "margin-bottom": "-15px",
-      "padding-top": "7px",
-      "max-height": "60px"
-    }
-  }, [_c("div", {
-    staticClass: "col text-start",
-    staticStyle: {
-      width: "161.75px"
-    }
-  }, [_c("img", {
-    staticClass: "rounded-circle img-fluid",
-    attrs: {
-      src: "assets/img/OIP.jpeg",
-      height: "30px",
-      width: "30px"
-    }
-  }), _vm._v(" "), _c("p", {
-    staticClass: "fw-normal",
-    staticStyle: {
-      "margin-top": "-23px",
-      "margin-left": "40px"
-    }
-  }, [_vm._v("Rafie Akmal Haryanto")])])]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col"
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/d228d012b5f3852abb2b66d9da526801.jpg",
-      width: "20px",
-      height: "20px"
-    }
-  }), _vm._v(" "), _c("p", {
-    staticStyle: {
-      "margin-top": "-21px",
-      "margin-left": "28px"
-    }
-  }, [_vm._v("12 Januari 2022")])]), _vm._v(" "), _c("div", {
-    staticClass: "col text-end"
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/OIP%20(1).jpeg",
-      width: "20px",
-      height: "20px"
-    }
-  }), _vm._v(" "), _c("p", {
-    staticStyle: {
-      "margin-top": "-21px",
-      "margin-left": "0px",
-      "margin-right": "31px"
-    }
-  }, [_vm._v("20 Komentar")])])]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
-    staticClass: "col-auto"
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/investree_home_page_hello.ed24a5f2.webp",
-      width: "500px",
-      loading: "lazy"
-    }
-  })]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
-    staticClass: "row",
-    staticStyle: {
-      "margin-bottom": "-15px",
-      "padding-top": "7px",
-      "max-height": "60px"
-    }
-  }, [_c("div", {
-    staticClass: "col text-start",
-    staticStyle: {
-      width: "161.75px"
-    }
-  }, [_c("img", {
-    staticClass: "rounded-circle img-fluid",
-    attrs: {
-      src: "assets/img/OIP.jpeg",
-      height: "30px",
-      width: "30px"
-    }
-  }), _vm._v(" "), _c("p", {
-    staticClass: "fw-normal",
-    staticStyle: {
-      "margin-top": "-23px",
-      "margin-left": "40px"
-    }
-  }, [_vm._v("Rafie Akmal Haryanto")])])]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col"
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/d228d012b5f3852abb2b66d9da526801.jpg",
-      width: "20px",
-      height: "20px"
-    }
-  }), _vm._v(" "), _c("p", {
-    staticStyle: {
-      "margin-top": "-21px",
-      "margin-left": "28px"
-    }
-  }, [_vm._v("12 Januari 2022")])]), _vm._v(" "), _c("div", {
-    staticClass: "col text-end"
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/OIP%20(1).jpeg",
-      width: "20px",
-      height: "20px"
-    }
-  }), _vm._v(" "), _c("p", {
-    staticStyle: {
-      "margin-top": "-21px",
-      "margin-left": "0px",
-      "margin-right": "31px"
-    }
-  }, [_vm._v("20 Komentar")])])]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
-    staticClass: "col-auto"
   }, [_c("h2", {
     attrs: {
       "data-bs-toggle": "tooltip",
@@ -3613,23 +3358,23 @@ var staticRenderFns = [function () {
     }
   }), _vm._v(" "), _c("a", {
     attrs: {
-      href: "#"
+      href: "article?query=Pendidikan"
     }
   }, [_c("h6", [_vm._v("Pendidikan")])]), _vm._v(" "), _c("a", {
     attrs: {
-      href: "#"
+      href: "article?query=Teknologi"
     }
   }, [_c("h6", [_vm._v("Teknologi")])]), _vm._v(" "), _c("a", {
     attrs: {
-      href: "#"
+      href: "article?query=Masyarakat"
     }
   }, [_c("h6", [_vm._v("Masyarakat")])]), _vm._v(" "), _c("a", {
     attrs: {
-      href: "#"
+      href: "article?query=Leadership"
     }
   }, [_c("h6", [_vm._v("Leadership")])]), _vm._v(" "), _c("a", {
     attrs: {
-      href: "#"
+      href: "article?query=Lowongan"
     }
   }, [_c("h6", [_vm._v("Lowongan")])])]);
 }];
@@ -3654,13 +3399,6 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _vm._m(0);
-};
-
-var staticRenderFns = [function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
   return _c("section", {
     staticClass: "position-relative py-4 py-xl-5"
   }, [_c("div", {
@@ -3678,262 +3416,108 @@ var staticRenderFns = [function () {
     staticClass: "card-body p-sm-5"
   }, [_c("h2", {
     staticClass: "text-center mb-4"
-  }, [_vm._v("Comments")]), _vm._v(" "), _c("form", {
-    staticStyle: {},
+  }, [_vm._v("Comments")]), _vm._v(" "), _vm.message ? _c("div", {
+    staticClass: "alert alert-success",
     attrs: {
-      method: "post"
+      role: "alert"
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.message) + "\n                        ")]) : _vm._e(), _vm._v(" "), _vm.error ? _c("div", {
+    staticClass: "alert alert-danger"
+  }, [_vm._v("\n                            " + _vm._s(_vm.error) + "\n                        ")]) : _vm._e(), _vm._v(" "), _c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.sendComment.apply(null, arguments);
+      }
     }
   }, [_c("div", {
     staticClass: "mb-3"
   }, [_c("textarea", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.comment.message,
+      expression: "comment.message"
+    }],
     staticClass: "form-control",
     attrs: {
-      id: "message-2",
-      name: "message",
       rows: "6",
-      placeholder: "Message"
+      required: ""
+    },
+    domProps: {
+      value: _vm.comment.message
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.comment, "message", $event.target.value);
+      }
     }
-  })]), _vm._v(" "), _c("div", [_c("button", {
+  })]), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _vm._l(this.$store.state.comments, function (comment) {
+    return _c("div", {
+      staticClass: "card"
+    }, [_c("div", {
+      staticClass: "card-body",
+      staticStyle: {
+        height: "140px",
+        "margin-top": "-20px"
+      }
+    }, [_c("ul", {
+      staticClass: "list-group"
+    }, [_c("li", {
+      staticClass: "list-group-item",
+      staticStyle: {
+        "margin-bottom": "6px"
+      }
+    }, [_c("div", {
+      staticClass: "d-flex media"
+    }, [_c("div"), _vm._v(" "), _c("div", {
+      staticClass: "media-body"
+    }, [_c("div", {
+      staticClass: "d-flex media",
+      staticStyle: {
+        overflow: "visible"
+      }
+    }, [_vm._m(1, true), _vm._v(" "), _c("div", {
+      staticClass: "media-body",
+      staticStyle: {
+        overflow: "visible"
+      }
+    }, [_c("div", {
+      staticClass: "row"
+    }, [_c("div", {
+      staticClass: "col-md-12"
+    }, [_c("p", [_c("a", [_vm._v(_vm._s(comment.username) + ":")]), _vm._v(" " + _vm._s(comment.komen)), _c("br"), _vm._v(" "), _c("small", {
+      staticClass: "text-muted"
+    }, [_vm._v(_vm._s(comment.created_time))])])])])])])])])])])])]);
+  })], 2)])])])])]);
+};
+
+var staticRenderFns = [function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", [_c("button", {
     staticClass: "btn btn-primary d-block w-100",
     staticStyle: {
       "margin-bottom": "50px"
-    },
-    attrs: {
-      type: "submit"
     }
-  }, [_vm._v("Send ")])])]), _vm._v(" "), _c("div", {
-    staticClass: "card"
-  }, [_c("div", {
-    staticClass: "card-body",
-    staticStyle: {
-      height: "140px",
-      "margin-top": "-20px"
-    }
-  }, [_c("ul", {
-    staticClass: "list-group"
-  }, [_c("li", {
-    staticClass: "list-group-item",
-    staticStyle: {
-      "margin-bottom": "6px"
-    }
-  }, [_c("div", {
-    staticClass: "d-flex media"
-  }, [_c("div"), _vm._v(" "), _c("div", {
-    staticClass: "media-body"
-  }, [_c("div", {
-    staticClass: "d-flex media",
-    staticStyle: {
-      overflow: "visible"
-    }
-  }, [_c("div", [_c("img", {
+  }, [_vm._v("Send ")])]);
+}, function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", [_c("img", {
     staticClass: "rounded-circle me-3",
     staticStyle: {
       width: "25px",
       height: "25px"
     },
     attrs: {
-      src: "assets/img/ava1.jpg"
+      src: "/assets/img/ava1.jpg"
     }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "media-body",
-    staticStyle: {
-      overflow: "visible"
-    }
-  }, [_c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-md-12"
-  }, [_c("p", [_c("a", {
-    attrs: {
-      href: "#"
-    }
-  }, [_vm._v("Sara Doe:")]), _vm._v(" This guy has been going 100+ MPH on side streets. "), _c("br"), _vm._v(" "), _c("small", {
-    staticClass: "text-muted"
-  }, [_vm._v("August 6, 2016 @ 10:35am ")])])])])])])])])])])]), _vm._v(" "), _c("div", {
-    staticClass: "card-body",
-    staticStyle: {
-      height: "140px",
-      "margin-top": "-20px"
-    }
-  }, [_c("ul", {
-    staticClass: "list-group"
-  }, [_c("li", {
-    staticClass: "list-group-item",
-    staticStyle: {
-      "margin-bottom": "6px"
-    }
-  }, [_c("div", {
-    staticClass: "d-flex media"
-  }, [_c("div"), _vm._v(" "), _c("div", {
-    staticClass: "media-body"
-  }, [_c("div", {
-    staticClass: "d-flex media",
-    staticStyle: {
-      overflow: "visible"
-    }
-  }, [_c("div", [_c("img", {
-    staticClass: "rounded-circle me-3",
-    staticStyle: {
-      width: "25px",
-      height: "25px"
-    },
-    attrs: {
-      src: "assets/img/ava1.jpg"
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "media-body",
-    staticStyle: {
-      overflow: "visible"
-    }
-  }, [_c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-md-12"
-  }, [_c("p", [_c("a", {
-    attrs: {
-      href: "#"
-    }
-  }, [_vm._v("Sara Doe:")]), _vm._v(" This guy has been going 100+ MPH on side streets. "), _c("br"), _vm._v(" "), _c("small", {
-    staticClass: "text-muted"
-  }, [_vm._v("August 6, 2016 @ 10:35am ")])])])])])])])])])])]), _vm._v(" "), _c("div", {
-    staticClass: "card-body",
-    staticStyle: {
-      height: "140px",
-      "margin-top": "-20px"
-    }
-  }, [_c("ul", {
-    staticClass: "list-group"
-  }, [_c("li", {
-    staticClass: "list-group-item",
-    staticStyle: {
-      "margin-bottom": "6px"
-    }
-  }, [_c("div", {
-    staticClass: "d-flex media"
-  }, [_c("div"), _vm._v(" "), _c("div", {
-    staticClass: "media-body"
-  }, [_c("div", {
-    staticClass: "d-flex media",
-    staticStyle: {
-      overflow: "visible"
-    }
-  }, [_c("div", [_c("img", {
-    staticClass: "rounded-circle me-3",
-    staticStyle: {
-      width: "25px",
-      height: "25px"
-    },
-    attrs: {
-      src: "assets/img/ava1.jpg"
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "media-body",
-    staticStyle: {
-      overflow: "visible"
-    }
-  }, [_c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-md-12"
-  }, [_c("p", [_c("a", {
-    attrs: {
-      href: "#"
-    }
-  }, [_vm._v("Sara Doe:")]), _vm._v(" This guy has been going 100+ MPH on side streets. "), _c("br"), _vm._v(" "), _c("small", {
-    staticClass: "text-muted"
-  }, [_vm._v("August 6, 2016 @ 10:35am ")])])])])])])])])])])]), _vm._v(" "), _c("div", {
-    staticClass: "card-body",
-    staticStyle: {
-      height: "140px",
-      "margin-top": "-20px"
-    }
-  }, [_c("ul", {
-    staticClass: "list-group"
-  }, [_c("li", {
-    staticClass: "list-group-item",
-    staticStyle: {
-      "margin-bottom": "6px"
-    }
-  }, [_c("div", {
-    staticClass: "d-flex media"
-  }, [_c("div"), _vm._v(" "), _c("div", {
-    staticClass: "media-body"
-  }, [_c("div", {
-    staticClass: "d-flex media",
-    staticStyle: {
-      overflow: "visible"
-    }
-  }, [_c("div", [_c("img", {
-    staticClass: "rounded-circle me-3",
-    staticStyle: {
-      width: "25px",
-      height: "25px"
-    },
-    attrs: {
-      src: "assets/img/ava1.jpg"
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "media-body",
-    staticStyle: {
-      overflow: "visible"
-    }
-  }, [_c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-md-12"
-  }, [_c("p", [_c("a", {
-    attrs: {
-      href: "#"
-    }
-  }, [_vm._v("Sara Doe:")]), _vm._v(" This guy has been going 100+ MPH on side streets. "), _c("br"), _vm._v(" "), _c("small", {
-    staticClass: "text-muted"
-  }, [_vm._v("August 6, 2016 @ 10:35am ")])])])])])])])])])])]), _vm._v(" "), _c("div", {
-    staticClass: "card-body",
-    staticStyle: {
-      height: "140px",
-      "margin-top": "-20px"
-    }
-  }, [_c("ul", {
-    staticClass: "list-group"
-  }, [_c("li", {
-    staticClass: "list-group-item",
-    staticStyle: {
-      "margin-bottom": "6px"
-    }
-  }, [_c("div", {
-    staticClass: "d-flex media"
-  }, [_c("div"), _vm._v(" "), _c("div", {
-    staticClass: "media-body"
-  }, [_c("div", {
-    staticClass: "d-flex media",
-    staticStyle: {
-      overflow: "visible"
-    }
-  }, [_c("div", [_c("img", {
-    staticClass: "rounded-circle me-3",
-    staticStyle: {
-      width: "25px",
-      height: "25px"
-    },
-    attrs: {
-      src: "assets/img/ava1.jpg"
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "media-body",
-    staticStyle: {
-      overflow: "visible"
-    }
-  }, [_c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-md-12"
-  }, [_c("p", [_c("a", {
-    attrs: {
-      href: "#"
-    }
-  }, [_vm._v("Rafie Akmal:")]), _vm._v(" This guy has been going 100+ MPH on side streets. "), _c("br"), _vm._v(" "), _c("small", {
-    staticClass: "text-muted"
-  }, [_vm._v("August 6, 2016 @ 10:35am ")])])])])])])])])])])])])])])])])])]);
+  })]);
 }];
 render._withStripped = true;
 
@@ -3956,13 +3540,6 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _vm._m(0);
-};
-
-var staticRenderFns = [function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
   return _c("section", {
     staticClass: "py-5"
   }, [_c("div", {
@@ -3974,16 +3551,16 @@ var staticRenderFns = [function () {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-12"
-  }, [_c("h1", [_vm._v("CERITANYA JUDUL")]), _vm._v(" "), _c("p", {
+  }, [_c("h1", [_vm._v(_vm._s(this.$store.state.articlePost.title))]), _vm._v(" "), _c("p", {
     staticStyle: {
       "margin-top": "1px"
     }
-  }, [_vm._v("12 Januari 2023")])])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v(_vm._s(this.$store.state.articlePost.created_time))])])])]), _vm._v(" "), _c("div", {
     staticClass: "container text-center"
   }, [_c("img", {
     staticClass: "img-fluid",
     attrs: {
-      src: "assets/img/inv_logo.webp",
+      src: this.$store.state.articlePost.post_image,
       width: "1200px",
       height: "1000px"
     }
@@ -3991,7 +3568,7 @@ var staticRenderFns = [function () {
     staticClass: "container"
   }, [_c("p", {
     staticClass: "fw-normal text-start"
-  }, [_vm._v("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pharetra vel turpis nunc eget lorem dolor sed viverra ipsum. Arcu cursus vitae congue mauris rhoncus aenean vel elit. Enim eu turpis egestas pretium aenean pharetra magna ac placerat. A lacus vestibulum sed arcu non. Eros in cursus turpis massa tincidunt dui ut. Morbi enim nunc faucibus a pellentesque sit. Tortor at risus viverra adipiscing at in tellus. Condimentum mattis pellentesque id nibh tortor. Fames ac turpis egestas maecenas. Tortor consequat id porta nibh. Et malesuada fames ac turpis egestas sed tempus urna et. Ut enim blandit volutpat maecenas volutpat. Enim nunc faucibus a pellentesque sit amet porttitor. Massa massa ultricies mi quis hendrerit. Mattis enim ut tellus elementum sagittis vitae et. Orci eu lobortis elementum nibh tellus molestie nunc non blandit. Tincidunt tortor aliquam nulla facilisi cras fermentum odio. Mauris nunc congue nisi vitae suscipit tellus mauris a diam. Fermentum odio eu feugiat pretium nibh ipsum. Pellentesque diam volutpat commodo sed egestas egestas fringilla. Nulla facilisi cras fermentum odio eu feugiat pretium nibh ipsum. Viverra nam libero justo laoreet sit amet cursus sit amet. Sem viverra aliquet eget sit amet. Eleifend donec pretium vulputate sapien nec sagittis aliquam malesuada bibendum. Quis hendrerit dolor magna eget est lorem ipsum. Imperdiet dui accumsan sit amet nulla facilisi morbi. Tincidunt tortor aliquam nulla facilisi cras fermentum odio eu feugiat. Id cursus metus aliquam eleifend mi in nulla posuere. Vulputate sapien nec sagittis aliquam malesuada bibendum. At volutpat diam ut venenatis tellus in metus vulputate eu. Arcu risus quis varius quam. Sit amet dictum sit amet justo donec enim diam vulputate. Risus pretium quam vulputate dignissim suspendisse in est. Morbi non arcu risus quis varius quam quisque. Aliquam faucibus purus in massa. Tellus pellentesque eu tincidunt tortor. Neque gravida in fermentum et sollicitudin ac orci phasellus. Consequat nisl vel pretium lectus quam id. Odio aenean sed adipiscing diam donec adipiscing tristique. Felis eget nunc lobortis mattis aliquam faucibus purus. Est ante in nibh mauris. Enim tortor at auctor urna nunc id. Iaculis eu non diam phasellus vestibulum. Tempus egestas sed sed risus. Hendrerit gravida rutrum quisque non tellus. Ut diam quam nulla porttitor massa id neque aliquam.")])]), _vm._v(" "), _c("div", {
+  }, [_vm._v(_vm._s(this.$store.state.articlePost.post_detail))])]), _vm._v(" "), _c("div", {
     staticClass: "container"
   }, [_c("div", {
     staticClass: "row",
@@ -4011,7 +3588,7 @@ var staticRenderFns = [function () {
   }, [_c("img", {
     staticClass: "rounded-circle img-fluid",
     attrs: {
-      src: "assets/img/OIP.jpeg",
+      src: "/assets/img/OIP.jpeg",
       height: "40px",
       width: "40px"
     }
@@ -4029,8 +3606,10 @@ var staticRenderFns = [function () {
       "margin-left": "52px",
       "font-size": "24px"
     }
-  }, [_vm._v("Rafie Akmal Haryanto")])])])])]);
-}];
+  }, [_vm._v(_vm._s(this.$store.state.articlePost.username))])])])])]);
+};
+
+var staticRenderFns = [];
 render._withStripped = true;
 
 
@@ -4052,64 +3631,38 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _vm._m(0);
+  return _c("div", {
+    staticClass: "container"
+  }, [_vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, _vm._l(this.$store.state.relatedArticle, function (article) {
+    return _c("div", {
+      key: article.post_id,
+      staticClass: "col-sm-6 col-md-3 mb-4"
+    }, [_c("a", {
+      attrs: {
+        href: "article/" + article.slug
+      }
+    }), _vm._v(" "), _c("a", {
+      attrs: {
+        href: article.slug
+      }
+    }, [_c("img", {
+      staticClass: "img-fluid",
+      attrs: {
+        src: article.post_image
+      }
+    }), _vm._v(" "), _c("p", [_vm._v(_vm._s(article.title.substring(0, 50)) + "...")])])]);
+  }), 0)]);
 };
 
 var staticRenderFns = [function () {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("div", {
-    staticClass: "container"
-  }, [_c("h3", {
+  return _c("h3", {
     staticClass: "my-4"
-  }, [_vm._v("Related Articles"), _c("br")]), _vm._v(" "), _c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-sm-6 col-md-3 mb-4"
-  }, [_c("a", {
-    attrs: {
-      href: "#"
-    }
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/Logo.png"
-    }
-  }), _vm._v(" "), _c("p", [_vm._v("Judul 1")])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-6 col-md-3 mb-4"
-  }, [_c("a", {
-    attrs: {
-      href: "#"
-    }
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/MBKM_02.jpg"
-    }
-  }), _vm._v(" "), _c("p", [_vm._v("Judul 2")])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-6 col-md-3 mb-4"
-  }, [_c("a", {
-    attrs: {
-      href: "#"
-    }
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/Investree_Campaign_My-First-september_Promo-page-1500x500_c.webp"
-    }
-  }), _vm._v(" "), _c("p", [_vm._v("Judul 3")])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-6 col-md-3 mb-4"
-  }, [_c("a", {
-    attrs: {
-      href: "#"
-    }
-  }, [_c("img", {
-    staticClass: "img-fluid",
-    attrs: {
-      src: "assets/img/ojk.webp"
-    }
-  }), _vm._v(" "), _c("p", [_vm._v("Judul 4")])])])])]);
+  }, [_vm._v("Related Articles"), _c("br")]);
 }];
 render._withStripped = true;
 
@@ -4278,7 +3831,7 @@ var staticRenderFns = [function () {
   }, [_vm._v("Card title")]), _vm._v(" "), _c("a", {
     staticClass: "btn btn-primary",
     attrs: {
-      href: "/article"
+      href: "/1/article"
     }
   }, [_vm._v("Go somewhere")])])]);
 }];
@@ -4479,7 +4032,7 @@ var staticRenderFns = [function () {
     staticClass: "navbar-brand"
   }, [_c("img", {
     attrs: {
-      src: "assets/img/Logo.png",
+      src: "/assets/img/Logo.png",
       width: "100px"
     }
   })])]), _vm._v(" "), _c("div", {
@@ -5618,11 +5171,11 @@ var routes = [{
   component: _src_pages_AddBlog__WEBPACK_IMPORTED_MODULE_8__["default"],
   name: 'add-blog'
 }, {
-  path: '/article',
+  path: '/:id/article',
   component: _src_pages_Articlepage__WEBPACK_IMPORTED_MODULE_4__["default"],
   name: 'article-page'
 }, {
-  path: '/detail',
+  path: '/:id/article/:slug',
   component: _src_pages_DetailArticlePage__WEBPACK_IMPORTED_MODULE_5__["default"],
   name: 'detail-article'
 }, {
@@ -5672,54 +5225,21 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_0__["default"]);
 var store = new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
   state: {
-    marketpost: [],
-    loadingTime: 2000,
-    loadingType: 'circles',
-    loadingText: 'Loading...',
-    loadingColor: 'rgb(126, 211, 33)',
-    // loadingBgcolor: '#7a76cb'
-    quoteOrigin: 'placeholder',
-    quotePosition: null,
-    quoteColor: '#7d33ff',
-    quoteProgress: 'auto',
-    quoteDuration: '3000',
-    quoteBorder: '#FFFFFF',
-    quoteText: 'placeholder',
-    formatLang: 'id-ID',
-    formatStyle: 'decimal',
-    formatCurrency: 'IDR',
-    detailCountResult: '0'
+    articlePost: [],
+    relatedArticle: [],
+    comments: []
   },
-  getters: {
-    // Property-Style Access
-    formattedCost: function formattedCost(state) {
-      return new Intl.NumberFormat(state.formatLang, {
-        style: state.formatStyle,
-        currency: state.formatCurrency
-      }).format(state.detailCountResult);
-    },
-    // Method-Style Access
-    formattedCostByMethod: function formattedCostByMethod(state) {
-      return function (rupiah) {
-        return new Intl.NumberFormat(state.formatLang, {
-          style: state.formatStyle,
-          currency: state.formatCurrency
-        }).format(rupiah);
-      };
-    }
+  getters: {//
   },
   mutations: {
-    addQuoteText: function addQuoteText(state, newQuote) {
-      state.quoteText = newQuote;
+    addArticlePost: function addArticlePost(state, newPost) {
+      state.articlePost = newPost;
     },
-    addQuoteOrigin: function addQuoteOrigin(state, newOrigin) {
-      state.quoteOrigin = newOrigin;
+    addRelatedArticle: function addRelatedArticle(state, newPost) {
+      state.relatedArticle = newPost;
     },
-    addCountedNumber: function addCountedNumber(state, newNumber) {
-      state.detailCountResult = newNumber;
-    },
-    addMarketPost: function addMarketPost(state, newPost) {
-      state.marketpost = newPost;
+    addArticleComment: function addArticleComment(state, newComment) {
+      state.comments = newComment;
     },
     deleteMarketPost: function deleteMarketPost(state, newID) {
       var i = state.marketpost.map(function (item) {
