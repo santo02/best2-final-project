@@ -21,9 +21,12 @@ use App\Http\Controllers\PostController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::POST('/registrasi', [UserController::class, 'registrasi']);
-Route::POST('/login', [UserController::class, 'login']);
-Route::GET('/user', [UserController::class, 'GetUser']);
+
+Route::controller(UserController::class)->group(function () {
+    Route::POST('/registrasi', 'registrasi');
+    Route::POST('/login', 'login');
+    Route::GET('/user', 'GetUser');
+});
 
 Route::controller(CommentController::class)->group(function () {
     Route::GET('/comments', 'index');
