@@ -26,12 +26,12 @@ const routes = [
     name: 'add-blog',
   },
   {
-    path: '/article',
+    path: '/:id/article',
     component: ArticlePage,
     name: 'article-page',
   },
   {
-    path: '/detail',
+    path: '/:id/article/:slug',
     component: DetailArticle,
     name: 'detail-article',
   },
