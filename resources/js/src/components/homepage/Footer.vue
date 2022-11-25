@@ -7,9 +7,9 @@
             <!--Grid column-->
             <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-3">
               <a class="navbar-brand">
-                <img src="assets/img/Logo.png" width="100px"/></a></div>
+                <img src="/assets/img/Logo.png" width="100px"/></a></div>
             <!--Grid column-->
-      
+
             <!--Grid column-->
             <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-3">
               <h3 class="fs-6 fw-bold">Kategori</h3>
@@ -21,7 +21,7 @@
             </ul>
             </div>
             <!--Grid column-->
-      
+
             <!--Grid column-->
             <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-3">
               <h3 class="fs-6 fw-bold">Pusat Bantuan</h3>
@@ -36,7 +36,7 @@
           <!--Grid row-->
         </div>
         <!-- Grid container -->
-      
+
         <!-- Copyright -->
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.1);">
             Copyright © 2022 Kelompok 2. All Rights Reserved
