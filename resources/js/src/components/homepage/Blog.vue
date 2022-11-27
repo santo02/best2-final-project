@@ -2,38 +2,50 @@
     <section class="py-5 mt-5">
         <div class="container py-5">
             <div class="card">
-                <h3 class="text-center">Tambah Post Baru</h3>
-                <div class="card" style="border-width: 3px;border-style: dashed;">
+                <h3 class="text-center mb-4">Tambah Post Baru</h3>
+                <div class="card p-3" style="border-width: 3px;border-style: dashed;">
                     <div class="card-body">
-                        <form class="text-start" method="post">
+                        <form class="text-start" @submit.prevent="addPost" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label class="form-label">Choose Image</label>
-                                <input class="form-control" type="file">
+                                <input @change="handleFileUpload()" ref="file" class="form-control" type="file" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Judul</label>
-                                <input class="form-control" type="text" name="judul">
+                                <input @input="sanitizeTitle(blog.title)" class="form-control" type="text" v-model="blog.title" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Slug</label>
-                                <input class="form-control" type="text" name="slug">
+                                <input class="form-control" type="text" v-model="blog.slug" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Company</label>
+                                <select class="form-select" v-model="blog.company_id" required>
+                                    <optgroup label="Pilih Perusahaan">
+                                        <option v-for='company in companies' :key="company.post_id" :value="company.company_id">{{company.company_name}}</option>
+                                    </optgroup>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Kategori</label>
-                                <select class="form-select" name="kategori">
-                                    <optgroup label="This is a group">
-                                        <option value="12" selected="">This is item 1</option>
-                                        <option value="13">This is item 2</option>
-                                        <option value="14">This is item 3</option>
+                                <select class="form-select" v-model="blog.category" required>
+                                    <optgroup label="Pilih Kategori">
+                                        <option value="Pendidikan">Pendidikan</option>
+                                        <option value="Teknologi">Teknologi</option>
+                                        <option value="Masyarakat">Masyarakat</option>
+                                        <option value="Leadership">Leadership</option>
+                                        <option value="Lowongan">Lowongan</option>
                                     </optgroup>
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Isi</label>
-                                <textarea class="form-control" name="isi"></textarea>
+                                <textarea class="form-control" v-model="blog.post_detail" required></textarea>
                             </div>
-                            <div class="mb-3">
-                                <button class="btn btn-primary d-block w-100" type="submit">submit</button>
+                            
+
+                            <div class="mb-3 mt-5">
+                                <button class="btn btn-primary d-block w-100" type="submit">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -45,6 +57,74 @@
 
 <script>
 export default {
-  name: "Blog",
-};
+    name: "Blog",
+    data() {
+        return {
+            blog: {},
+            companies: [],
+            user: [],
+            file: '',
+            isLoggedIn: false,
+        }
+    },
+    mounted() {
+        this.getCompanyData()
+    },
+    methods: {
+        getCompanyData() {
+            axios.get('/api/companies')
+            .then(response => {
+                this.companies = response.data
+            })
+            .catch(error => {
+                console.log(error)
+            });
+        },
+        sanitizeTitle(title) {
+            var slug = ""
+            var titleLower = title.toLowerCase()
+            slug = titleLower.replace(/\s*$/g, '')
+            slug = slug.replace(/\s+/g, '-')
+            slug = slug.replace("‘", '')
+            slug = slug.replace("’", '')
+            slug = slug.replace("'", '')
+            slug = slug.replace("\'", '')
+            slug = slug.replace('"', '')
+            slug = slug.replace('\"', '')
+            slug = slug.replace('#', '')
+            slug = slug.replace(',', '')
+            return this.blog.slug = slug
+        },
+        addPost() {
+            this.user = JSON.parse(localStorage.getItem('user'))
+            this.isLoggedIn = localStorage.getItem('token') != null
+
+            let formData =  new FormData()
+            formData.append('company_id', this.blog.company_id)
+            formData.append('title', this.blog.title)
+            formData.append('category', this.blog.category)
+            formData.append('file', this.file)
+            formData.append('post_detail', this.blog.post_detail)
+            formData.append('user_id', this.user.id)
+            formData.append('slug', this.blog.slug)
+            console.log(formData)
+            this.axios({
+                url: '/api/posts/add',
+                method: 'post',
+                data: formData,
+                headers: {
+                    'Content-Type' : 'multipart/form-data',
+                    'Acces-Control-Allow-Origin' : '*',
+                }
+            }).then(response => (
+                    this.$router.push({ name: 'home' })
+                ))
+                .catch(err => console.log(err))
+        },
+        handleFileUpload(){
+            this.file = this.$refs.file.files[0];
+            console.log(this.file);
+        }      
+    }
+}
 </script>

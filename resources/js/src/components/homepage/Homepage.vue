@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="container">
-      <Carousel />
+      <Carousel/>
 
       <div class="row mt-4">
         <div class="col" style="text-align:center">
@@ -13,18 +13,15 @@
       </div>
 
       <div class="container">
-        <div class="  row m-4 justify-content-md-center">
-          <div class="col-md-4 mt-4">
-            <CardCompany />
-          </div>
-          <div class="col-md-4 mt-4">
-            <CardCompany />
-          </div>
-          <div class="col-md-4 mt-4">
-            <CardCompany />
-          </div>
-          <div class="col-md-4 mt-4">
-            <CardCompany />
+        <div class="row m-4">
+          <div v-for='company in companies' :key="company.company_id" class="col-md-4 mt-4">
+            <div class="card text-center" style="width: 18rem;">
+              <img class="card-img-top" :src="company.company_image">
+              <div class="card-body">
+                <h5 class="card-title">{{company.company_name}}</h5>
+                <a :href="company.company_slug + '/article'" class="btn btn-primary">Detail</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -48,18 +45,18 @@ export default {
   },
   data() {
     return {
-      companys: [],
+      companies: [],
     };
   },
   methods: {
-    setCompanys(data) {
-      this.companys = data;
+    setCompanies(data) {
+      this.companies = data;
     },
   },
   mounted() {
     axios
-      .get("")
-      .then((response) => this.setCompanys(response.data))
+      .get("/api/companies")
+      .then((response) => this.setCompanies(response.data))
       .catch((error) => console.log(error))
   },
 };

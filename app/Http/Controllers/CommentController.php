@@ -20,6 +20,7 @@ class CommentController extends Controller
         $post_data = DB::table('comments')
             ->join('users', 'users.id', '=', 'comments.user_id')
             ->where('comments.post_id', '=', $id)
+            ->orderBy('comments.created_at', 'DESC')
             ->get();
         return response()->json($post_data);
     }

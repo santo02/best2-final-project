@@ -7,6 +7,10 @@ import DetailArticle from '../src/pages/DetailArticlePage'
 import HomePage from '../src/pages/Homepage'
 import Company from '../src/pages/Company'
 import AddBlog from '../src/pages/AddBlog'
+import ListBlog from '../src/pages/ListBlog'
+import UpdateBlog from '../src/pages/UpdateBlog'
+import Upload from '../src/pages/Upload'
+import AddCompany from '../src/pages/AddCompany'
 
 
 const routes = [
@@ -24,6 +28,26 @@ const routes = [
     path: "/add-blog",
     component: AddBlog,
     name: 'add-blog',
+  },
+  {
+    path: "/my-blog",
+    component: ListBlog,
+    name: '/my-blog',
+  },
+  {
+    path: "/add-company",
+    component: AddCompany,
+    name: 'add-company',
+  },
+  {
+    path: "/upload-image",
+    component: Upload,
+    name: 'upload',
+  },
+  {
+    path: "/edit/:id",
+    component: UpdateBlog,
+    name: 'update-blog',
   },
   {
     path: '/:id/article',

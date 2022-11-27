@@ -3,8 +3,6 @@
         <h3 class="my-4">Related Articles<br></h3>
         <div class="row">
             <div v-for='article in this.$store.state.relatedArticle' :key="article.post_id" class="col-sm-6 col-md-3 mb-4">
-                <a :href="'article/' + article.slug">
-                </a>
                 <a :href="article.slug">
                     <img class="img-fluid" :src="article.post_image"/>
                     <p>{{article.title.substring(0, 50)}}...</p>
