@@ -33,7 +33,7 @@
                                                             <div class="row">
                                                                 <div class="col-md-12">
                                                                     <p><a>{{comment.username}}:</a> {{comment.komen}}<br>
-                                                                    <small class="text-muted">{{comment.created_time}}</small></p>
+                                                                    <small class="text-muted">{{comment.created_at}}</small></p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -63,9 +63,6 @@
                 message: '',
             }
         },
-        mounted() {
-            console.log(this.$route.params.slug)
-        },
         methods: {
             sendComment() {
                 let message = this.comment.message
@@ -76,7 +73,6 @@
                 } else if(!this.comment.message) {
                     this.error = 'Please type a comment!';
                 } else {
-                    this.message = 'Berhasil upload komentar!';
                     axios.post('/api/comments/post', {
                         comment: message,
                         userId: this.user.id,
@@ -84,6 +80,7 @@
                     })
                     .then(response => {
                         this.refreshData(this.$store.state.articlePost.post_id)
+                        this.message = 'Berhasil upload komentar!';
                     })
                     .catch(error => {
                         console.log(error)

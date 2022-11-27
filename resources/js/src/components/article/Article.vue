@@ -83,7 +83,7 @@
         mounted() {
             console.log('test')
             if(!this.$route.query.query) {
-                axios.get('/api/posts')
+                axios.get(`/api/posts/companies/${this.$route.params.id}`)
                 .then(response => {
                     this.$store.commit("addArticlePost", response.data)
                     console.log(this.$store.state.articlePost)
@@ -92,7 +92,7 @@
                     console.log(response.data.errors)
                 });
             } else {
-                axios.get(`/api/posts/search/${this.$route.query.query}`)
+                axios.get(`/api/posts/search/${this.$route.query.query}/${this.$route.params.id}`)
                 .then(response => {
                     this.$store.commit("addArticlePost", response.data)
                 })
@@ -103,7 +103,8 @@
         },
         methods: {
             detailPost(slug) {
-                this.$router.push(`/1/article/${slug}`)
+                let companySlug = this.$route.params.id
+                this.$router.push(`/${companySlug}/article/${slug}`)
                 window.scrollTo(0,0)
             },
         }

@@ -19,7 +19,7 @@
                 </router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" to="/Post">Post</router-link>
+                <router-link class="nav-link" to="/Kategori">Post</router-link>
               </li>
               <li class="nav-item">
                 <router-link class="nav-link" to="/Kategori">Kategori</router-link>
@@ -27,6 +27,11 @@
               <li class="nav-item">
                 <router-link class="nav-link" :to="{ name: 'add-blog' }">
                   Add Blog
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link class="nav-link" :to="{ name: 'add-company' }">
+                  Add Company
                 </router-link>
               </li>
             </ul>
@@ -38,7 +43,7 @@
                 </router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" to="/Post">Post</router-link>
+                <router-link class="nav-link" to="/Kategori">Post</router-link>
               </li>
               <li class="nav-item">
                 <router-link class="nav-link" to="/Kategori">Kategori</router-link>
@@ -48,14 +53,19 @@
                   Add Blog
                 </router-link>
               </li>
+              <li class="nav-item">
+                <router-link class="nav-link" :to="{ name: 'add-company' }">
+                  Add Company
+                </router-link>
+              </li>
             </ul>
               <li class="nav-link dropdown ">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
                   data-bs-toggle="dropdown" aria-expanded="false">
-                  {{ user.name }}
+                  Settings
                 </a>
                 <ul class="dropdown-menu dropdown-menu-white" aria-labelledby="navbarDarkDropdownMenuLink">
-                  <li><a class="dropdown-item" href="#">Profile</a></li>
+                  <li><a class="dropdown-item" href="/my-blog">My Blog</a></li>
                   <li><a class="dropdown-item" @click="logout">Logout</a></li>
                 </ul>
               </li>
