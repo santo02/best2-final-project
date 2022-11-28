@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
+<<<<<<< HEAD
 
     protected $guarded = ['id'];
 
@@ -15,4 +16,6 @@ class Post extends Model
       // Satu post punya satu kategori
       return $this->belongsTo(Category::class);
     }
+=======
+>>>>>>> 411eb12fd4aa019bac637ad4bf73a0d3e3e3355a
 }

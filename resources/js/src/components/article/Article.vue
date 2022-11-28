@@ -15,105 +15,27 @@
                         </div>
                     </div>
                 </div>
-                <div style="padding-bottom: 10px;">
+                <div v-for='article in this.$store.state.articlePost' :key="article.post_id" style="padding-bottom: 10px;">
                     <div class="card" style="border-radius: 10px;border-width: 3px;border-color: var(--bs-card-cap-bg);">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-auto"><img class="img-fluid" src="assets/img/MBKM_02.jpg" width="500px" loading="lazy"></div>
+                                <div class="col-auto"><img class="img-fluid" :src="article.post_image" width="500px"></div>
                                 <div class="col">
-                                    <div class="row" style="margin-bottom: -15px;padding-top: 7px;max-height: 60px;">
-                                        <div class="col text-start" style="width: 161.75px;"><img class="rounded-circle img-fluid" src="assets/img/OIP.jpeg" height="30px" width="30px">
-                                            <p class="fw-normal" style="margin-top: -23px;margin-left: 40px;">Rafie Akmal Haryanto</p>
+                                    <div class="row" style="margin-bottom: -10px;padding-top: 7px;max-height: 60px;">
+                                        <div class="col text-start" style="width: 161.75px;"><img class="rounded-circle img-fluid" src="/assets/img/OIP.jpeg" height="30px" width="30px">
+                                            <p class="fw-normal" style="margin-top: -27px;margin-left: 40px;">{{article.username}}</p>
                                         </div>
                                     </div>
-                                    <h5>Merdeka Belajar untuk seluruh mahasiswa Indonesia</h5>
-                                    <p style="margin-top: 5px;">Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.</p>
+                                    <h5>{{article.title}}</h5>
+                                    <p style="margin-top: 5px;">{{article.post_detail.substring(0, 240)}}...</p>
                                     <div class="row">
-                                        <div class="col"><img class="img-fluid" src="assets/img/d228d012b5f3852abb2b66d9da526801.jpg" width="20px" height="20px">
-                                            <p style="margin-top: -21px;margin-left: 28px;">12 Januari 2022</p>
+                                        <div class="col"><img class="img-fluid" src="/assets/img/d228d012b5f3852abb2b66d9da526801.jpg" width="20px" height="20px">
+                                            <p style="margin-top: -25px;margin-left: 28px;">{{article.created_time}}</p>
                                         </div>
-                                        <div class="col text-end"><img class="img-fluid" src="assets/img/OIP%20(1).jpeg" width="20px" height="20px">
-                                            <p style="margin-top: -21px;margin-left: 0px;margin-right: 31px;">20 Komentar</p>
+                                        <div class="col text-end"><img class="img-fluid" src="/assets/img/category.png" width="20px" height="20px">
+                                            <p style="margin-top: -25px;margin-left: 0px;margin-right: 31px;">{{article.category}}</p>
                                         </div>
-                                    </div><button class="btn btn-outline-primary btn-sm" @click="detailPost()" type="button" style="margin-top: -15px;border-radius: 8px;">Detail</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div style="padding-bottom: 10px;">
-                    <div class="card" style="border-radius: 10px;border-width: 3px;border-color: var(--bs-card-cap-bg);">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-auto"><img class="img-fluid" src="assets/img/Logo.png" width="500px" loading="lazy"></div>
-                                <div class="col">
-                                    <div class="row" style="margin-bottom: -15px;padding-top: 7px;max-height: 60px;">
-                                        <div class="col text-start" style="width: 161.75px;"><img class="rounded-circle img-fluid" src="assets/img/OIP.jpeg" height="30px" width="30px">
-                                            <p class="fw-normal" style="margin-top: -23px;margin-left: 40px;">Rafie Akmal Haryanto</p>
-                                        </div>
-                                    </div>
-                                    <h5>Merdeka Belajar untuk seluruh mahasiswa Indonesia</h5>
-                                    <p style="margin-top: 5px;">Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.</p>
-                                    <div class="row">
-                                        <div class="col"><img class="img-fluid" src="assets/img/d228d012b5f3852abb2b66d9da526801.jpg" width="20px" height="20px">
-                                            <p style="margin-top: -21px;margin-left: 28px;">12 Januari 2022</p>
-                                        </div>
-                                        <div class="col text-end"><img class="img-fluid" src="assets/img/OIP%20(1).jpeg" width="20px" height="20px">
-                                            <p style="margin-top: -21px;margin-left: 0px;margin-right: 31px;">20 Komentar</p>
-                                        </div>
-                                    </div><button class="btn btn-outline-primary btn-sm" @click="detailPost()" type="button" style="margin-top: -15px;border-radius: 8px;">Detail</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div style="padding-bottom: 10px;">
-                    <div class="card" style="border-radius: 10px;border-width: 3px;border-color: var(--bs-card-cap-bg);">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-auto"><img class="img-fluid" src="assets/img/Investree_Campaign_My-First-september_Promo-page-1500x500_c.webp" width="500px" loading="lazy"></div>
-                                <div class="col">
-                                    <div class="row" style="margin-bottom: -15px;padding-top: 7px;max-height: 60px;">
-                                        <div class="col text-start" style="width: 161.75px;"><img class="rounded-circle img-fluid" src="assets/img/OIP.jpeg" height="30px" width="30px">
-                                            <p class="fw-normal" style="margin-top: -23px;margin-left: 40px;">Rafie Akmal Haryanto</p>
-                                        </div>
-                                    </div>
-                                    <h5>Merdeka Belajar untuk seluruh mahasiswa Indonesia</h5>
-                                    <p style="margin-top: 5px;">Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.</p>
-                                    <div class="row">
-                                        <div class="col"><img class="img-fluid" src="assets/img/d228d012b5f3852abb2b66d9da526801.jpg" width="20px" height="20px">
-                                            <p style="margin-top: -21px;margin-left: 28px;">12 Januari 2022</p>
-                                        </div>
-                                        <div class="col text-end"><img class="img-fluid" src="assets/img/OIP%20(1).jpeg" width="20px" height="20px">
-                                            <p style="margin-top: -21px;margin-left: 0px;margin-right: 31px;">20 Komentar</p>
-                                        </div>
-                                    </div><button class="btn btn-outline-primary btn-sm" @click="detailPost()" type="button" style="margin-top: -15px;border-radius: 8px;">Detail</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div style="padding-bottom: 10px;">
-                    <div class="card" style="border-radius: 10px;border-width: 3px;border-color: var(--bs-card-cap-bg);">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-auto"><img class="img-fluid" src="assets/img/investree_home_page_hello.ed24a5f2.webp" width="500px" loading="lazy"></div>
-                                <div class="col">
-                                    <div class="row" style="margin-bottom: -15px;padding-top: 7px;max-height: 60px;">
-                                        <div class="col text-start" style="width: 161.75px;"><img class="rounded-circle img-fluid" src="assets/img/OIP.jpeg" height="30px" width="30px">
-                                            <p class="fw-normal" style="margin-top: -23px;margin-left: 40px;">Rafie Akmal Haryanto</p>
-                                        </div>
-                                    </div>
-                                    <h5>Merdeka Belajar untuk seluruh mahasiswa Indonesia</h5>
-                                    <p style="margin-top: 5px;">Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.</p>
-                                    <div class="row">
-                                        <div class="col"><img class="img-fluid" src="assets/img/d228d012b5f3852abb2b66d9da526801.jpg" width="20px" height="20px">
-                                            <p style="margin-top: -21px;margin-left: 28px;">12 Januari 2022</p>
-                                        </div>
-                                        <div class="col text-end"><img class="img-fluid" src="assets/img/OIP%20(1).jpeg" width="20px" height="20px">
-                                            <p style="margin-top: -21px;margin-left: 0px;margin-right: 31px;">20 Komentar</p>
-                                        </div>
-                                    </div><button class="btn btn-outline-primary btn-sm" @click="detailPost()" type="button" style="margin-top: -15px;border-radius: 8px;">Detail</button>
+                                    </div><button class="btn btn-outline-primary btn-sm" @click="detailPost(article.slug)" type="button" style="margin-top: -15px;border-radius: 8px;">Detail</button>
                                 </div>
                             </div>
                         </div>
@@ -123,19 +45,19 @@
             <div class="col-auto">
                 <h2 data-bs-toggle="tooltip" data-bss-tooltip="" title="Silahkan Pilih Kategori">Kategori</h2>
                 <hr style="background: #0676dd;border-radius: 18px;border-width: 3px;border-color: rgb(6,118,221);margin-top: -7px;">
-                <a href="#">
+                <a href="article?query=Pendidikan">
                     <h6>Pendidikan</h6>
                 </a>
-                <a href="#">
+                <a href="article?query=Teknologi">
                     <h6>Teknologi</h6>
                 </a>
-                <a href="#">
+                <a href="article?query=Masyarakat">
                     <h6>Masyarakat</h6>
                 </a>
-                <a href="#">
+                <a href="article?query=Leadership">
                     <h6>Leadership</h6>
                 </a>
-                <a href="#">
+                <a href="article?query=Lowongan">
                     <h6>Lowongan</h6>
                 </a>
             </div>
@@ -159,11 +81,30 @@
     export default {
         name: 'articles',
         mounted() {
-            console.log('Article component mounted.')
+            console.log('test')
+            if(!this.$route.query.query) {
+                axios.get(`/api/posts/companies/${this.$route.params.id}`)
+                .then(response => {
+                    this.$store.commit("addArticlePost", response.data)
+                    console.log(this.$store.state.articlePost)
+                })
+                .catch(error => {
+                    console.log(response.data.errors)
+                });
+            } else {
+                axios.get(`/api/posts/search/${this.$route.query.query}/${this.$route.params.id}`)
+                .then(response => {
+                    this.$store.commit("addArticlePost", response.data)
+                })
+                .catch(error => {
+                    console.log(response.data.errors)
+                });
+            }
         },
         methods: {
-            detailPost() {
-                this.$router.push('/detail')
+            detailPost(slug) {
+                let companySlug = this.$route.params.id
+                this.$router.push(`/${companySlug}/article/${slug}`)
                 window.scrollTo(0,0)
             },
         }

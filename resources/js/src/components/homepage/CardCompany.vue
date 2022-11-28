@@ -3,7 +3,7 @@
       <img class="card-img-top" src="assets/img/Logo.png">
       <div class="card-body">
         <h5 class="card-title">Card title</h5>
-        <a href="/article" class="btn btn-primary">Go somewhere</a>
+        <a href="/1/article" class="btn btn-primary">A</a>
       </div>
     </div>
 </template>
