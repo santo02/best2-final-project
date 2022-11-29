@@ -11,10 +11,12 @@ import ListBlog from '../src/pages/ListBlog'
 import UpdateBlog from '../src/pages/UpdateBlog'
 import Upload from '../src/pages/Upload'
 import AddCompany from '../src/pages/AddCompany'
+import AddKategori from '../src/pages/AddKategori'
+import Categories from '../src/pages/categories'
+import CategoriesAdmin from '../src/pages/CategoriesAdmin'
 
 
-const routes = [
-  {
+const routes = [{
     path: '/',
     component: HomePage,
     name: 'home',
@@ -28,6 +30,9 @@ const routes = [
     path: "/add-blog",
     component: AddBlog,
     name: 'add-blog',
+    meta: {
+      requiresAuth: true,
+    }
   },
   {
     path: "/my-blog",
@@ -38,26 +43,64 @@ const routes = [
     path: "/add-company",
     component: AddCompany,
     name: 'add-company',
+    requiresAuth: true,
+  },
+  {
+    path: "/categories",
+    component: Categories,
+    name: 'categories'
+  },
+  {
+    path: "/categories-admin",
+    component: CategoriesAdmin,
+    name: 'categories-admin',
+    meta: {
+      requiresAuth: true,
+      isAdmin: true
+    }
+  },
+  {
+    path: "/add-categories",
+    component: AddKategori,
+    name: 'add-categories',
+    meta: {
+      requiresAuth: true,
+      isAdmin: true
+    }
   },
   {
     path: "/upload-image",
     component: Upload,
     name: 'upload',
+    meta: {
+      requiresAuth: true,
+      isUser: true
+    }
   },
   {
     path: "/edit/:id",
     component: UpdateBlog,
     name: 'update-blog',
+    meta: {
+      requiresAuth: true,
+      isUser: true
+    }
   },
   {
     path: '/:id/article',
     component: ArticlePage,
     name: 'article-page',
+    meta: {
+      requiresAuth: true,
+    }
   },
   {
     path: '/:id/article/:slug',
     component: DetailArticle,
     name: 'detail-article',
+    meta: {
+      requiresAuth: true,
+    }
   },
   {
     path: '/registrasi',
@@ -92,4 +135,3 @@ const routes = [
 ]
 
 export default routes;
-

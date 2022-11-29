@@ -32,10 +32,12 @@
         </div>
         <div class="col">
           <div class="card " style="width: 18rem;">
-            <div class="card-body">
-              <h2 class="card-title">Total Category: </h2>
-              <p class="card-text">10 Category</p>
-            </div>
+            <router-link to="categories">
+              <div class="card-body">
+                <h2 class="card-title">Total Category: </h2>
+                <p class="card-text">{{CountCate}}  Category</p>
+              </div>
+            </router-link>
           </div>
         </div>
       </div>
@@ -49,7 +51,22 @@ export default {
   name: "Dashboard",
   data() {
     return {
-      AdminGambar: 'assets/img/Slider1.jpg'
+      AdminGambar: 'assets/img/Slider1.jpg',
+      CountCate:'',
+    }
+  },
+  mounted(){
+    this.CountCategories();
+  },
+  methods: {
+    CountCategories() {
+      axios.get('/api/categories/count')
+        .then(response => {
+          this.CountCate= response.data
+        })
+        .catch(error => {
+          console.log(error)
+        });
     }
   }
 };
@@ -60,7 +77,8 @@ export default {
   margin: 20px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.wellcome{
+
+.wellcome {
   color: white;
   margin-top: -80px;
   margin-left: 10px;

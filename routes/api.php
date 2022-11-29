@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoriesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -52,6 +53,13 @@ Route::controller(CompanyController::class)->group(function () {
     // Route::GET('/posts/find/{slug}', 'show');
     // Route::GET('/posts/search/{query}', 'search');
     // Route::GET('/posts/related/{currentPost}/{category}', 'related');
+});
+
+Route::controller(CategoriesController::class)->group(function(){
+  Route::post('/categories/add', 'store');
+  Route::get('/categories/show', 'show');
+  Route::get('/categories/count', 'CountCate');
+  Route::delete('/categories/delete/{id}', 'delete');
 });
 
 // Route::apiResource('posts', AddBlog::class);
