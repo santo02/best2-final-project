@@ -12,17 +12,17 @@
         <template v-if="isLoggedIn">
           <div class="collapse navbar-collapse" id="navcol-1">
             <!-- If role admin -->
-            <ul class="navbar-nav mx-auto" v-if="logintype == admin" style="font-size: 14px;margin-top: 3px;">
+            <ul class="navbar-nav mx-auto" v-if="loginType === 'admin'" style="font-size: 14px;margin-top: 3px;">
               <li class="nav-item">
                 <router-link class="nav-link" :to="{ name: 'admin' }">
-                  Home
+                  home
                 </router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" to="/Kategori">Post</router-link>
+                <router-link class="nav-link" to="/post">Post</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" to="/Kategori">Kategori</router-link>
+                <router-link class="nav-link" :to="{ name: 'categories-admin' }">Kategori</router-link>
               </li>
               <li class="nav-item">
                 <router-link class="nav-link" :to="{ name: 'add-blog' }">
@@ -36,39 +36,34 @@
               </li>
             </ul>
             <!-- if role user -->
-            <ul class="navbar-nav mx-auto" v-if="logintype == user" style="font-size: 14px;margin-top: 3px;">
+            <ul class="navbar-nav mx-auto" v-if="loginType === 'user'" style="font-size: 14px;margin-top: 3px;">
               <li class="nav-item">
-                <router-link class="nav-link" :to="{ name: 'home' }">
+                <router-link class="nav-link" :to="{ name: 'user' }">
                   Home
                 </router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" to="/Kategori">Post</router-link>
+                <router-link class="nav-link" to="/post">Post</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" to="/Kategori">Kategori</router-link>
+                <router-link class="nav-link" :to="{ name: 'categories' }">Kategori</router-link>
               </li>
               <li class="nav-item">
                 <router-link class="nav-link" :to="{ name: 'add-blog' }">
                   Add Blog
                 </router-link>
               </li>
-              <li class="nav-item">
-                <router-link class="nav-link" :to="{ name: 'add-company' }">
-                  Add Company
-                </router-link>
-              </li>
             </ul>
-              <li class="nav-link dropdown ">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
-                  data-bs-toggle="dropdown" aria-expanded="false">
-                  Settings
-                </a>
-                <ul class="dropdown-menu dropdown-menu-white" aria-labelledby="navbarDarkDropdownMenuLink">
-                  <li><a class="dropdown-item" href="/my-blog">My Blog</a></li>
-                  <li><a class="dropdown-item" @click="logout">Logout</a></li>
-                </ul>
-              </li>
+            <li class="nav-link dropdown ">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Settings
+              </a>
+              <ul class="dropdown-menu dropdown-menu-white" aria-labelledby="navbarDarkDropdownMenuLink">
+                <li><a class="dropdown-item" href="/my-blog">My Blog</a></li>
+                <li><a class="dropdown-item" @click="logout">Logout</a></li>
+              </ul>
+            </li>
           </div>
         </template>
         <template v-if="!isLoggedIn">
@@ -83,7 +78,7 @@
                 <router-link class="nav-link" to="/Post">Post</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" to="/Kategori">Kategori</router-link>
+                <router-link class="nav-link" :to="{ name: 'categories' }">Kategori</router-link>
               </li>
             </ul>
             <router-link to="/login">
@@ -132,7 +127,7 @@ export default {
     axios.get('api/user')
       .then(response => {
         this.user = response.data
-        // console.log(this.user)
+        // console.log(this.user.role)
         this.loginType = response.data.role
         // console.log(this.loginType)
       })
