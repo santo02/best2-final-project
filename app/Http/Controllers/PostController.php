@@ -45,16 +45,20 @@ class PostController extends Controller
 
     }
 
-    public function search($query, $slug)
+    public function search($search, $slug)
     {
         $post_data = DB::table('posts')
             ->join('users', 'users.id', '=', 'posts.user_id')
             ->join('companies', 'companies.company_id', '=', 'posts.company_id')
             ->where('companies.company_slug', '=', $slug)
-            ->where('posts.title', 'LIKE', "%{$query}%")
-            // ->orWhere('posts.post_detail', 'LIKE', "%{$query}%")
-            ->orWhere('posts.category', 'LIKE', "%{$query}%")
-            // ->orWhere('users.username', 'LIKE', "%{$query}%")
+            ->where(function($query) use ($search) {
+                $query->where('posts.title', 'LIKE', "%{$search}%")
+                ->orWhere('posts.post_detail', 'LIKE', "%{$search}%")
+                ->orWhere('posts.category', 'LIKE', "%{$search}%")
+                ->orWhere('users.username', 'LIKE', "%{$search}%");
+            })
+            ->select('posts.post_id', 'posts.slug', 'posts.title', 'post_image', 'posts.category', 'posts.post_image', 'post_detail', 'posts.created_at', 'users.username', 'users.name', 'users.image')
+            ->limit(10)
             ->get();
         return response()->json($post_data);
     }
@@ -74,7 +78,9 @@ class PostController extends Controller
     public function show($slug)
     {
         return Post::join('users', 'users.id', '=', 'posts.user_id')
-            ->where('slug', $slug)->firstorfail();
+            ->where('slug', $slug)
+            ->select('posts.post_id', 'posts.slug', 'posts.title', 'post_image', 'posts.category', 'posts.post_image', 'post_detail', 'posts.created_at', 'users.username', 'users.name', 'users.image')
+            ->firstorfail();
     }
 
     public function store(Request $request)
