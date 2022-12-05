@@ -2232,8 +2232,6 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    console.log('test');
-
     if (!this.$route.query.query) {
       axios.get("/api/posts/companies/".concat(this.$route.params.id)).then(function (response) {
         _this.$store.commit("addArticlePost", response.data);
@@ -2596,9 +2594,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Company",
-  components: {
-    CardCompany: _CardCompany_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
   data: function data() {
     return {
       Companys: [],
@@ -2607,26 +2602,25 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     setCompanys: function setCompanys(data) {
-      this.sompanys = data;
-    },
-    search: function search() {
-      var _this = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default().get("" + this.search).then(function (response) {
-        return _this.setCompanys(response.data);
-      })["catch"](function (error) {
-        return console.log(error);
-      });
+      this.Companys = data;
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this = this;
 
-    axios__WEBPACK_IMPORTED_MODULE_1___default().get("").then(function (response) {
-      return _this2.setCompanys(response.data);
-    })["catch"](function (error) {
-      return console.log(error);
-    });
+    if (!this.$route.query.query) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get('/api/companies/').then(function (response) {
+        _this.setCompanys(response.data);
+      })["catch"](function (error) {
+        console.log(response.data.errors);
+      });
+    } else {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get("/api/companies/search/".concat(this.$route.query.query)).then(function (response) {
+        _this.setCompanys(response.data);
+      })["catch"](function (error) {
+        console.log(response.data.errors);
+      });
+    }
   }
 });
 
@@ -3628,7 +3622,7 @@ var render = function render() {
         "margin-top": "-25px",
         "margin-left": "28px"
       }
-    }, [_vm._v(_vm._s(article.created_time))])]), _vm._v(" "), _c("div", {
+    }, [_vm._v(_vm._s(article.created_at))])]), _vm._v(" "), _c("div", {
       staticClass: "col text-end"
     }, [_c("img", {
       staticClass: "img-fluid",
@@ -3926,7 +3920,7 @@ var render = function render() {
     staticStyle: {
       "margin-top": "1px"
     }
-  }, [_vm._v(_vm._s(this.$store.state.articlePost.created_time))])])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v(_vm._s(this.$store.state.articlePost.created_at))])])])]), _vm._v(" "), _c("div", {
     staticClass: "container text-center"
   }, [_c("img", {
     staticClass: "img-fluid",
@@ -4577,9 +4571,31 @@ var render = function render() {
     staticClass: "container"
   }, [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _c("div", {
     staticClass: "row mb-4"
-  }, [_c("div", {
-    staticClass: "col-md-4 mt-4"
-  }, [_c("CardCompany")], 1)])])], 1);
+  }, _vm._l(_vm.Companys, function (company) {
+    return _c("div", {
+      key: company.company_id,
+      staticClass: "col-md-4 mt-4"
+    }, [_c("div", {
+      staticClass: "card text-center",
+      staticStyle: {
+        width: "18rem"
+      }
+    }, [_c("img", {
+      staticClass: "card-img-top",
+      attrs: {
+        src: company.company_image
+      }
+    }), _vm._v(" "), _c("div", {
+      staticClass: "card-body"
+    }, [_c("h5", {
+      staticClass: "card-title"
+    }, [_vm._v(_vm._s(company.company_name))]), _vm._v(" "), _c("a", {
+      staticClass: "btn btn-primary",
+      attrs: {
+        href: company.company_slug + "/article"
+      }
+    }, [_vm._v("Detail")])])])]);
+  }), 0)])], 1);
 };
 
 var staticRenderFns = [function () {

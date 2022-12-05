@@ -28,21 +28,13 @@ class CompanyController extends Controller
         return response()->json($post_data);
     }
 
-    public function related($currentPost, $category)
+    public function show($query)
     {
-        $post_data = DB::table('posts')
-            ->where('posts.post_id', '!=', $currentPost)
-            ->where('posts.category', 'LIKE', "%{$category}%")
-            ->select('posts.post_id', 'posts.slug', 'posts.title', 'post_image')
-            ->limit(4)
+        $post_data = DB::table('companies')
+            ->where('companies.company_name', 'LIKE', "%{$query}%")
+            ->orWhere('companies.company_slug', 'LIKE', "%{$query}%")
             ->get();
         return response()->json($post_data);
-    }
-
-    public function show($slug)
-    {
-        return Company::join('users', 'users.id', '=', 'posts.user_id')
-            ->where('slug', $slug)->firstorfail();
     }
 
     public function store(Request $request)

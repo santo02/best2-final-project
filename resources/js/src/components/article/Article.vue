@@ -30,7 +30,7 @@
                                     <p style="margin-top: 5px;">{{article.post_detail.substring(0, 240)}}...</p>
                                     <div class="row">
                                         <div class="col"><img class="img-fluid" src="/assets/img/d228d012b5f3852abb2b66d9da526801.jpg" width="20px" height="20px">
-                                            <p style="margin-top: -25px;margin-left: 28px;">{{article.created_time}}</p>
+                                            <p style="margin-top: -25px;margin-left: 28px;">{{article.created_at}}</p>
                                         </div>
                                         <div class="col text-end"><img class="img-fluid" src="/assets/img/category.png" width="20px" height="20px">
                                             <p style="margin-top: -25px;margin-left: 0px;margin-right: 31px;">{{article.category}}</p>
@@ -81,7 +81,6 @@
     export default {
         name: 'articles',
         mounted() {
-            console.log('test')
             if(!this.$route.query.query) {
                 axios.get(`/api/posts/companies/${this.$route.params.id}`)
                 .then(response => {

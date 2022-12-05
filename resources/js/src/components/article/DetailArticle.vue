@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h1>{{this.$store.state.articlePost.title}}</h1>
-                    <p style="margin-top: 1px;">{{this.$store.state.articlePost.created_time}}</p>
+                    <p style="margin-top: 1px;">{{this.$store.state.articlePost.created_at}}</p>
                 </div>
             </div>
         </div>

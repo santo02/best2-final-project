@@ -23,9 +23,15 @@
     </div>
 
       <div class="row mb-4">
-        <div class="col-md-4 mt-4">
-          <CardCompany/>
-        </div>
+        <div v-for='company in Companys' :key="company.company_id" class="col-md-4 mt-4">
+            <div class="card text-center" style="width: 18rem;">
+              <img class="card-img-top" :src="company.company_image">
+              <div class="card-body">
+                <h5 class="card-title">{{company.company_name}}</h5>
+                <a :href="company.company_slug + '/article'" class="btn btn-primary">Detail</a>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
   </div>
@@ -37,9 +43,6 @@ import axios from "axios";
 
 export default {
   name: "Company",
-  components: {
-    CardCompany,
-  },
   data() {
     return {
       Companys: [],
@@ -48,20 +51,27 @@ export default {
   },
   methods: {
     setCompanys(data) {
-      this.sompanys = data;
+      this.Companys = data;
     },
-    search() {
-      axios
-      .get(""+this.search)
-      .then((response) => this.setCompanys(response.data))
-      .catch((error) => console.log(error));
-    }
   },
   mounted() {
-    axios
-      .get("")
-      .then((response) => this.setCompanys(response.data))
-      .catch((error) => console.log(error));
+    if(!this.$route.query.query) {
+      axios.get('/api/companies/')
+      .then(response => {
+        this.setCompanys(response.data)
+      })
+      .catch(error => {
+        console.log(response.data.errors)
+      });
+    } else {
+      axios.get(`/api/companies/search/${this.$route.query.query}`)
+      .then(response => {
+        this.setCompanys(response.data)
+      })
+      .catch(error => {
+        console.log(response.data.errors)
+      });
+    }
   },
 };
 </script>

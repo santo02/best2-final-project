@@ -49,9 +49,7 @@ Route::controller(PostController::class)->group(function () {
 Route::controller(CompanyController::class)->group(function () {
     Route::GET('/companies', 'index');
     Route::POST('/companies/add', 'store');
-    // Route::GET('/posts/find/{slug}', 'show');
-    // Route::GET('/posts/search/{query}', 'search');
-    // Route::GET('/posts/related/{currentPost}/{category}', 'related');
+    Route::GET('/companies/search/{query}', 'show');
 });
 
 // Route::apiResource('posts', AddBlog::class);
