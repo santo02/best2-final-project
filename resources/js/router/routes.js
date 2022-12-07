@@ -65,7 +65,7 @@ const routes = [{
     name: 'add-categories',
     meta: {
       requiresAuth: true,
-      isUser: true
+      isAdmin: true
     }
   },
   {

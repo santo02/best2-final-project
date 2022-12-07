@@ -6996,7 +6996,7 @@ var routes = [{
   name: 'add-categories',
   meta: {
     requiresAuth: true,
-    isUser: true
+    isAdmin: true
   }
 }, {
   path: "/upload-image",
