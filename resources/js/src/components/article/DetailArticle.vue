@@ -41,12 +41,11 @@
             },
 
             getRelatedArticlePost() {
-                let postId = this.$store.state.articlePost.post_id
-                let postCategory = this.$store.state.articlePost.category
+                let postId = this.$store.state.articlePost.id
+                let postCategory = this.$store.state.articlePost.Categories_name
                 axios.get(`/api/posts/related/${postId}/${postCategory}`)
                 .then(response => {
                     this.$store.commit("addRelatedArticle", response.data)
-                    console.log(response.data)
                     this.getComments(postId)
 
                 })
@@ -58,8 +57,9 @@
             getComments(id) {
                 axios.get(`/api/comments/find/${id}`)
                 .then(response => {
-                    console.log(response.data)
                     this.$store.commit("addArticleComment", response.data)
+                    this.$store.commit("addIsLoggedIn", localStorage.getItem('token') != null)
+                    this.$store.commit("addUser", JSON.parse(localStorage.getItem('user')))
                 })
                 .catch(error => {
                     console.log(error)

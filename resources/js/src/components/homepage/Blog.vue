@@ -21,10 +21,11 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">Company</label>
-                <select class="form-select" v-model="blog.company_id" required>
+                <select class="form-select" v-model="blog.id" required>
                   <optgroup label="Pilih Perusahaan">
-                    <option v-for='company in companies' :key="company.post_id" :value="company.company_id">
-                      {{ company.company_name }}</option>
+                    <option v-for='company in companies' :key="company.id" :value="company.id">
+                      {{ company.company_name }}
+                    </option>
                   </optgroup>
                 </select>
               </div>
@@ -111,13 +112,15 @@ export default {
       this.isLoggedIn = localStorage.getItem('token') != null
 
       let formData = new FormData()
-      formData.append('company_id', this.blog.company_id)
+      formData.append('company_id', this.blog.id)
       formData.append('title', this.blog.title)
       formData.append('category', this.blog.category)
       formData.append('file', this.file)
       formData.append('post_detail', this.blog.post_detail)
       formData.append('user_id', this.user.id)
       formData.append('slug', this.blog.slug)
+      console.log(this.blog)
+      console.log(this.user.id)
       console.log(formData)
       this.axios({
         url: '/api/posts/add',

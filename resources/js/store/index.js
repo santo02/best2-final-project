@@ -8,6 +8,8 @@ const store = new Vuex.Store({
       articlePost: [],
       relatedArticle: [],
       comments: [],
+      user: [],
+      isLoggedIn: false,
     },
     getters: {
       //
@@ -19,6 +21,14 @@ const store = new Vuex.Store({
 
       addRelatedArticle(state, newPost) {
         state.relatedArticle = newPost
+      },
+
+      addUser(state, newUser) {
+        state.user = newUser
+      },
+
+      addIsLoggedIn(state, newPost) {
+        state.isLoggedIn = newPost
       },
 
       addArticleComment(state, newComment) {

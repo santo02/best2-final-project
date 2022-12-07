@@ -20,7 +20,7 @@ class CommentController extends Controller
         $post_data = DB::table('comments')
             ->join('users', 'users.id', '=', 'comments.user_id')
             ->where('comments.post_id', '=', $id)
-            ->select('comments.post_id', 'comments.id', 'comments.user_id', 'comments.komen', 'comments.created_at', 'users.username', 'users.name', 'users.image')
+            ->select('comments.post_id', 'comments.id', 'comments.user_id', 'comments.comments', 'comments.created_at', 'users.username', 'users.name', 'users.image')
             ->orderBy('comments.created_at', 'DESC')
             ->get();
         return response()->json($post_data);
@@ -29,7 +29,7 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $commentData = $request->validate([
-            'comment' => ['required'],
+            'comments' => ['required'],
             'userId' => ['required'],
             'postId' => ['required']
         ]);
@@ -38,8 +38,10 @@ class CommentController extends Controller
         } else {
             $post_id = $request->input('postId');
             $user_id = $request->input('userId');
-            $komen = $request->input('comment');
-            $values = array('post_id' => $post_id,'user_id' => $user_id, 'komen' => $komen);
+            $komen = $request->input('comments');
+            $created_at = \Carbon\Carbon::now()->toDateTimeString();
+            $updated_at = \Carbon\Carbon::now()->toDateTimeString();
+            $values = array('post_id' => $post_id,'user_id' => $user_id, 'comments' => $komen, 'created_at' => $created_at,'updated_at' => $updated_at);
             $upload_komen = DB::table('comments')->insert($values);
             return response()->json($upload_komen);
         }

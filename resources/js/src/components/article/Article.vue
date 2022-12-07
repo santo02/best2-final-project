@@ -15,7 +15,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-for='article in this.$store.state.articlePost' :key="article.post_id" style="padding-bottom: 10px;">
+                <div v-for='article in this.$store.state.articlePost' :key="article.id" style="padding-bottom: 10px;">
                     <div class="card" style="border-radius: 10px;border-width: 3px;border-color: var(--bs-card-cap-bg);">
                         <div class="card-body">
                             <div class="row">
@@ -33,7 +33,7 @@
                                             <p style="margin-top: -25px;margin-left: 28px;">{{article.created_at}}</p>
                                         </div>
                                         <div class="col text-end"><img class="img-fluid" src="/assets/img/category.png" width="20px" height="20px">
-                                            <p style="margin-top: -25px;margin-left: 0px;margin-right: 31px;">{{article.category}}</p>
+                                            <p style="margin-top: -25px;margin-left: 0px;margin-right: 31px;">{{article.Categories_name}}</p>
                                         </div>
                                     </div><button class="btn btn-outline-primary btn-sm" @click="detailPost(article.slug)" type="button" style="margin-top: -15px;border-radius: 8px;">Detail</button>
                                 </div>

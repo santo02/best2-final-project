@@ -21,8 +21,10 @@ class PostController extends Controller
     {
         $post_data = DB::table('posts')
             ->join('users', 'users.id', '=', 'posts.user_id')
-            ->join('companies', 'companies.company_id', '=', 'posts.company_id')
+            ->join('companies', 'companies.id', '=', 'posts.company_id')
+            ->join('categories', 'categories.id', '=', 'posts.categori_id')
             ->where('companies.company_slug', '=', $query)
+            ->select('posts.id', 'posts.slug', 'posts.title', 'post_image', 'categories.Categories_name', 'posts.post_image', 'post_detail', 'posts.created_at', 'users.username', 'users.name', 'users.image')
             ->get();
         return response()->json($post_data);
 
@@ -49,15 +51,16 @@ class PostController extends Controller
     {
         $post_data = DB::table('posts')
             ->join('users', 'users.id', '=', 'posts.user_id')
-            ->join('companies', 'companies.company_id', '=', 'posts.company_id')
+            ->join('companies', 'companies.id', '=', 'posts.company_id')
+            ->join('categories', 'categories.id', '=', 'posts.categori_id')
             ->where('companies.company_slug', '=', $slug)
             ->where(function($query) use ($search) {
                 $query->where('posts.title', 'LIKE', "%{$search}%")
                 ->orWhere('posts.post_detail', 'LIKE', "%{$search}%")
-                ->orWhere('posts.category', 'LIKE', "%{$search}%")
+                ->orWhere('categories.Categories_name', 'LIKE', "%{$search}%")
                 ->orWhere('users.username', 'LIKE', "%{$search}%");
             })
-            ->select('posts.post_id', 'posts.slug', 'posts.title', 'post_image', 'posts.category', 'posts.post_image', 'post_detail', 'posts.created_at', 'users.username', 'users.name', 'users.image')
+            ->select('posts.id', 'posts.slug', 'posts.title', 'post_image', 'categories.Categories_name', 'posts.post_image', 'post_detail', 'posts.created_at', 'users.username', 'users.name', 'users.image')
             ->limit(10)
             ->get();
         return response()->json($post_data);
@@ -66,10 +69,11 @@ class PostController extends Controller
     public function related($currentPost, $category)
     {
         $post_data = DB::table('posts')
-            ->join('companies', 'companies.company_id', '=', 'posts.company_id')
-            ->where('posts.post_id', '!=', $currentPost)
-            ->where('posts.category', 'LIKE', "%{$category}%")
-            ->select('posts.post_id', 'posts.slug', 'posts.title', 'post_image', 'companies.company_slug')
+            ->join('companies', 'companies.id', '=', 'posts.company_id')
+            ->join('categories', 'categories.id', '=', 'posts.categori_id')
+            ->where('posts.id', '!=', $currentPost)
+            ->where('categories.Categories_name', 'LIKE', "%{$category}%")
+            ->select('posts.id', 'posts.slug', 'posts.title', 'post_image', 'companies.company_slug')
             ->limit(4)
             ->get();
         return response()->json($post_data);
@@ -78,15 +82,16 @@ class PostController extends Controller
     public function show($slug)
     {
         return Post::join('users', 'users.id', '=', 'posts.user_id')
-            ->where('slug', $slug)
-            ->select('posts.post_id', 'posts.slug', 'posts.title', 'post_image', 'posts.category', 'posts.post_image', 'post_detail', 'posts.created_at', 'users.username', 'users.name', 'users.image')
+            ->join('categories', 'categories.id', '=', 'posts.categori_id')
+            ->where('posts.slug', $slug)
+            ->select('posts.id', 'posts.slug', 'posts.title', 'post_image', 'categories.Categories_name', 'posts.post_image', 'post_detail', 'posts.created_at', 'users.username', 'users.name', 'users.image')
             ->firstorfail();
     }
 
     public function store(Request $request)
     {
         $imageData = $request->validate([
-            'file' => 'required|mimes:jpg,jpeg,png|max:2048',
+            'file' => 'required|mimes:jpg,jpeg,png',
             'company_id' => 'required',
             'title' => 'required',
             'category' => 'required',
@@ -107,7 +112,9 @@ class PostController extends Controller
             $post_detail = $request->input('post_detail');
             $userId = $request->input('user_id');
             $slug= $request->input('slug');
-            $values = array('company_id' => $companyId,'title' => $title, 'slug' => $slug, 'category' => $category,'post_image' => $post_image, 'post_detail' => $post_detail, 'user_id' => $userId);
+            $created_at = \Carbon\Carbon::now()->toDateTimeString();
+            $updated_at = \Carbon\Carbon::now()->toDateTimeString();
+            $values = array('company_id' => $companyId, 'categori_id' => $category, 'title' => $title, 'slug' => $slug, 'post_image' => $post_image, 'post_detail' => $post_detail, 'user_id' => $userId, 'created_at' => $created_at, 'updated_at' => $updated_at);
             $data_article = DB::table('posts')->insert($values);
             return response()->json($data_article);
         }
