@@ -53,7 +53,9 @@ class CompanyController extends Controller
             $company_name = $request->input('company_name');
             $post_image = '/assets/img/company/'.$file_name;
             $slug= $request->input('slug');
-            $values = array('company_name' => $company_name,'company_slug' => $slug, 'company_image' => $post_image);
+            $created_at = \Carbon\Carbon::now()->toDateTimeString();
+            $updated_at = \Carbon\Carbon::now()->toDateTimeString();
+            $values = array('company_name' => $company_name,'company_slug' => $slug, 'company_image' => $post_image, 'created_at' => $created_at, 'updated_at' => $updated_at);
             $data_company = DB::table('companies')->insert($values);
             return response()->json($data_company);
         }
