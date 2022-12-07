@@ -7017,17 +7017,11 @@ var routes = [{
 }, {
   path: '/:id/article',
   component: _src_pages_Articlepage__WEBPACK_IMPORTED_MODULE_4__["default"],
-  name: 'article-page',
-  meta: {
-    requiresAuth: true
-  }
+  name: 'article-page'
 }, {
   path: '/:id/article/:slug',
   component: _src_pages_DetailArticlePage__WEBPACK_IMPORTED_MODULE_5__["default"],
-  name: 'detail-article',
-  meta: {
-    requiresAuth: true
-  }
+  name: 'detail-article'
 }, {
   path: '/registrasi',
   component: _src_pages_Registration__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -7144,7 +7138,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.card[data-v-c2bba678] {\n  background-color: rgba(245, 245, 245, 0.856);\n  margin: 20px;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n.wellcome[data-v-c2bba678] {\n  color: white;\n  margin-top: -80px;\n  margin-left: 10px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.card[data-v-c2bba678] {\r\n  background-color: rgba(245, 245, 245, 0.856);\r\n  margin: 20px;\r\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n.wellcome[data-v-c2bba678] {\r\n  color: white;\r\n  margin-top: -80px;\r\n  margin-left: 10px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

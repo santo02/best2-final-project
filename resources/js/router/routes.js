@@ -89,18 +89,12 @@ const routes = [{
   {
     path: '/:id/article',
     component: ArticlePage,
-    name: 'article-page',
-    meta: {
-      requiresAuth: true,
-    }
+    name: 'article-page'
   },
   {
     path: '/:id/article/:slug',
     component: DetailArticle,
-    name: 'detail-article',
-    meta: {
-      requiresAuth: true,
-    }
+    name: 'detail-article'
   },
   {
     path: '/registrasi',
