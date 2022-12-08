@@ -10,11 +10,27 @@ const store = new Vuex.Store({
       comments: [],
       user: [],
       isLoggedIn: false,
+
+      quoteOrigin: 'placeholder',
+      quotePosition: 'bottom-center',
+      quoteColor: '#00cc00',
+      quoteProgress: 'auto',
+      quoteDuration: '2500',
+      quoteBorder: '#FFFFFF',
+      quoteText: 'placeholder',
     },
     getters: {
       //
     },
     mutations: {
+      addQuoteText(state, newQuote) {
+        state.quoteText = newQuote
+      },
+      
+      addQuoteOrigin(state, newOrigin) {
+        state.quoteOrigin = newOrigin
+      },
+
       addArticlePost(state, newPost) {
         state.articlePost = newPost
       },

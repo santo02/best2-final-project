@@ -14,9 +14,10 @@
         </div>
         <div class="container">
             <div class="row" style="width: 348px;">
-                <div class="col text-start" style="width: 161.75px;border-width: 1px;border-style: dotted;border-radius: 0px;padding-top: 17px;padding-left: 22px;"><img class="rounded-circle img-fluid" src="/assets/img/OIP.jpeg" height="40px" width="40px">
-                    <p class="fw-semibold" style="margin-top: -41px;margin-left: 52px;font-size: 15px;">Creator</p>
-                    <p class="fw-lighter" style="margin-top: -27px;margin-left: 52px;font-size: 24px;">{{this.$store.state.articlePost.username}}</p>
+                <div class="col text-start" style="width: 161.75px;border-width: 1px;border-style: dotted;border-radius: 0px;padding-top: 17px;padding-left: 22px;">
+                    <img class="rounded-circle" :src="this.$store.state.articlePost.image" height="50px" width="50px">
+                    <p class="fw-semibold" style="margin-top: -47px;margin-left: 60px;font-size: 15px;">Creator</p>
+                    <p class="fw-lighter" style="margin-top: -27px;margin-left: 60px;font-size: 24px;">{{this.$store.state.articlePost.username}}</p>
                 </div>
             </div>
         </div>

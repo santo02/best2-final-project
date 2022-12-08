@@ -22,7 +22,7 @@
                                 <div class="col-auto"><img class="img-fluid" :src="article.post_image" width="500px"></div>
                                 <div class="col">
                                     <div class="row" style="margin-bottom: -10px;padding-top: 7px;max-height: 60px;">
-                                        <div class="col text-start" style="width: 161.75px;"><img class="rounded-circle img-fluid" src="/assets/img/OIP.jpeg" height="30px" width="30px">
+                                        <div class="col text-start" style="width: 161.75px;"><img class="rounded-circle" :src="article.image" height="33px" width="33px">
                                             <p class="fw-normal" style="margin-top: -27px;margin-left: 40px;">{{article.username}}</p>
                                         </div>
                                     </div>
@@ -45,21 +45,11 @@
             <div class="col-auto">
                 <h2 data-bs-toggle="tooltip" data-bss-tooltip="" title="Silahkan Pilih Kategori">Kategori</h2>
                 <hr style="background: #0676dd;border-radius: 18px;border-width: 3px;border-color: rgb(6,118,221);margin-top: -7px;">
-                <a href="article?query=Pendidikan">
-                    <h6>Pendidikan</h6>
-                </a>
-                <a href="article?query=Teknologi">
-                    <h6>Teknologi</h6>
-                </a>
-                <a href="article?query=Masyarakat">
-                    <h6>Masyarakat</h6>
-                </a>
-                <a href="article?query=Leadership">
-                    <h6>Leadership</h6>
-                </a>
-                <a href="article?query=Lowongan">
-                    <h6>Lowongan</h6>
-                </a>
+                <div v-for='kategori in category' :key="kategori.id">
+                    <a :href="'article?query=' + kategori.Categories_name">
+                        <h6>{{kategori.Categories_name}}</h6>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -80,6 +70,11 @@
 <script>
     export default {
         name: 'articles',
+        data() {
+            return {
+                category: null
+            }
+        },
         mounted() {
             if(!this.$route.query.query) {
                 axios.get(`/api/posts/companies/${this.$route.params.id}`)
@@ -99,6 +94,15 @@
                     console.log(response.data.errors)
                 });
             }
+
+            axios.get('/api/categories/show')
+                .then(response => {
+                    this.category = response.data
+                })
+                .catch(error => {
+                    console.log(response.data.errors)
+                });
+
         },
         methods: {
             detailPost(slug) {

@@ -60,7 +60,7 @@ class PostController extends Controller
                 ->orWhere('categories.Categories_name', 'LIKE', "%{$search}%")
                 ->orWhere('users.username', 'LIKE', "%{$search}%");
             })
-            ->select('posts.id', 'posts.slug', 'posts.title', 'post_image', 'categories.Categories_name', 'posts.post_image', 'post_detail', 'posts.created_at', 'users.username', 'users.name', 'users.image')
+            ->select('posts.id', 'posts.slug', 'posts.title', 'posts.post_image', 'categories.Categories_name', 'post_detail', 'posts.created_at', 'users.username', 'users.name', 'users.image')
             ->limit(10)
             ->get();
         return response()->json($post_data);
@@ -73,7 +73,7 @@ class PostController extends Controller
             ->join('categories', 'categories.id', '=', 'posts.categori_id')
             ->where('posts.id', '!=', $currentPost)
             ->where('categories.Categories_name', 'LIKE', "%{$category}%")
-            ->select('posts.id', 'posts.slug', 'posts.title', 'post_image', 'companies.company_slug')
+            ->select('posts.id', 'posts.slug', 'posts.title', 'posts.post_image', 'companies.company_slug')
             ->limit(4)
             ->get();
         return response()->json($post_data);
@@ -84,7 +84,7 @@ class PostController extends Controller
         return Post::join('users', 'users.id', '=', 'posts.user_id')
             ->join('categories', 'categories.id', '=', 'posts.categori_id')
             ->where('posts.slug', $slug)
-            ->select('posts.id', 'posts.slug', 'posts.title', 'post_image', 'categories.Categories_name', 'posts.post_image', 'post_detail', 'posts.created_at', 'users.username', 'users.name', 'users.image')
+            ->select('posts.id', 'posts.slug', 'posts.title', 'posts.post_image', 'categories.Categories_name', 'post_detail', 'posts.created_at', 'users.username', 'users.name', 'users.image')
             ->firstorfail();
     }
 

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->enum('role', ['admin', 'user']);
             $table->string('password');
-            $table->string('image')->nullable();
+            $table->string('image')->default('/assets/img/profile/default.jpeg');
             $table->boolean('is_verified');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

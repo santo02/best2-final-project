@@ -35,7 +35,7 @@
                                                 <div></div>
                                                 <div class="media-body">
                                                     <div class="d-flex media" style="overflow:visible;">
-                                                        <div><img class="rounded-circle me-3" style="width: 25px; height:25px;" src="/assets/img/ava1.jpg"></div>
+                                                        <div><img class="rounded-circle me-3" style="width: 25px; height:25px;" :src="comment.image"></div>
                                                         <div style="overflow:visible;" class="media-body">
                                                             <div class="row">
                                                                 <div class="col-md-12">
