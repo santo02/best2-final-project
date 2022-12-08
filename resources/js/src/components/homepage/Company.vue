@@ -53,6 +53,10 @@ export default {
     setCompanys(data) {
       this.Companys = data;
     },
+    hitButton(slug) {
+      this.$router.push(`/${slug}/article`)
+      window.scrollTo(0,0)
+    }
   },
   mounted() {
     if(!this.$route.query.query) {

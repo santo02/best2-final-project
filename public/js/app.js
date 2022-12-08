@@ -2809,6 +2809,10 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     setCompanys: function setCompanys(data) {
       this.Companys = data;
+    },
+    hitButton: function hitButton(slug) {
+      this.$router.push("/".concat(slug, "/article"));
+      window.scrollTo(0, 0);
     }
   },
   mounted: function mounted() {
