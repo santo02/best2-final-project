@@ -5396,15 +5396,19 @@ var render = function render() {
   return _c("div", [_c("Navbar"), _vm._v(" "), _c("div", {
     staticClass: "container"
   }, [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _c("div", {
-    staticClass: "row mb-4"
+    staticClass: "container"
+  }, [_c("div", {
+    staticClass: "row m-4"
   }, _vm._l(_vm.Companys, function (company) {
     return _c("div", {
       key: company.id,
-      staticClass: "col-md-4",
+      staticClass: "col-md-4 text-center",
       staticStyle: {
         "padding-bottom": "25px"
       }
-    }, [_c("div", {
+    }, [_c("h4", {
+      staticClass: "fw-semibold"
+    }, [_vm._v(_vm._s(company.company_name))]), _vm._v(" "), _c("div", {
       staticClass: "card",
       staticStyle: {
         "border-width": "1px"
@@ -5419,15 +5423,14 @@ var render = function render() {
         width: "100px",
         height: "150px"
       }
-    }), _vm._v(" "), _c("div", {
-      staticClass: "card-img-overlay",
-      attrs: {
-        "data-v-2": ""
-      }
-    }, [_c("div", [_c("h4", {
-      staticClass: "fw-semibold text-black"
-    }, [_vm._v(_vm._s(company.company_name))])]), _vm._v(" "), _c("button", {
-      staticClass: "btn btn-primary btn-sm",
+    })]), _vm._v(" "), _c("button", {
+      staticClass: "btn btn-primary btn-sm text-center",
+      staticStyle: {
+        "margin-top": "10px",
+        "border-radius": "10px",
+        width: "150px",
+        height: "40px"
+      },
       attrs: {
         type: "button",
         "data-v-button-1": ""
@@ -5437,8 +5440,8 @@ var render = function render() {
           return _vm.hitButton(company.company_slug);
         }
       }
-    }, [_vm._v("Detail")])])])]);
-  }), 0)])], 1);
+    }, [_vm._v("See Article")])]);
+  }), 0)])])], 1);
 };
 
 var staticRenderFns = [function () {
@@ -6169,7 +6172,7 @@ var render = function render() {
       role: "group"
     }
   }, [_c("button", {
-    staticClass: "btn btn-primary",
+    staticClass: "btn btn-success",
     attrs: {
       type: "button"
     },
@@ -6177,7 +6180,7 @@ var render = function render() {
       click: _vm.username
     }
   }, [_vm._v("Username")]), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-primary",
+    staticClass: "btn btn-success",
     attrs: {
       type: "button"
     },
@@ -6185,7 +6188,7 @@ var render = function render() {
       click: _vm.name
     }
   }, [_vm._v("Name")]), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-primary",
+    staticClass: "btn btn-success",
     attrs: {
       type: "button"
     },
@@ -6356,7 +6359,7 @@ var staticRenderFns = [function () {
     attrs: {
       type: "submit"
     }
-  }, [_vm._v("change")])]);
+  }, [_vm._v("Change")])]);
 }];
 render._withStripped = true;
 
@@ -6437,7 +6440,7 @@ var staticRenderFns = [function () {
     attrs: {
       type: "submit"
     }
-  }, [_vm._v("change")])]);
+  }, [_vm._v("Change")])]);
 }];
 render._withStripped = true;
 
@@ -6530,7 +6533,7 @@ var staticRenderFns = [function () {
     attrs: {
       type: "submit"
     }
-  }, [_vm._v("change")])]);
+  }, [_vm._v("Change")])]);
 }];
 render._withStripped = true;
 
@@ -6754,7 +6757,7 @@ var staticRenderFns = [function () {
   return _c("li", [_c("a", {
     staticClass: "dropdown-item",
     attrs: {
-      href: "/profile"
+      href: "/profile/username"
     }
   }, [_vm._v("My Profile")])]);
 }, function () {

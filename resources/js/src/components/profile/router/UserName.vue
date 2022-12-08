@@ -10,7 +10,7 @@
                                     <input class="form-control" type="text" name="name" placeholder="Username" required v-model="profile.username">
                                 </div>
                                 <div class="mb-3" style="margin-right: 16px;">
-                                    <button class="btn btn-primary d-block w-100" type="submit" style="margin-right: 0px;margin-left: 10px;">change</button>
+                                    <button class="btn btn-primary d-block w-100" type="submit" style="margin-right: 0px;margin-left: 10px;">Change</button>
                                 </div>
                             </form>
                         </div>
