@@ -75,6 +75,12 @@ export default {
       slug = slug.replace('"', '')
       slug = slug.replace('\"', '')
       slug = slug.replace('#', '')
+      slug = slug.replace(',', '')
+      slug = slug.replace('.', '')
+      slug = slug.replace('[', '')
+      slug = slug.replace(']', '')
+      slug = slug.replace('{', '')
+      slug = slug.replace('}', '')
       return this.categories.slug = slug
     },
     addCategories() {
@@ -83,7 +89,7 @@ export default {
           this.categories.Categories_name = '',
             this.categories.slug = '',
             this.$router.push({
-              name: 'add-categories',
+              name: 'categories-admin',
               params: {
                 message: response.data.message,
               }

@@ -27,6 +27,10 @@ Route::controller(UserController::class)->group(function () {
     Route::POST('/registrasi', 'registrasi');
     Route::POST('/login', 'login');
     Route::GET('/user', 'GetUser');
+    Route::GET('/user/find/{id}', 'show');
+    Route::POST('/user/change/name', 'name');
+    Route::POST('/user/change/username', 'username');
+    Route::POST('/user/change/photo', 'photo');
 });
 
 Route::controller(CommentController::class)->group(function () {

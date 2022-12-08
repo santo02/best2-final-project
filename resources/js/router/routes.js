@@ -14,6 +14,10 @@ import AddCompany from '../src/pages/AddCompany'
 import AddKategori from '../src/pages/AddKategori'
 import Categories from '../src/pages/categories'
 import CategoriesAdmin from '../src/pages/CategoriesAdmin'
+import EditProfile from '../src/pages/EditProfile'
+import Name from '../src/components/profile/router/Name'
+import UserName from '../src/components/profile/router/UserName'
+import Photo from '../src/components/profile/router/Profile'
 
 
 const routes = [{
@@ -44,6 +48,32 @@ const routes = [{
     component: AddCompany,
     name: 'add-company',
     requiresAuth: true,
+  },
+  {
+    path: "/profile",
+    component: EditProfile,
+    name: 'profile-main',
+    meta: {
+      requiresAuth: true,
+      isUser: true
+    },
+    children: [
+      {
+          path: 'name',
+          component: Name,
+          name: 'profile-name'
+      },
+      {
+        path: 'username',
+        component: UserName,
+        name: 'profile-username'
+      },
+      {
+        path: 'photo',
+        component: Photo,
+        name: 'profile-photo'
+      },
+    ]
   },
   {
     path: "/categories",

@@ -56,6 +56,12 @@ export default {
       slug = slug.replace('"', '')
       slug = slug.replace('\"', '')
       slug = slug.replace('#', '')
+      slug = slug.replace(',', '')
+      slug = slug.replace('.', '')
+      slug = slug.replace('[', '')
+      slug = slug.replace(']', '')
+      slug = slug.replace('{', '')
+      slug = slug.replace('}', '')
       return this.slug = slug
     },
     addCompany() {

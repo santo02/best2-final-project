@@ -105,6 +105,11 @@ export default {
       slug = slug.replace('\"', '')
       slug = slug.replace('#', '')
       slug = slug.replace(',', '')
+      slug = slug.replace('.', '')
+      slug = slug.replace('[', '')
+      slug = slug.replace(']', '')
+      slug = slug.replace('{', '')
+      slug = slug.replace('}', '')
       return this.blog.slug = slug
     },
     addPost() {
