@@ -4280,10 +4280,10 @@ var render = function render() {
     }, [_c("div", {
       staticClass: "col-auto"
     }, [_c("img", {
+      staticClass: "img-fluid",
       attrs: {
         src: article.post_image,
-        width: "315px",
-        height: "250px"
+        width: "500px"
       }
     })]), _vm._v(" "), _c("div", {
       staticClass: "col"

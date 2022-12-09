@@ -19,7 +19,7 @@
                     <div class="card" style="border-radius: 10px;border-width: 3px;border-color: var(--bs-card-cap-bg);">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-auto"><img :src="article.post_image" width="315px" height="250px"></div>
+                                <div class="col-auto"><img class="img-fluid" :src="article.post_image" width="500px"></div>
                                 <div class="col">
                                     <div class="row" style="margin-bottom: -10px;padding-top: 7px;max-height: 60px;">
                                         <div class="col text-start" style="width: 161.75px;"><img class="rounded-circle" :src="article.image" height="33px" width="33px">
