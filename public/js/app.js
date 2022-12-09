@@ -7480,7 +7480,7 @@ var render = function render() {
     attrs: {
       type: "password",
       id: "form2Example28",
-      placeholder: "Confirm FPassword"
+      placeholder: "Confirm Password"
     },
     domProps: {
       value: _vm.user.password_confirmation
