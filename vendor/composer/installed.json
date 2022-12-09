@@ -1,6 +1,53 @@
 {
     "packages": [
         {
+            "name": "101infotech/imgbb",
+            "version": "v1.1.0",
+            "version_normalized": "1.1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/101INFOTECH/ImgBB.git",
+                "reference": "aecba06913ec1314f6ab2e7429be0d655dc53e34"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/101INFOTECH/ImgBB/zipball/aecba06913ec1314f6ab2e7429be0d655dc53e34",
+                "reference": "aecba06913ec1314f6ab2e7429be0d655dc53e34",
+                "shasum": ""
+            },
+            "time": "2022-03-21T06:49:32+00:00",
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Infotech\\ImgBB\\ImgBBServiceProvider"
+                    ]
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Infotech\\ImgBB\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "101infotech",
+                    "email": "help@101infotech.com.np"
+                }
+            ],
+            "description": "Simple Way to upload image using imgbb api without any fuss.",
+            "support": {
+                "issues": "https://github.com/101INFOTECH/ImgBB/issues",
+                "source": "https://github.com/101INFOTECH/ImgBB/tree/v1.1.0"
+            },
+            "install-path": "../101infotech/imgbb"
+        },
+        {
             "name": "brick/math",
             "version": "0.10.2",
             "version_normalized": "0.10.2.0",

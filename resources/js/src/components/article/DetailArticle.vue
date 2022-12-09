@@ -10,7 +10,7 @@
         </div>
         <div class="container text-center"><img class="img-fluid" :src="this.$store.state.articlePost.post_image" width="1200px" height="1000px"></div>
         <div class="container">
-            <p class="fw-normal text-start">{{this.$store.state.articlePost.post_detail}}</p>
+            <div v-html="this.$store.state.articlePost.post_detail"></div>
         </div>
         <div class="container">
             <div class="row" style="width: 348px;">

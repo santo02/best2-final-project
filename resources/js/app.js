@@ -9,12 +9,14 @@ import App from './src/App.vue'
 import Vuesax from 'vuesax'
 import store from './store/index'
 import VueMeta from 'vue-meta'
+import Vue2Editor from "vue2-editor"
 
 import 'vuesax/dist/vuesax.css'
 Vue.use(VueMeta)
 Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
 Vue.use(Vuesax)
+Vue.use(Vue2Editor)
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
