@@ -10,7 +10,7 @@
                                     <input @change="handleFileUpload()" ref="file" class="form-control" type="file" required>
                                 </div>
                                 <div class="mb-3" style="margin-right: 16px;">
-                                    <button class="btn btn-primary d-block w-100" type="submit" style="margin-right: 0px;margin-left: 10px;">Change</button>
+                                    <button class="btn btn-primary d-block w-100" type="submit" style="margin-right: 0px;margin-left: 10px;">change</button>
                                 </div>
                             </form>
                         </div>

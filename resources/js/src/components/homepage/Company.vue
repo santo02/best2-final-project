@@ -22,16 +22,18 @@
         </div>
     </div>
 
-      <div class="container">
-        <div class="row m-4">
-          <div v-for='company in Companys' :key="company.id" class="col-md-4 text-center" style="padding-bottom: 25px;">
-            <h4 class="fw-semibold">{{company.company_name}}</h4>
+      <div class="row mb-4">
+        <div v-for='company in Companys' :key="company.id" class="col-md-4" style="padding-bottom: 25px;">
             <div class="card" style="border-width: 1px;">
               <img class="card-img w-100 d-block" :src="company.company_image" style="opacity: 1;" width="100px" height="150px">
+              <div class="card-img-overlay" data-v-2>
+                <div>
+                  <h4 class="fw-semibold text-black">{{company.company_name}}</h4>
+                </div>
+                <button class="btn btn-primary btn-sm" type="button" @click="hitButton(company.company_slug)" data-v-button-1>Detail</button>
+              </div>
             </div>
-            <button class="btn btn-primary btn-sm text-center" type="button" style="margin-top: 10px; border-radius: 10px; width: 150px; height: 40px;" @click="hitButton(company.company_slug)" data-v-button-1>See Article</button>
           </div>
-        </div>
       </div>
     </div>
   </div>
@@ -53,10 +55,6 @@ export default {
     setCompanys(data) {
       this.Companys = data;
     },
-    hitButton(slug) {
-      this.$router.push(`/${slug}/article`)
-      window.scrollTo(0,0)
-    }
   },
   mounted() {
     if(!this.$route.query.query) {

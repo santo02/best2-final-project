@@ -60,7 +60,7 @@
                 Settings
               </a>
               <ul class="dropdown-menu dropdown-menu-white" aria-labelledby="navbarDarkDropdownMenuLink">
-                <li><a class="dropdown-item" href="/profile/username">My Profile</a></li>
+                <li><a class="dropdown-item" href="/profile">My Profile</a></li>
                 <li><a class="dropdown-item" href="/my-blog">My Blog</a></li>
                 <li><a class="dropdown-item" @click="logout">Logout</a></li>
               </ul>

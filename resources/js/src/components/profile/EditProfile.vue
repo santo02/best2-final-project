@@ -56,9 +56,9 @@
                                                 <hr style="width: 130px;margin-top: 0px;color: var(--bs-blue);border-radius: 32px;border-width: 5px;">
                                             </div>
                                             <div class="btn-group" role="group">
-                                                <button class="btn btn-success" type="button" @click="username">Username</button>
-                                                <button class="btn btn-success" type="button" @click="name">Name</button>
-                                                <button class="btn btn-success" type="button" @click="photo">Photo</button>
+                                                <button class="btn btn-primary" type="button" @click="username">Username</button>
+                                                <button class="btn btn-primary" type="button" @click="name">Name</button>
+                                                <button class="btn btn-primary" type="button" @click="photo">Photo</button>
                                             </div>
                                             <router-view></router-view>
                                         </div>

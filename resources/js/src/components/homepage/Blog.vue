@@ -41,10 +41,9 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">Isi</label>
-                <textarea class="form-control" v-model="blog.post_detail" required></textarea>
+                <textarea id="mytextarea" v-model="blog.post_detail" required></textarea>
               </div>
-
-
+              
               <div class="mb-3 mt-5">
                 <button class="btn btn-primary d-block w-100" type="submit">Submit</button>
               </div>
@@ -55,6 +54,7 @@
     </div>
   </section>
 </template>
+
 
 <script>
 export default {
@@ -73,6 +73,7 @@ export default {
     this.getCompanyData()
     this.getCategory()
   },
+  
   methods: {
     getCompanyData() {
       axios.get('/api/companies')
@@ -143,7 +144,7 @@ export default {
     handleFileUpload() {
       this.file = this.$refs.file.files[0];
       console.log(this.file);
-    }
+    },
   }
 }
 </script>

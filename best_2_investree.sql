@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 08, 2022 at 12:45 PM
+-- Generation Time: Nov 25, 2022 at 12:26 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -24,127 +24,44 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categories`
---
-
-CREATE TABLE `categories` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `Categories_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `categories`
---
-
-INSERT INTO `categories` (`id`, `Categories_name`, `slug`, `created_at`, `updated_at`) VALUES
-(2, 'Teknologi', 'teknologi', '2022-12-07 18:36:21', '2022-12-07 18:36:21'),
-(3, 'Pendidikan', 'pendidikan', '2022-12-07 18:36:50', '2022-12-07 18:36:50'),
-(4, 'Game', 'game', '2022-12-07 18:37:06', '2022-12-07 18:37:06');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `comments`
 --
 
 CREATE TABLE `comments` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `post_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `comments` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `id` int(10) NOT NULL,
+  `post_id` int(10) NOT NULL,
+  `user_id` int(10) NOT NULL,
+  `komen` varchar(255) NOT NULL,
+  `created_time` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `comments`
 --
 
-INSERT INTO `comments` (`id`, `post_id`, `user_id`, `comments`, `created_at`, `updated_at`) VALUES
-(1, '2', '1', 'test', '2022-12-07 18:42:06', '2022-12-07 18:42:06'),
-(2, '2', '1', 'hi', '2022-12-07 18:42:19', '2022-12-07 18:42:19'),
-(3, '2', '3', 'hah', '2022-12-07 19:26:57', '2022-12-07 19:26:57');
+INSERT INTO `comments` (`id`, `post_id`, `user_id`, `komen`, `created_time`) VALUES
+(3, 3, 1, 'Testing', '2022-11-25 14:47:02'),
+(4, 3, 2, 'Hah?????', '2022-11-25 14:47:29'),
+(5, 3, 2, 'Halo', '2022-11-25 15:05:26'),
+(6, 3, 2, 'Halo', '2022-11-25 15:06:01'),
+(7, 3, 1, 'Haiii semua', '2022-11-25 15:06:46'),
+(8, 3, 1, 'Kakak', '2022-11-25 15:10:14'),
+(9, 3, 1, 'sdadsdw', '2022-11-25 15:14:30'),
+(10, 3, 1, 'hah', '2022-11-25 15:14:35'),
+(11, 6, 1, 'Hai hai', '2022-11-25 15:15:07'),
+(12, 5, 2, 'Hai', '2022-11-25 15:17:09');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `companies`
+-- Table structure for table `company`
 --
 
-CREATE TABLE `companies` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `company_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `company_slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `company_image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `companies`
---
-
-INSERT INTO `companies` (`id`, `company_name`, `company_slug`, `company_image`, `created_at`, `updated_at`) VALUES
-(1, 'Hoyoverse', 'hoyoverse', '/assets/img/company/1670462440_Featured-Hoyo-Verse.jpg', '2022-12-07 18:20:40', '2022-12-07 18:20:40'),
-(3, 'Google Indonesia', 'google-indonesia', '/assets/img/company/1670471752_google-logo.jpg', '2022-12-07 20:55:52', '2022-12-07 20:55:52');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `migrations`
---
-
-CREATE TABLE `migrations` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `migrations`
---
-
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(8, '2014_10_12_000000_create_users_table', 1),
-(9, '2014_10_12_100000_create_password_resets_table', 1),
-(10, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(11, '2022_11_25_093816_create_categories_table', 1),
-(12, '2022_11_25_094757_create_posts_table', 1),
-(13, '2022_11_25_102220_create_comments_table', 1),
-(14, '2022_11_26_091925_create_companies_table', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `password_resets`
---
-
-CREATE TABLE `password_resets` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `personal_access_tokens`
---
-
-CREATE TABLE `personal_access_tokens` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `last_used_at` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `company` (
+  `company_id` int(10) NOT NULL,
+  `company_name` varchar(50) NOT NULL,
+  `company_image` varchar(150) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -153,26 +70,25 @@ CREATE TABLE `personal_access_tokens` (
 --
 
 CREATE TABLE `posts` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `company_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `categori_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `post_image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `post_detail` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `post_id` int(10) NOT NULL,
+  `company_id` int(10) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `slug` varchar(100) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `post_image` varchar(150) NOT NULL,
+  `post_detail` text NOT NULL,
+  `user_id` int(10) NOT NULL,
+  `created_time` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`id`, `company_id`, `categori_id`, `title`, `slug`, `post_image`, `post_detail`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, '1', '1', 'Genshin Impact Version 3.2 Arrives November 2', 'genshin-impact-version-32-arrives-november-2', '/assets/img/post/1670462803_20e2459cd05dce761217a409103905a8_339547909977338277.jpg', 'Global interactive entertainment brand HoYoverse has announced Genshin Impact\'s Version 3.2 \"Akasha Pulses, the Kalpa Flame Rises\" will arrive on November 2. With the latest update, Sumeru\'s main storyline will culminate in a climax before coming to a grand finale, and more local allies, including Nahida and Layla, will be ready to join as playable characters. Meanwhile, more formidable opponents and fun events, including one to catch and train Fungi, will further enrich players\' adventures in the fantasy world of Teyvat.', '1', '2022-12-07 18:26:43', '2022-12-07 18:26:43'),
-(2, '1', '4', 'Genshin Impact Version 3.2 Arrives November 2', 'genshin-impact-version-32-arrives-november-2', '/assets/img/post/1670463472_20e2459cd05dce761217a409103905a8_339547909977338277.jpg', 'Global interactive entertainment brand HoYoverse has announced Genshin Impact\'s Version 3.2 \"Akasha Pulses, the Kalpa Flame Rises\" will arrive on November 2. With the latest update, Sumeru\'s main storyline will culminate in a climax before coming to a grand finale, and more local allies, including Nahida and Layla, will be ready to join as playable characters. Meanwhile, more formidable opponents and fun events, including one to catch and train Fungi, will further enrich players\' adventures in the fantasy world of Teyvat.', '1', '2022-12-07 18:37:52', '2022-12-07 18:37:52'),
-(3, '3', '2', 'For the first time, Waze navigation is built in to your car', 'for-the-first-time-waze-navigation-is-built-in-to-your-car', '/assets/img/post/1670471826_Renault_PR_Hero_1200x628__WithoutLockup_2x.max-1000x1000.jpg', 'For the first time ever, Waze is launching a new, dedicated app on select cars with Google built-in. The experience is rolling out today, starting with select Renault vehicles. With this new experience, Renault drivers will have all Waze real-time routing, navigation and alerts, plus settings, preferences and saved places, built into their car display. Drivers can now enjoy a bigger, bolder navigation display right at eye level without using their phone.', '3', '2022-12-07 20:57:06', '2022-12-07 20:57:06');
+INSERT INTO `posts` (`post_id`, `company_id`, `title`, `slug`, `category`, `post_image`, `post_detail`, `user_id`, `created_time`) VALUES
+(3, 0, 'Tokopedia Gencarkan Persiapan Talenta Digital Masa Depan Lewat Program Devcamp', 'tokopedia-gencarkan-persiapan-talenta-digital-masa-depan-lewat-program-devcamp', 'Teknologi', '/assets/img/post/test.jpg', 'Kini siapa pun bisa mengasah keterampilan dan kemampuan diri dengan mudah lewat teknologi. Menemukan materi edukasi dan pembelajaran yang sesuai dengan minat dapat dilakukan kapan saja dan dimana saja.\r\n\r\nHal ini lah yang mendorong Tokopedia lewat Tokopedia Academy untuk terus berinovasi demi mewujudkan komitmen dalam menyediakan platform belajar inklusif yang dapat diakses oleh seluruh masyarakat Indonesia secara gratis, khususnya para talenta digital masa depan yang memiliki aspirasi untuk berkarya di industri teknologi.\r\n\r\nSalah satu program yang dibesut oleh Tokopedia Academy dan mendapatkan antusiasme tinggi dari pegiat teknologi adalah Devcamp. Program ini merupakan pelatihan eksklusif dan intensif selama tujuh hari penuh yang terbuka untuk mahasiswa tingkat akhir, lulusan baru, atau pun mereka yang memiliki pengalaman kerja maksimal dua tahun.', 2, '2022-11-24 16:15:46'),
+(5, 0, 'Test Data', 'test-data', 'Teknologi', '/assets/img/post/ojk.webp', 'Seperti yang kita tahu, iklim di Indonesia bahkan di dunia sudah mulai mengalami perubahan dan sulit untuk diprediksi. Di periode ini kemudian muncul cuaca tak bersahabat yang membawa kuman dan mengancam kesehatan tubuh.\r\n\r\nSehingga mengakibatkan kita menjadi rentan terkena penyakit seperti batuk, radang maupun flu. Kita tentunya tak ingin sakit berlama-lama dan ingin segera kembali ke kondisi semula. Karena penyakit yang kelihatannya remeh ini sangat berpengaruh terhadap produktivitas.\r\n\r\nJangan biarkan flu berlama-lama mengganggu aktivitasmu sehari-hari. Selain istirahat cukup dan mengonsumsi vitamin, serta makan dengan nutrisi yang tepat. Obat flu bisa menjadi solusi jitu.', 1, '2022-11-24 16:45:28'),
+(6, 1, 'Jangkau Belasan Ribu Pelaku UMKM di 2021, GoTo Kembali Gelar Konferensi Maju Digital 2022', 'goto-hadirkan-konferensi-maju-digital', 'Teknologi', '/assets/img/post/test.jpg', 'Indonesia, 27 Oktober 2022 - Grup GoTo, ekosistem digital terbesar Indonesia yang menaungi Gojek, Tokopedia dan GoTo Financial (GTF), tahun ini kembali menghadirkan Konferensi Maju Digital (KoMD) untuk para pegiat UMKM.\r\n\r\nKoMD 2022 merupakan edisi kedua, menyusul kesuksesan gelaran KoMD pertama pada 2021 yang menjangkau belasan ribu pelaku UMKM. Mengusung tema besar ‘Transformasi Usaha Digital dan Ramah Lingkungan’ yang selaras dengan misi pemerintah Indonesia dalam presidensi G20 2022, KoMD 2022 bertujuan mendorong kemajuan dan daya saing UMKM.\r\n\r\nSejumlah pakar dari berbagai bidang akan hadir dalam KoMD 2022 untuk berbagi pengalaman, berdiskusi dan memberikan pelatihan dalam rangkaian kelas yang dapat diikuti oleh pegiat UMKM untuk mengembangkan bisnisnya dengan memanfaatkan teknologi digital.\r\n\r\nBerbeda dengan tahun sebelumnya, kali ini konferensi berlangsung secara tatap muka (offline) di The Kasablanka Hall, Kota Kasablanka, Jakarta dan dapat disaksikan live melalui website Tokopedia Academy, YouTube Mitra Usaha Gojek, YouTube Tokopedia Seller, Tokopedia PLAY dan GoPlay.\r\n\r\nAcara dibuka oleh sambutan CEO Grup GoTo, Andre Soelistyo, dilanjutkan talkshow bersama Menteri Perdagangan RI, Zulkifli Hasan, Staf Ahli Menteri Bidang Produktivitas dan Daya Saing Kementerian Koperasi dan UKM, Eddy Satriya dan Kepala Grup Inovasi Keuangan Digital (IKD) Otoritas Jasa Keuangan, Triyono Gani.\r\n\r\nChief of Corporate Affairs Grup GoTo, Nila Marita menyatakan, “Bersama lebih dari 15 juta mitra usaha, 2,6 juta mitra pengemudi dan lebih dari 67 juta pengguna bertransaksi tahunan, ekosistem digital Grup GoTo berkontribusi sekitar 2% terhadap PDB Indonesia. Dampak ekonomi yang besar tersebut tidak lepas dari peran UMKM sebagai penggerak sektor riil ekonomi tanah air dan motor pendorong pemulihan ekonomi nasional. Grup GoTo menghadirkan KoMD untuk mendorong kemajuan para mitra UMKM melalui program edukasi dan pemberdayaan berkelanjutan.”\r\n\r\n“KoMD adalah konferensi UMKM nasional terbesar dari Grup GoTo untuk mendorong kapasitas pegiat UMKM Indonesia melalui berbagai inisiatif dan solusi teknologi, agar dapat terus beradaptasi dengan perkembangan dunia usaha masa kini. Kehadiran KoMD 2022 dilatarbelakangi oleh tingginya animo peserta rangkaian KoMD 2021,” jelas Group Head of Merchant Marketing Gojek dan GoTo Financial, Bayu Ramadhan.\r\n\r\n“Lebih dari 14 ribu peserta berpartisipasi dalam rangkaian KoMD 2021 dan mayoritas berasal dari Jabodetabek, Surabaya, Medan, Makassar dan Manado,” tambah Bayu.\r\n\r\nVP of Seller Experience Tokopedia, Puput Hidayat mengatakan, “Sebagai kelanjutan dari KoMD 2021, Grup GoTo telah secara rutin menyelenggarakan Kelas Maju Digital (KeMD) pada 2021. Melalui KeMD, Grup GoTo memberikan pembekalan terkait pengembangan usaha dan kompetensi kewirausahaan agar UMKM di seluruh penjuru Indonesia semakin menjadi pilihan masyarakat. KeMD dapat terlaksana melalui kolaborasi Grup GoTo dengan pemerintah daerah dan UMKM lokal untuk membantu pemulihan ekonomi daerah. KeMD 2021 telah diselenggarakan di berbagai wilayah, seperti Solo, Surabaya, Bandung, Semarang, Medan dan Jabodetabek.”\r\n\r\n“Tahun ini, KeMD 2022 menghadirkan berbagai topik sesuai kebutuhan UMKM dari berbagai skala, antara lain pemanfaatan media sosial, pengelolaan keuangan, hingga pembangunan bisnis yang ramah lingkungan. Banyak pegiat usaha lokal yang hadir sebagai narasumber dan siap berbagi inspirasi hari ini, seperti pemilik KEM Footwear, Buttonscarves, Erigo, SukkhaCitta, Teguk, Wakacao dan masih banyak lagi,” tambah Puput.\r\n\r\nSelain melalui KoMD dan KeMD, UMKM di berbagai daerah juga bisa memperoleh wawasan dari sesama UMKM melalui Komunitas Partner GoFood (KOMPAG), Keluarga Tokopedia (K-Top) dan Komunitas Retail GoTo Financial (KONTAG). Grup GoTo mencatat jumlah pegiat UMKM yang bergabung di KOMPAG, K-Top dan KONTAG bertambah lebih dari 80 ribu dalam setahun terakhir.\r\n\r\nKoMD dan KeMD adalah bagian dari upaya pemberdayaan UMKM yang telah menjadi mitra usaha Grup GoTo. Grup GoTo juga menyediakan solusi layanan digital yang holistik dan beragam guna membantu pegiat usaha khususnya UMKM menciptakan peluang dalam setiap fase pertumbuhan.', 2, '2022-11-25 11:16:38');
 
 -- --------------------------------------------------------
 
@@ -187,7 +103,7 @@ CREATE TABLE `users` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` enum('admin','user') COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '/assets/img/profile/default.jpeg',
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_verified` tinyint(1) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -200,19 +116,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `username`, `email`, `role`, `password`, `image`, `is_verified`, `email_verified_at`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Rafie Akmal Haryanto', 'rafieakmalharyanto', 'testname@gmail.com', 'user', '$2y$10$7Q5MgrEtxb3VeszeSSwVBeE3sfzO8Rg56JYyBDVQ/n.Jc4BJSwDpq', '/assets/img/profile/1670470754_save = follow _3.jpg', 0, NULL, NULL, '2022-12-07 18:16:09', '2022-12-07 20:13:35'),
-(2, 'admin', 'admin', 'admin@admin.com', 'admin', '$2y$10$nrzrIwdIlpZGsN.EGeLq..BdSqSuaqPQUOV0fXSGdGCpCoZgr.C1u', '/assets/img/profile/default.jpeg', 0, NULL, NULL, '2022-12-07 18:19:11', '2022-12-07 18:19:11'),
-(3, 'Pendragon', 'rafie', 'rafie1112.ra@gmail.com', 'user', '$2y$10$/mrm1/jZ0M5E5oazYHaY3ecRKy1nTdACXFpoUo5iPrOMRuHAPGor.', '/assets/img/profile/1670499652_24d2100cfcc45f4fd45bf6fa98ca372f.jpg', 0, NULL, NULL, '2022-12-07 19:26:37', '2022-12-07 21:02:23');
+(1, 'Rafie Akmal Haryanto', 'rafieakmalh', 'rafie1112.ra@gmail.com', 'user', '$2y$10$3nWF/CcVu/9m1NSgRjgyrewc483sGdPcTrPSuumhAXdt37glwyVhG', NULL, 0, NULL, NULL, '2022-11-23 22:17:01', '2022-11-23 22:17:01'),
+(2, 'Aron Pendragon', 'aron_pendragon', 'aron_pendragon@gmail.com', 'user', '$2y$10$ZMzMfNgN1EpWfSxdZhGU9.tPg5rCXG7MX7oScbxlp3esT9qqyvjNu', NULL, 0, NULL, NULL, '2022-11-24 02:04:42', '2022-11-24 02:04:42');
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `categories`
---
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `comments`
@@ -221,36 +130,16 @@ ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `companies`
+-- Indexes for table `company`
 --
-ALTER TABLE `companies`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `migrations`
---
-ALTER TABLE `migrations`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `password_resets`
---
-ALTER TABLE `password_resets`
-  ADD KEY `password_resets_email_index` (`email`);
-
---
--- Indexes for table `personal_access_tokens`
---
-ALTER TABLE `personal_access_tokens`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
-  ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
+ALTER TABLE `company`
+  ADD PRIMARY KEY (`company_id`);
 
 --
 -- Indexes for table `posts`
 --
 ALTER TABLE `posts`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`post_id`);
 
 --
 -- Indexes for table `users`
@@ -264,46 +153,22 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `categories`
---
-ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `companies`
---
-ALTER TABLE `companies`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `migrations`
---
-ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-
---
--- AUTO_INCREMENT for table `personal_access_tokens`
---
-ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `post_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
