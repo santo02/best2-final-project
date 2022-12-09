@@ -18,7 +18,8 @@ import EditProfile from '../src/pages/EditProfile'
 import Name from '../src/components/profile/router/Name'
 import UserName from '../src/components/profile/router/UserName'
 import Photo from '../src/components/profile/router/Profile'
-
+import CompanyAdmin from '../src/pages/CompanyAdmin'
+import BlogAdmin from '../src/pages/BlogAdmin'
 
 const routes = [{
     path: '/',
@@ -55,13 +56,11 @@ const routes = [{
     name: 'profile-main',
     meta: {
       requiresAuth: true,
-      isUser: true
     },
-    children: [
-      {
-          path: 'name',
-          component: Name,
-          name: 'profile-name'
+    children: [{
+        path: 'name',
+        component: Name,
+        name: 'profile-name'
       },
       {
         path: 'username',
@@ -76,6 +75,16 @@ const routes = [{
     ]
   },
   {
+    path: "/blog-admin",
+    component: BlogAdmin,
+    name: 'blog-admin',
+    meta: {
+      requiresAuth: true,
+      isAdmin: true
+    }
+  },
+
+  {
     path: "/categories",
     component: Categories,
     name: 'categories'
@@ -89,6 +98,16 @@ const routes = [{
       isAdmin: true
     }
   },
+  {
+    path: "/company-admin",
+    component: CompanyAdmin,
+    name: 'company-admin',
+    meta: {
+      requiresAuth: true,
+      isAdmin: true
+    }
+  },
+
   {
     path: "/add-categories",
     component: AddKategori,
@@ -124,7 +143,10 @@ const routes = [{
   {
     path: '/:id/article/:slug',
     component: DetailArticle,
-    name: 'detail-article'
+    name: 'detail-article',
+    meta: {
+      requiresAuth: true,
+    }
   },
   {
     path: '/registrasi',

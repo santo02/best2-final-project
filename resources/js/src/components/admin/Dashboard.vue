@@ -8,34 +8,41 @@
       <div class="row">
         <div class="col">
           <div class="card " style="width: 18rem;">
-            <div class="card-body">
-              <h2 class="card-title">Total User: </h2>
-              <p class="card-text">100 user</p>
-            </div>
+            <router-link :to="{ name: 'user-admin' }">
+              <div class="card-body">
+                <h2 class="card-title">Total User: </h2>
+                <p class="card-text">{{ CountUsers }} user</p>
+              </div>
+            </router-link>
           </div>
         </div>
         <div class="col">
           <div class="card " style="width: 18rem;">
-            <div class="card-body">
-              <h2 class="card-title">Total Blog: </h2>
-              <p class="card-text">59 Blog</p>
-            </div>
+            <router-link :to="{ name: 'blog-admin' }">
+              <div class="card-body">
+                <h2 class="card-title">Total Blog: </h2>
+                <p class="card-text">{{ CounPosts }} Blog</p>
+              </div>
+            </router-link>
           </div>
         </div>
         <div class="col">
           <div class="card " style="width: 18rem;">
-            <div class="card-body">
-              <h2 class="card-title">Total Company: </h2>
-              <p class="card-text">10 company</p>
-            </div>
+            <router-link :to="{ name: 'company-admin' }">
+              <div class="card-body">
+                <h2 class="card-title">Total Company: </h2>
+                <p class="card-text">{{ CountCompanys }} company</p>
+              </div>
+            </router-link>
+
           </div>
         </div>
         <div class="col">
           <div class="card " style="width: 18rem;">
-            <router-link to="categories">
+            <router-link :to="{ name: 'categories-admin' }">
               <div class="card-body">
                 <h2 class="card-title">Total Category: </h2>
-                <p class="card-text">{{CountCate}}  Category</p>
+                <p class="card-text">{{ CountCate }} Category</p>
               </div>
             </router-link>
           </div>
@@ -52,17 +59,51 @@ export default {
   data() {
     return {
       AdminGambar: 'assets/img/Slider1.jpg',
-      CountCate:'',
+      CountCate: '',
+      CountUsers: '',
+      CounPosts: '',
+      CountCompanys: '',
+
     }
   },
-  mounted(){
+  mounted() {
     this.CountCategories();
+    this.CountUser();
+    this.CounPost();
+    this.CountCompany();
   },
   methods: {
     CountCategories() {
       axios.get('/api/categories/count')
         .then(response => {
-          this.CountCate= response.data
+          this.CountCate = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        });
+    },
+    CountUser() {
+      axios.get('api/TotalUser')
+        .then(response => {
+          this.CountUsers = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        });
+    },
+    CounPost() {
+      axios.get('api/TotalPost')
+        .then(response => {
+          this.CounPosts = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        });
+    },
+    CountCompany() {
+      axios.get('api/TotalCompany')
+        .then(response => {
+          this.CountCompanys = response.data
         })
         .catch(error => {
           console.log(error)

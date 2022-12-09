@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\DashboardAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,7 @@ Route::controller(CommentController::class)->group(function () {
 
 Route::controller(PostController::class)->group(function () {
     Route::GET('/posts', 'index');
+    Route::GET('/all-posts', 'AllPost');
     Route::GET('/posts/my/{id}', 'mypost');
     Route::GET('/posts/companies/{slug}', 'indextwo');
     Route::GET('/posts/find/{slug}', 'show');
@@ -62,6 +64,12 @@ Route::controller(CategoriesController::class)->group(function(){
   Route::get('/categories/show', 'show');
   Route::get('/categories/count', 'CountCate');
   Route::delete('/categories/delete/{id}', 'delete');
+});
+Route::controller(DashboardAdminController::class)->group(function(){
+  Route::get('/TotalUser', 'UserCount');
+  Route::get('/TotalPost', 'PostCount');
+  Route::get('/TotalCompany', 'CompanyCount');
+
 });
 
 // Route::apiResource('posts', AddBlog::class);

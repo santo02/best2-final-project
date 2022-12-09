@@ -1,6 +1,21 @@
 <template>
   <section class="py-5 mt-5">
     <div class="container py-5">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <router-link to="blog-admin">
+              <a>Blog</a>
+            </router-link>
+          </li>
+          <li class="breadcrumb-item">
+            <router-link to="add-blog">
+              <a>New Blog</a>
+            </router-link>
+          </li>
+
+        </ol>
+      </nav>
       <div class="card">
         <h3 class="text-center mb-4">Tambah Post Baru</h3>
         <div class="card p-3" style="border-width: 3px;border-style: dashed;">
@@ -21,11 +36,10 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">Company</label>
-                <select class="form-select" v-model="blog.id" required>
+                <select class="form-select" v-model="blog.company_id" required>
                   <optgroup label="Pilih Perusahaan">
-                    <option v-for='company in companies' :key="company.id" :value="company.id">
-                      {{ company.company_name }}
-                    </option>
+                    <option v-for='company in companies' :key="company.post_id" :value="company.company_id">
+                      {{ company.company_name }}</option>
                   </optgroup>
                 </select>
               </div>
@@ -43,8 +57,6 @@
                 <label class="form-label">Isi</label>
                 <textarea class="form-control" v-model="blog.post_detail" required></textarea>
               </div>
-
-
               <div class="mb-3 mt-5">
                 <button class="btn btn-primary d-block w-100" type="submit">Submit</button>
               </div>
@@ -105,11 +117,6 @@ export default {
       slug = slug.replace('\"', '')
       slug = slug.replace('#', '')
       slug = slug.replace(',', '')
-      slug = slug.replace('.', '')
-      slug = slug.replace('[', '')
-      slug = slug.replace(']', '')
-      slug = slug.replace('{', '')
-      slug = slug.replace('}', '')
       return this.blog.slug = slug
     },
     addPost() {
@@ -117,15 +124,13 @@ export default {
       this.isLoggedIn = localStorage.getItem('token') != null
 
       let formData = new FormData()
-      formData.append('company_id', this.blog.id)
+      formData.append('company_id', this.blog.company_id)
       formData.append('title', this.blog.title)
       formData.append('category', this.blog.category)
       formData.append('file', this.file)
       formData.append('post_detail', this.blog.post_detail)
       formData.append('user_id', this.user.id)
       formData.append('slug', this.blog.slug)
-      console.log(this.blog)
-      console.log(this.user.id)
       console.log(formData)
       this.axios({
         url: '/api/posts/add',

@@ -15,26 +15,24 @@
             <ul class="navbar-nav mx-auto" v-if="loginType === 'admin'" style="font-size: 14px;margin-top: 3px;">
               <li class="nav-item">
                 <router-link class="nav-link" :to="{ name: 'admin' }">
-                  home
+                  Home
                 </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link class="nav-link" to="/post">Post</router-link>
               </li>
               <li class="nav-item">
                 <router-link class="nav-link" :to="{ name: 'categories-admin' }">Kategori</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" :to="{ name: 'add-blog' }">
-                  Add Blog
+                <router-link class="nav-link" :to="{ name: 'blog-admin' }">
+                  Blog
                 </router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" :to="{ name: 'add-company' }">
-                  Add Company
+                <router-link class="nav-link" :to="{ name: 'company-admin' }">
+                  Company
                 </router-link>
               </li>
             </ul>
+
             <!-- if role user -->
             <ul class="navbar-nav mx-auto" v-if="loginType === 'user'" style="font-size: 14px;margin-top: 3px;">
               <li class="nav-item">

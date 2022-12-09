@@ -1,6 +1,21 @@
 <template>
   <section class="py-5 mt-5">
     <div class="container py-5">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <router-link to="company-admin">
+              <a>Company</a>
+            </router-link>
+          </li>
+          <li class="breadcrumb-item">
+            <router-link to="add-company">
+              <a>New Company</a>
+            </router-link>
+          </li>
+
+        </ol>
+      </nav>
       <div class="card">
         <h3 class="text-center mb-4">Tambah Company Baru</h3>
         <div class="card p-3" style="border-width: 3px;border-style: dashed;">
@@ -56,12 +71,6 @@ export default {
       slug = slug.replace('"', '')
       slug = slug.replace('\"', '')
       slug = slug.replace('#', '')
-      slug = slug.replace(',', '')
-      slug = slug.replace('.', '')
-      slug = slug.replace('[', '')
-      slug = slug.replace(']', '')
-      slug = slug.replace('{', '')
-      slug = slug.replace('}', '')
       return this.slug = slug
     },
     addCompany() {
