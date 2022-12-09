@@ -4280,10 +4280,10 @@ var render = function render() {
     }, [_c("div", {
       staticClass: "col-auto"
     }, [_c("img", {
+      staticClass: "img-fluid",
       attrs: {
         src: article.post_image,
-        width: "315px",
-        height: "250px"
+        width: "500px"
       }
     })]), _vm._v(" "), _c("div", {
       staticClass: "col"
@@ -7480,7 +7480,7 @@ var render = function render() {
     attrs: {
       type: "password",
       id: "form2Example28",
-      placeholder: "Confirm FPassword"
+      placeholder: "Confirm Password"
     },
     domProps: {
       value: _vm.user.password_confirmation
