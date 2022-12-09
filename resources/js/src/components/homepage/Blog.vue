@@ -40,8 +40,15 @@
                 </select>
               </div>
               <div class="mb-3">
+                <label class="form-label">Preview</label>
+                <textarea class="form-control" v-model="blog.preview" required></textarea>
+              </div>
+              <div class="mb-3">
                 <label class="form-label">Isi</label>
-                <textarea class="form-control" v-model="blog.post_detail" required></textarea>
+                <vue-editor id="editor"
+                  use-custom-image-handler
+                  @image-added="handleImageAdded" v-model="blog.post_detail">
+                </vue-editor>
               </div>
 
 
@@ -56,9 +63,12 @@
   </section>
 </template>
 
+
 <script>
+import { VueEditor } from "vue2-editor";
 export default {
   name: "Blog",
+  components: { VueEditor },
   data() {
     return {
       blog: {},
@@ -74,6 +84,28 @@ export default {
     this.getCategory()
   },
   methods: {
+    handleImageAdded(file, Editor, cursorLocation) {
+      var formData = new FormData();
+      formData.append('file', file)
+      axios({
+        url: '/api/posts/add/image',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Acces-Control-Allow-Origin': '*',
+        },
+        data: formData
+      })
+      .then((result) => {
+        console.log(result);
+        let url = result.data.data.url
+        console.log(url)
+        Editor.insertEmbed(cursorLocation, 'image', url);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    },
     getCompanyData() {
       axios.get('/api/companies')
         .then(response => {
@@ -110,6 +142,7 @@ export default {
       slug = slug.replace(']', '')
       slug = slug.replace('{', '')
       slug = slug.replace('}', '')
+      slug = slug.replace('|', '')
       return this.blog.slug = slug
     },
     addPost() {
@@ -122,6 +155,7 @@ export default {
       formData.append('category', this.blog.category)
       formData.append('file', this.file)
       formData.append('post_detail', this.blog.post_detail)
+      formData.append('preview', this.blog.preview)
       formData.append('user_id', this.user.id)
       formData.append('slug', this.blog.slug)
       console.log(this.blog)

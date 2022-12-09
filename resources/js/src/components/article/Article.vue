@@ -19,7 +19,7 @@
                     <div class="card" style="border-radius: 10px;border-width: 3px;border-color: var(--bs-card-cap-bg);">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-auto"><img class="img-fluid" :src="article.post_image" width="500px"></div>
+                                <div class="col-auto"><img :src="article.post_image" width="315px" height="250px"></div>
                                 <div class="col">
                                     <div class="row" style="margin-bottom: -10px;padding-top: 7px;max-height: 60px;">
                                         <div class="col text-start" style="width: 161.75px;"><img class="rounded-circle" :src="article.image" height="33px" width="33px">
@@ -27,7 +27,7 @@
                                         </div>
                                     </div>
                                     <h5>{{article.title}}</h5>
-                                    <p style="margin-top: 5px;">{{article.post_detail.substring(0, 240)}}...</p>
+                                    <p style="margin-top: 5px;">{{article.preview.substring(0, 240)}}...</p>
                                     <div class="row">
                                         <div class="col"><img class="img-fluid" src="/assets/img/d228d012b5f3852abb2b66d9da526801.jpg" width="20px" height="20px">
                                             <p style="margin-top: -25px;margin-left: 28px;">{{article.created_at}}</p>
@@ -79,6 +79,7 @@
             if(!this.$route.query.query) {
                 axios.get(`/api/posts/companies/${this.$route.params.id}`)
                 .then(response => {
+                    console.log(response.data)
                     this.$store.commit("addArticlePost", response.data)
                     console.log(this.$store.state.articlePost)
                 })
@@ -88,6 +89,7 @@
             } else {
                 axios.get(`/api/posts/search/${this.$route.query.query}/${this.$route.params.id}`)
                 .then(response => {
+                    console.log(response.data)
                     this.$store.commit("addArticlePost", response.data)
                 })
                 .catch(error => {

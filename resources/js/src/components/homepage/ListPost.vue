@@ -20,14 +20,14 @@
                   <tbody>
                     <tr v-for="post in posts" :key="post.post_id">
                       <td>{{ post.title }}</td>
-                      <td>{{ post.category }}</td>
-                      <td>{{ post.user_id }}</td>
-                      <td>{{ post.post_detail.substring(0, 200) }}...</td>
+                      <td>{{ post.Categories_name }}</td>
+                      <td>{{ post.username }}</td>
+                      <td>{{ post.preview.substring(0, 200) }}...</td>
                       <td>
                         <div class="btn-group" role="group">
-                          <router-link :to="{ name: 'update-blog', params: { id: post.post_id } }"
+                          <router-link :to="{ name: 'update-blog', params: { id: post.id } }"
                             class="btn btn-sm  btn-success">Edit</router-link>
-                          <button class="btn btn-sm btn-danger" @click="deleteposts(post.post_id)">Delete</button>
+                          <button class="btn btn-sm btn-danger" @click="deleteposts(post.id)">Delete</button>
                         </div>
                       </td>
                     </tr>
@@ -62,7 +62,7 @@ export default {
         .get(`/api/posts/my/${this.user.id}`)
         .then(response => {
           this.posts = response.data;
-          // console.log(this.posts)
+          console.log(response.data)
         });
     }
   },

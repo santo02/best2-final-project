@@ -54,8 +54,7 @@ const routes = [{
     component: EditProfile,
     name: 'profile-main',
     meta: {
-      requiresAuth: true,
-      isUser: true
+      requiresAuth: true
     },
     children: [
       {
