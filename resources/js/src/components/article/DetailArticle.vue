@@ -4,12 +4,12 @@
             <div class="row">
                 <div class="col-md-12">
                     <h1>{{this.$store.state.articlePost.title}}</h1>
-                    <p style="margin-top: 1px;">{{this.$store.state.articlePost.created_at}}</p>
+                    <p style="margin-top: 1px;">Last update: {{this.$store.state.articlePost.updated_at}}</p>
                 </div>
             </div>
         </div>
         <div class="container text-center"><img class="img-fluid" :src="this.$store.state.articlePost.post_image" width="1200px" height="1000px"></div>
-        <div class="container">
+        <div class="container" style="margin-top: 23px;">
             <div v-html="this.$store.state.articlePost.post_detail"></div>
         </div>
         <div class="container">

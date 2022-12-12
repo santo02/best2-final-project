@@ -2301,18 +2301,12 @@ __webpack_require__.r(__webpack_exports__);
 
     if (!this.$route.query.query) {
       axios.get("/api/posts/companies/".concat(this.$route.params.id)).then(function (response) {
-        console.log(response.data);
-
         _this.$store.commit("addArticlePost", response.data);
-
-        console.log(_this.$store.state.articlePost);
       })["catch"](function (error) {
         console.log(response.data.errors);
       });
     } else {
       axios.get("/api/posts/search/".concat(this.$route.query.query, "/").concat(this.$route.params.id)).then(function (response) {
-        console.log(response.data);
-
         _this.$store.commit("addArticlePost", response.data);
       })["catch"](function (error) {
         console.log(response.data.errors);
@@ -2644,6 +2638,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
+    window.scrollTo(0, 0);
     this.getCompanyData();
     this.getCategory();
   },
@@ -2660,9 +2655,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         data: formData
       }).then(function (result) {
-        console.log(result);
         var url = result.data.data.url;
-        console.log(url);
         Editor.insertEmbed(cursorLocation, 'image', url);
       })["catch"](function (err) {
         console.log(err);
@@ -2705,6 +2698,8 @@ __webpack_require__.r(__webpack_exports__);
       slug = slug.replace('{', '');
       slug = slug.replace('}', '');
       slug = slug.replace('|', '');
+      slug = slug.replace('+', '');
+      slug = slug.replace(':', '');
       return this.blog.slug = slug;
     },
     addPost: function addPost() {
@@ -2721,9 +2716,6 @@ __webpack_require__.r(__webpack_exports__);
       formData.append('preview', this.blog.preview);
       formData.append('user_id', this.user.id);
       formData.append('slug', this.blog.slug);
-      console.log(this.blog);
-      console.log(this.user.id);
-      console.log(formData);
       this.axios({
         url: '/api/posts/add',
         method: 'post',
@@ -2998,30 +2990,130 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var vue2_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue2-editor */ "./node_modules/vue2-editor/dist/vue2-editor.esm.js");
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "UpdatePost",
+  components: {
+    VueEditor: vue2_editor__WEBPACK_IMPORTED_MODULE_0__.VueEditor
+  },
   data: function data() {
     return {
-      post: {}
+      post: {},
+      companies: [],
+      categories: [],
+      user: [],
+      file: '',
+      isLoggedIn: false
     };
   },
   created: function created() {
-    var _this = this;
-
-    this.axios.get("/api/posts/find/id/".concat(this.$route.params.id)).then(function (res) {
-      _this.post = res.data;
-      console.log(_this.post);
-    });
+    window.scrollTo(0, 0);
+    this.getPostData();
+    this.getCompanyData();
+    this.getCategory();
   },
   methods: {
-    updatePost: function updatePost() {
+    handleImageAdded: function handleImageAdded(file, Editor, cursorLocation) {
+      var formData = new FormData();
+      formData.append('file', file);
+      axios({
+        url: '/api/posts/add/image',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Acces-Control-Allow-Origin': '*'
+        },
+        data: formData
+      }).then(function (result) {
+        var url = result.data.data.url;
+        Editor.insertEmbed(cursorLocation, 'image', url);
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+    sanitizeTitle: function sanitizeTitle(title) {
+      var slug = "";
+      var titleLower = title.toLowerCase();
+      slug = titleLower.replace(/\s*$/g, '');
+      slug = slug.replace(/\s+/g, '-');
+      slug = slug.replace("‘", '');
+      slug = slug.replace("’", '');
+      slug = slug.replace("'", '');
+      slug = slug.replace("\'", '');
+      slug = slug.replace('"', '');
+      slug = slug.replace('\"', '');
+      slug = slug.replace('#', '');
+      slug = slug.replace(',', '');
+      slug = slug.replace('.', '');
+      slug = slug.replace('[', '');
+      slug = slug.replace(']', '');
+      slug = slug.replace('{', '');
+      slug = slug.replace('}', '');
+      slug = slug.replace('|', '');
+      slug = slug.replace('+', '');
+      slug = slug.replace(':', '');
+      return this.post.slug = slug;
+    },
+    getPostData: function getPostData() {
+      var _this = this;
+
+      this.axios.get("/api/posts/find/id/".concat(this.$route.params.id)).then(function (res) {
+        _this.post = res.data;
+      });
+    },
+    getCompanyData: function getCompanyData() {
       var _this2 = this;
 
-      this.axios.patch("/api/posts/".concat(this.$route.params.id), this.post).then(function (res) {
-        _this2.$router.push({
-          name: 'list-blog'
-        });
+      axios.get('/api/companies').then(function (response) {
+        _this2.companies = response.data;
+      })["catch"](function (error) {
+        console.log(error);
       });
+    },
+    getCategory: function getCategory() {
+      var _this3 = this;
+
+      axios.get('/api/categories/show').then(function (response) {
+        _this3.categories = response.data;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    editPost: function editPost() {
+      var _this4 = this;
+
+      this.user = JSON.parse(localStorage.getItem('user'));
+      this.isLoggedIn = localStorage.getItem('token') != null;
+      var formData = new FormData();
+      formData.append('company_id', this.post.id);
+      formData.append('post_id', this.$route.params.id);
+      formData.append('title', this.post.title);
+      formData.append('category', this.post.category);
+      formData.append('file', this.file);
+      formData.append('post_detail', this.post.post_detail);
+      formData.append('preview', this.post.preview);
+      formData.append('user_id', this.user.id);
+      formData.append('slug', this.post.slug);
+      this.axios({
+        url: '/api/posts/edit',
+        method: 'post',
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Acces-Control-Allow-Origin': '*'
+        }
+      }).then(function (response) {
+        return _this4.$router.push({
+          name: 'home'
+        });
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    handleFileUpload: function handleFileUpload() {
+      this.file = this.$refs.file.files[0];
+      console.log(this.file);
     }
   }
 });
@@ -4617,7 +4709,7 @@ var render = function render() {
     staticStyle: {
       "margin-top": "1px"
     }
-  }, [_vm._v(_vm._s(this.$store.state.articlePost.created_at))])])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Last update: " + _vm._s(this.$store.state.articlePost.updated_at))])])])]), _vm._v(" "), _c("div", {
     staticClass: "container text-center"
   }, [_c("img", {
     staticClass: "img-fluid",
@@ -4627,7 +4719,10 @@ var render = function render() {
       height: "1000px"
     }
   })]), _vm._v(" "), _c("div", {
-    staticClass: "container"
+    staticClass: "container",
+    staticStyle: {
+      "margin-top": "23px"
+    }
   }, [_c("div", {
     domProps: {
       innerHTML: _vm._s(this.$store.state.articlePost.post_detail)
@@ -5864,7 +5959,9 @@ var render = function render() {
     staticClass: "container py-5"
   }, [_c("div", {
     staticClass: "card"
-  }, [_c("div", {
+  }, [_c("h3", {
+    staticClass: "text-center mb-4"
+  }, [_vm._v("Tambah Post Baru")]), _vm._v(" "), _c("div", {
     staticClass: "card p-3",
     staticStyle: {
       "border-width": "3px",
@@ -5880,10 +5977,26 @@ var render = function render() {
     on: {
       submit: function submit($event) {
         $event.preventDefault();
-        return _vm.updatePost.apply(null, arguments);
+        return _vm.editPost.apply(null, arguments);
       }
     }
-  }, [_vm._m(0), _vm._v(" "), _c("div", {
+  }, [_c("div", {
+    staticClass: "mb-3"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Choose Image")]), _vm._v(" "), _c("input", {
+    ref: "file",
+    staticClass: "form-control",
+    attrs: {
+      type: "file",
+      required: ""
+    },
+    on: {
+      change: function change($event) {
+        return _vm.handleFileUpload();
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
     staticClass: "mb-3"
   }, [_c("label", {
     staticClass: "form-label"
@@ -5896,17 +6009,20 @@ var render = function render() {
     }],
     staticClass: "form-control",
     attrs: {
-      type: "text"
+      type: "text",
+      required: ""
     },
     domProps: {
       value: _vm.post.title
     },
     on: {
-      input: function input($event) {
+      input: [function ($event) {
         if ($event.target.composing) return;
 
         _vm.$set(_vm.post, "title", $event.target.value);
-      }
+      }, function ($event) {
+        return _vm.sanitizeTitle(_vm.post.title);
+      }]
     }
   })]), _vm._v(" "), _c("div", {
     staticClass: "mb-3"
@@ -5921,7 +6037,8 @@ var render = function render() {
     }],
     staticClass: "form-control",
     attrs: {
-      type: "text"
+      type: "text",
+      readonly: ""
     },
     domProps: {
       value: _vm.post.slug
@@ -5941,10 +6058,13 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.post.company_id,
-      expression: "post.company_id"
+      value: _vm.post.id,
+      expression: "post.id"
     }],
     staticClass: "form-select",
+    attrs: {
+      required: ""
+    },
     on: {
       change: function change($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
@@ -5954,10 +6074,21 @@ var render = function render() {
           return val;
         });
 
-        _vm.$set(_vm.post, "company_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        _vm.$set(_vm.post, "id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
     }
-  }, [_vm._m(1)])]), _vm._v(" "), _c("div", {
+  }, [_c("optgroup", {
+    attrs: {
+      label: "Pilih Perusahaan"
+    }
+  }, _vm._l(_vm.companies, function (company) {
+    return _c("option", {
+      key: company.id,
+      domProps: {
+        value: company.id
+      }
+    }, [_vm._v("\n                    " + _vm._s(company.company_name) + "\n                  ")]);
+  }), 0)])]), _vm._v(" "), _c("div", {
     staticClass: "mb-3"
   }, [_c("label", {
     staticClass: "form-label"
@@ -5969,6 +6100,9 @@ var render = function render() {
       expression: "post.category"
     }],
     staticClass: "form-select",
+    attrs: {
+      required: ""
+    },
     on: {
       change: function change($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
@@ -5981,73 +6115,62 @@ var render = function render() {
         _vm.$set(_vm.post, "category", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
     }
-  }, [_vm._m(2)])]), _vm._v(" "), _c("div", {
+  }, [_c("optgroup", {
+    attrs: {
+      label: "Pilih Kategori"
+    }
+  }, _vm._l(_vm.categories, function (categori) {
+    return _c("option", {
+      key: categori.id,
+      domProps: {
+        value: categori.id
+      }
+    }, [_vm._v("\n                    " + _vm._s(categori.Categories_name) + "\n                  ")]);
+  }), 0)])]), _vm._v(" "), _c("div", {
     staticClass: "mb-3"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Isi")]), _vm._v(" "), _c("textarea", {
+  }, [_vm._v("Preview")]), _vm._v(" "), _c("textarea", {
     directives: [{
       name: "model",
       rawName: "v-model",
+      value: _vm.post.preview,
+      expression: "post.preview"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      required: ""
+    },
+    domProps: {
+      value: _vm.post.preview
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.post, "preview", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "mb-3"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Isi")]), _vm._v(" "), _c("vue-editor", {
+    attrs: {
+      id: "editor",
+      "use-custom-image-handler": ""
+    },
+    on: {
+      "image-added": _vm.handleImageAdded
+    },
+    model: {
       value: _vm.post.post_detail,
+      callback: function callback($$v) {
+        _vm.$set(_vm.post, "post_detail", $$v);
+      },
       expression: "post.post_detail"
-    }],
-    staticClass: "form-control",
-    domProps: {
-      value: _vm.post.post_detail
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-
-        _vm.$set(_vm.post, "post_detail", $event.target.value);
-      }
     }
-  })]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.post.user_id,
-      expression: "post.user_id"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "hidden",
-      value: "1"
-    },
-    domProps: {
-      value: _vm.post.user_id
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-
-        _vm.$set(_vm.post, "user_id", $event.target.value);
-      }
-    }
-  }), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.post.post_image,
-      expression: "post.post_image"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "hidden",
-      value: "test.jpg"
-    },
-    domProps: {
-      value: _vm.post.post_image
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-
-        _vm.$set(_vm.post, "post_image", $event.target.value);
-      }
-    }
-  }), _vm._v(" "), _vm._m(3)])])])])])]);
+  })], 1), _vm._v(" "), _vm._m(0)])])])])])]);
 };
 
 var staticRenderFns = [function () {
@@ -6055,69 +6178,13 @@ var staticRenderFns = [function () {
       _c = _vm._self._c;
 
   return _c("div", {
-    staticClass: "mb-3"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Choose Image")]), _vm._v(" "), _c("input", {
-    staticClass: "form-control",
-    attrs: {
-      type: "file"
-    }
-  })]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("optgroup", {
-    attrs: {
-      label: "Pilih Kategori"
-    }
-  }, [_c("option", {
-    attrs: {
-      value: "1"
-    }
-  }, [_vm._v("Company 1")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "2"
-    }
-  }, [_vm._v("Company 2")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "3"
-    }
-  }, [_vm._v("Company 3")])]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("optgroup", {
-    attrs: {
-      label: "Pilih Kategori"
-    }
-  }, [_c("option", {
-    attrs: {
-      value: "1"
-    }
-  }, [_vm._v("Kategori 1")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "2"
-    }
-  }, [_vm._v("Kategori 2")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "3"
-    }
-  }, [_vm._v("Kategori 3")])]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
-    staticClass: "mb-3 mt-4"
+    staticClass: "mb-3 mt-5"
   }, [_c("button", {
     staticClass: "btn btn-primary d-block w-100",
     attrs: {
       type: "submit"
     }
-  }, [_vm._v("submit")])]);
+  }, [_vm._v("Submit")])]);
 }];
 render._withStripped = true;
 
@@ -7966,8 +8033,7 @@ var routes = [{
   component: _src_pages_UpdateBlog__WEBPACK_IMPORTED_MODULE_10__["default"],
   name: 'update-blog',
   meta: {
-    requiresAuth: true,
-    isUser: true
+    requiresAuth: true
   }
 }, {
   path: '/:id/article',

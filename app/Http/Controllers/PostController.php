@@ -24,7 +24,7 @@ class PostController extends Controller
             ->join('companies', 'companies.id', '=', 'posts.company_id')
             ->join('categories', 'categories.id', '=', 'posts.categori_id')
             ->where('companies.company_slug', '=', $query)
-            ->select('posts.id', 'posts.slug', 'posts.title', 'posts.preview', 'categories.Categories_name', 'posts.post_image', 'post_detail', 'posts.created_at', 'users.username', 'users.name', 'users.image')
+            ->select('posts.id', 'posts.slug', 'posts.title', 'posts.preview', 'categories.Categories_name', 'posts.post_image', 'post_detail', 'posts.created_at', 'posts.updated_at', 'users.username', 'users.name', 'users.image')
             ->get();
         return response()->json($post);
 
@@ -36,7 +36,7 @@ class PostController extends Controller
             ->join('users', 'users.id', '=', 'posts.user_id')
             ->join('categories', 'categories.id', '=', 'posts.categori_id')
             ->where('users.id', '=', $query)
-            ->select('posts.id', 'posts.slug', 'posts.title', 'posts.post_image', 'categories.Categories_name', 'posts.post_detail', 'posts.preview', 'posts.created_at', 'users.username', 'users.name', 'users.image')
+            ->select('posts.id', 'posts.slug', 'posts.title', 'posts.post_image', 'categories.Categories_name', 'posts.post_detail', 'posts.preview', 'posts.created_at', 'posts.updated_at', 'users.username', 'users.name', 'users.image')
             ->get();
         return response()->json($post_data);
 
@@ -44,7 +44,7 @@ class PostController extends Controller
 
     public function useid($query)
     {
-        $post = Post::where('post_id', $query)->first();
+        $post = Post::where('posts.id', $query)->first();
         return response()->json($post);
     }
 
@@ -61,7 +61,7 @@ class PostController extends Controller
                 ->orWhere('categories.Categories_name', 'LIKE', "%{$search}%")
                 ->orWhere('users.username', 'LIKE', "%{$search}%");
             })
-            ->select('posts.id', 'posts.slug', 'posts.title', 'posts.post_image', 'categories.Categories_name', 'posts.post_detail', 'posts.preview', 'posts.created_at', 'users.username', 'users.name', 'users.image')
+            ->select('posts.id', 'posts.slug', 'posts.title', 'posts.post_image', 'categories.Categories_name', 'posts.post_detail', 'posts.preview', 'posts.created_at', 'posts.updated_at', 'users.username', 'users.name', 'users.image')
             ->limit(10)
             ->get();
         return response()->json($post_data);
@@ -85,7 +85,7 @@ class PostController extends Controller
         return Post::join('users', 'users.id', '=', 'posts.user_id')
             ->join('categories', 'categories.id', '=', 'posts.categori_id')
             ->where('posts.slug', $slug)
-            ->select('posts.id', 'posts.slug', 'posts.title', 'posts.post_image', 'categories.Categories_name', 'posts.post_detail', 'posts.preview', 'posts.created_at', 'users.username', 'users.name', 'users.image')
+            ->select('posts.id', 'posts.slug', 'posts.title', 'posts.post_image', 'categories.Categories_name', 'posts.post_detail', 'posts.preview', 'posts.created_at', 'posts.updated_at', 'users.username', 'users.name', 'users.image')
             ->firstorfail();
     }
 
@@ -124,10 +124,55 @@ class PostController extends Controller
         
     }
 
-    public function image(Request $request)
+    public function update(Request $request)
     {
         $imageData = $request->validate([
             'file' => 'required|mimes:jpg,jpeg,png',
+            'company_id' => 'required',
+            'post_id' => 'required',
+            'title' => 'required',
+            'category' => 'required',
+            'post_detail' => 'required',
+            'preview' => 'required',
+            'user_id' => 'required',
+            'slug' => 'required',
+         ]);
+ 
+        if(!$imageData) {
+            return response()->json('Error');
+        } else {
+            $file_name = time().'_'.$request->file->getClientOriginalName();
+            $file_path = $request->file('file')->move(public_path('assets/img/post'), $file_name);
+            $companyId = $request->input('company_id');
+            $postId = $request->input('post_id');
+            $title = $request->input('title');
+            $category = $request->input('category');
+            $post_image = '/assets/img/post/'.$file_name;
+            $post_detail = $request->input('post_detail');
+            $preview = $request->input('preview');
+            $slug= $request->input('slug');
+            $updated_at = \Carbon\Carbon::now()->toDateTimeString();
+            $result = DB::table('posts')
+            ->where('posts.id', $postId)
+            ->update([
+                'company_id' => $companyId, 
+                'categori_id' => $category, 
+                'title' => $title, 
+                'slug' => $slug, 
+                'post_image' => $post_image, 
+                'post_detail' => $post_detail, 
+                'preview' => $preview, 
+                'updated_at' => $updated_at
+            ]);
+            return response()->json($result);
+        }
+        
+    }
+
+    public function image(Request $request)
+    {
+        $imageData = $request->validate([
+            'file' => 'required|mimes:jpg,jpeg,png,gif',
          ]);
  
         if(!$imageData) {
@@ -148,14 +193,6 @@ class PostController extends Controller
             return $response->json();
         }
         
-    }
-
-    public function update(Request $request, $id)
-    {
-        $article = Post::findOrFail($id);
-        $article->update($request->all());
-
-        return $article;
     }
 
     public function delete(Request $request, $id)
