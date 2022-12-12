@@ -40,7 +40,7 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
         $imageData = $request->validate([
-            'file' => 'required|mimes:jpg,jpeg,png|max:2048',
+            'file' => 'required|mimes:jpg,jpeg,png',
             'company_name' => 'required',
             'slug' => 'required',
          ]);

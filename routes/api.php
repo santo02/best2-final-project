@@ -49,6 +49,7 @@ Route::controller(PostController::class)->group(function () {
     Route::GET('/posts/search/{query}/{slug}', 'search');
     Route::GET('/posts/related/{currentPost}/{category}', 'related');
     Route::POST('/posts/add', 'store');
+    Route::POST('/posts/edit', 'update');
     Route::POST('/posts/add/image', 'image');
 });
 

@@ -9,7 +9,7 @@ use DateTimeInterface;
 class Post extends Model
 {
   protected function serializeDate(DateTimeInterface $date) {
-    return $date->format('d M Y H:i');
+    return $date->format('d M Y H:i:s');
   }
   public function category(){
     // Satu post punya satu kategori

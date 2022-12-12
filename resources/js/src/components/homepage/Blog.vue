@@ -65,7 +65,7 @@
 
 
 <script>
-import { VueEditor } from "vue2-editor";
+import { VueEditor, Quill } from "vue2-editor";
 export default {
   name: "Blog",
   components: { VueEditor },
@@ -80,6 +80,7 @@ export default {
     }
   },
   mounted() {
+    window.scrollTo(0,0)
     this.getCompanyData()
     this.getCategory()
   },
@@ -97,9 +98,7 @@ export default {
         data: formData
       })
       .then((result) => {
-        console.log(result);
         let url = result.data.data.url
-        console.log(url)
         Editor.insertEmbed(cursorLocation, 'image', url);
       })
       .catch((err) => {
@@ -143,6 +142,8 @@ export default {
       slug = slug.replace('{', '')
       slug = slug.replace('}', '')
       slug = slug.replace('|', '')
+      slug = slug.replace('+', '')
+      slug = slug.replace(':', '')
       return this.blog.slug = slug
     },
     addPost() {
@@ -158,9 +159,6 @@ export default {
       formData.append('preview', this.blog.preview)
       formData.append('user_id', this.user.id)
       formData.append('slug', this.blog.slug)
-      console.log(this.blog)
-      console.log(this.user.id)
-      console.log(formData)
       this.axios({
         url: '/api/posts/add',
         method: 'post',

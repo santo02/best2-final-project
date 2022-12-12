@@ -79,9 +79,7 @@
             if(!this.$route.query.query) {
                 axios.get(`/api/posts/companies/${this.$route.params.id}`)
                 .then(response => {
-                    console.log(response.data)
                     this.$store.commit("addArticlePost", response.data)
-                    console.log(this.$store.state.articlePost)
                 })
                 .catch(error => {
                     console.log(response.data.errors)
@@ -89,7 +87,6 @@
             } else {
                 axios.get(`/api/posts/search/${this.$route.query.query}/${this.$route.params.id}`)
                 .then(response => {
-                    console.log(response.data)
                     this.$store.commit("addArticlePost", response.data)
                 })
                 .catch(error => {

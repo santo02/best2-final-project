@@ -111,8 +111,7 @@ const routes = [{
     component: UpdateBlog,
     name: 'update-blog',
     meta: {
-      requiresAuth: true,
-      isUser: true
+      requiresAuth: true
     }
   },
   {
