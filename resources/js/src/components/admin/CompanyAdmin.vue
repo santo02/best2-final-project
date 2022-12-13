@@ -9,8 +9,8 @@
           </router-link>
         </div>
         <div class="container">
-          <div class="row m-4">
-            <div v-for='company in companies' :key="company.company_id" class="col-md-4 mt-4">
+          <div class="row m-auto">
+            <div v-for='company in companies' :key="company.company_id" class="col-md-3 mt-4">
               <div class="card text-center" style="width: 12rem;">
                 <img class="card-img-top" :src="company.company_image" style="height: 12rem;">
                 <div class="card-body">
@@ -26,7 +26,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>/
   </section>
 </template>
 

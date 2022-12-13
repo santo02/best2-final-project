@@ -19,7 +19,7 @@ class PostController extends Controller
   {
     $allPost =  DB::table('posts')
       ->join('users', 'users.id', '=', 'posts.user_id')
-      ->join('categories', 'categories.id', '=', 'posts.category')
+      ->join('categories', 'categories.id', '=', 'posts.categori_id')
       ->select('posts.*', 'users.username', 'categories.Categories_name')
       ->get();
 

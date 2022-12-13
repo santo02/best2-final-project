@@ -8,7 +8,7 @@
       <div class="row">
         <div class="col">
           <div class="card " style="width: 18rem;">
-            <router-link :to="{ name: 'user-admin' }">
+            <router-link :to="{ name: 'all-users' }">
               <div class="card-body">
                 <h2 class="card-title">Total User: </h2>
                 <p class="card-text">{{ CountUsers }} user</p>

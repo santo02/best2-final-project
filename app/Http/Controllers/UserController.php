@@ -64,6 +64,10 @@ class UserController extends Controller
     $post = User::where('id', $query)->first();
     return response()->json($post);
   }
+  public function AllUser() {
+    $all_user = User::where('role', 'user')->get();
+    return response()->json($all_user);
+  }
 
   public function name(Request $request) {
     $request->validate([

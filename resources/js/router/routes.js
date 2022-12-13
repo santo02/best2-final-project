@@ -20,6 +20,8 @@ import UserName from '../src/components/profile/router/UserName'
 import Photo from '../src/components/profile/router/Profile'
 import CompanyAdmin from '../src/pages/CompanyAdmin'
 import BlogAdmin from '../src/pages/BlogAdmin'
+import AllUsers from '../src/pages/AllUser'
+
 
 const routes = [{
     path: '/',
@@ -43,6 +45,9 @@ const routes = [{
     path: "/my-blog",
     component: ListBlog,
     name: '/my-blog',
+    meta: {
+      requiresAuth: true,
+    }
   },
   {
     path: "/add-company",
@@ -147,6 +152,12 @@ const routes = [{
     meta: {
       requiresAuth: true,
     }
+  },
+  {
+    path: '/users-all',
+    component: AllUsers,
+    name: 'all-users',
+
   },
   {
     path: '/registrasi',
