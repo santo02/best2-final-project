@@ -17,13 +17,12 @@ class CommentController extends Controller
  
     public function show($id)
     {
-        $post_data = DB::table('comments')
-            ->join('users', 'users.id', '=', 'comments.user_id')
+        $post = Comment::join('users', 'users.id', '=', 'comments.user_id')
             ->where('comments.post_id', '=', $id)
             ->select('comments.post_id', 'comments.id', 'comments.user_id', 'comments.comments', 'comments.created_at', 'users.username', 'users.name', 'users.image')
             ->orderBy('comments.created_at', 'DESC')
             ->get();
-        return response()->json($post_data);
+        return response()->json($post);
     }
 
     public function store(Request $request)

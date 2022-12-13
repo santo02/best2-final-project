@@ -21,6 +21,7 @@ import Photo from '../src/components/profile/router/Profile'
 import CompanyAdmin from '../src/pages/CompanyAdmin'
 import BlogAdmin from '../src/pages/BlogAdmin'
 import AllUsers from '../src/pages/AllUser'
+import { truncate } from 'lodash'
 
 
 const routes = [{
@@ -60,7 +61,11 @@ const routes = [{
     component: EditProfile,
     name: 'profile-main',
     meta: {
+<<<<<<< HEAD
       requiresAuth: true,
+=======
+      requiresAuth: truncate
+>>>>>>> 4efecd288cd29ee325b74e9f0a4edc00eb635b8f
     },
     children: [{
         path: 'name',
@@ -136,8 +141,7 @@ const routes = [{
     component: UpdateBlog,
     name: 'update-blog',
     meta: {
-      requiresAuth: true,
-      isUser: true
+      requiresAuth: true
     }
   },
   {

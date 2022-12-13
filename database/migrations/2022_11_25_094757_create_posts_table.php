@@ -21,6 +21,7 @@ return new class extends Migration
       $table->string('slug');
       $table->string('post_image');
       $table->text('post_detail');
+      $table->text('preview');
       $table->string('user_id');
       $table->timestamps();
     });

@@ -27,7 +27,7 @@
                                         </div>
                                     </div>
                                     <h5>{{article.title}}</h5>
-                                    <p style="margin-top: 5px;">{{article.post_detail.substring(0, 240)}}...</p>
+                                    <p style="margin-top: 5px;">{{article.preview.substring(0, 240)}}...</p>
                                     <div class="row">
                                         <div class="col"><img class="img-fluid" src="/assets/img/d228d012b5f3852abb2b66d9da526801.jpg" width="20px" height="20px">
                                             <p style="margin-top: -25px;margin-left: 28px;">{{article.created_at}}</p>
@@ -80,7 +80,6 @@
                 axios.get(`/api/posts/companies/${this.$route.params.id}`)
                 .then(response => {
                     this.$store.commit("addArticlePost", response.data)
-                    console.log(this.$store.state.articlePost)
                 })
                 .catch(error => {
                     console.log(response.data.errors)

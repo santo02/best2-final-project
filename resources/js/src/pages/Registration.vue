@@ -40,7 +40,7 @@
               </div>
               <div class="form-outline mt-4 mb-4">
                 <input type="password" id="form2Example28" v-model="user.password_confirmation"
-                  class="form-control form-control-md" placeholder="Confirm FPassword"
+                  class="form-control form-control-md" placeholder="Confirm Password"
                   style="background-color: #D9D9D9; margin-top: 20px;" />
               </div>
 

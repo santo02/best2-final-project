@@ -54,8 +54,15 @@
                 </select>
               </div>
               <div class="mb-3">
+                <label class="form-label">Preview</label>
+                <textarea class="form-control" v-model="blog.preview" required></textarea>
+              </div>
+              <div class="mb-3">
                 <label class="form-label">Isi</label>
-                <textarea class="form-control" v-model="blog.post_detail" required></textarea>
+                <vue-editor id="editor"
+                  use-custom-image-handler
+                  @image-added="handleImageAdded" v-model="blog.post_detail">
+                </vue-editor>
               </div>
               <div class="mb-3 mt-5">
                 <button class="btn btn-primary d-block w-100" type="submit">Submit</button>
@@ -68,9 +75,12 @@
   </section>
 </template>
 
+
 <script>
+import { VueEditor, Quill } from "vue2-editor";
 export default {
   name: "Blog",
+  components: { VueEditor },
   data() {
     return {
       blog: {},
@@ -82,10 +92,31 @@ export default {
     }
   },
   mounted() {
+    window.scrollTo(0,0)
     this.getCompanyData()
     this.getCategory()
   },
   methods: {
+    handleImageAdded(file, Editor, cursorLocation) {
+      var formData = new FormData();
+      formData.append('file', file)
+      axios({
+        url: '/api/posts/add/image',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Acces-Control-Allow-Origin': '*',
+        },
+        data: formData
+      })
+      .then((result) => {
+        let url = result.data.data.url
+        Editor.insertEmbed(cursorLocation, 'image', url);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    },
     getCompanyData() {
       axios.get('/api/companies')
         .then(response => {
@@ -117,6 +148,17 @@ export default {
       slug = slug.replace('\"', '')
       slug = slug.replace('#', '')
       slug = slug.replace(',', '')
+<<<<<<< HEAD
+=======
+      slug = slug.replace('.', '')
+      slug = slug.replace('[', '')
+      slug = slug.replace(']', '')
+      slug = slug.replace('{', '')
+      slug = slug.replace('}', '')
+      slug = slug.replace('|', '')
+      slug = slug.replace('+', '')
+      slug = slug.replace(':', '')
+>>>>>>> 4efecd288cd29ee325b74e9f0a4edc00eb635b8f
       return this.blog.slug = slug
     },
     addPost() {
@@ -129,9 +171,13 @@ export default {
       formData.append('category', this.blog.category)
       formData.append('file', this.file)
       formData.append('post_detail', this.blog.post_detail)
+      formData.append('preview', this.blog.preview)
       formData.append('user_id', this.user.id)
       formData.append('slug', this.blog.slug)
+<<<<<<< HEAD
       console.log(formData)
+=======
+>>>>>>> 4efecd288cd29ee325b74e9f0a4edc00eb635b8f
       this.axios({
         url: '/api/posts/add',
         method: 'post',
