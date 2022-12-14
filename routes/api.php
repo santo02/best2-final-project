@@ -55,7 +55,13 @@ Route::controller(PostController::class)->group(function () {
 
 Route::controller(CompanyController::class)->group(function () {
     Route::GET('/companies', 'index');
+    Route::GET('/companies/my/{id}', 'index');
+    Route::GET('/companies/find/{slug}', 'show');
+    Route::delete('/companies/delete/{id}', 'delete');
+    Route::GET('/companies/find/id/{id}', 'useid');
     Route::POST('/companies/add', 'store');
+    Route::POST('/companies/edit', 'update');
+    Route::POST('/companies/add/image', 'image');
     Route::GET('/companies/search/{query}', 'show');
 });
 

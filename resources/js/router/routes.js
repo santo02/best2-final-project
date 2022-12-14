@@ -6,11 +6,13 @@ import ArticlePage from '../src/pages/Articlepage'
 import DetailArticle from '../src/pages/DetailArticlePage'
 import HomePage from '../src/pages/Homepage'
 import Company from '../src/pages/Company'
+import AddCompany from '../src/pages/AddCompany'
+import ListCompany from '../src/pages/ListCompany'
+import UpdateCompany from '../src/pages/UpdateCompany'
 import AddBlog from '../src/pages/AddBlog'
 import ListBlog from '../src/pages/ListBlog'
 import UpdateBlog from '../src/pages/UpdateBlog'
 import Upload from '../src/pages/Upload'
-import AddCompany from '../src/pages/AddCompany'
 import AddKategori from '../src/pages/AddKategori'
 import Categories from '../src/pages/categories'
 import CategoriesAdmin from '../src/pages/CategoriesAdmin'
@@ -48,6 +50,11 @@ const routes = [{
     component: AddCompany,
     name: 'add-company',
     requiresAuth: true,
+  },
+  {
+    path: "/my-company",
+    component: ListCompany,
+    name: '/my-company',
   },
   {
     path: "/profile",
@@ -110,6 +117,14 @@ const routes = [{
     path: "/edit/:id",
     component: UpdateBlog,
     name: 'update-blog',
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/edit-company/:id",
+    component: UpdateCompany,
+    name: 'update-company',
     meta: {
       requiresAuth: true
     }

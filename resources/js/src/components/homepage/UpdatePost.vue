@@ -2,7 +2,7 @@
     <section class="py-5 mt-5">
       <div class="container py-5">
         <div class="card">
-          <h3 class="text-center mb-4">Tambah Post Baru</h3>
+          <h3 class="text-center mb-4">Update Post</h3>
           <div class="card p-3" style="border-width: 3px;border-style: dashed;">
             <div class="card-body">
               <form class="text-start" @submit.prevent="editPost" enctype="multipart/form-data">

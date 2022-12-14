@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class CompanyController extends Controller
 {
@@ -49,9 +50,9 @@ class CompanyController extends Controller
             return response()->json('Error');
         } else {
             $file_name = time().'_'.$request->file->getClientOriginalName();
-            $file_path = $request->file('file')->move(public_path('assets/img/company'), $file_name);
+            $file_path = $request->file('file')->move(public_path('assets/img/companies'), $file_name);
             $company_name = $request->input('company_name');
-            $post_image = '/assets/img/company/'.$file_name;
+            $post_image = '/assets/img/companies/'.$file_name;
             $slug= $request->input('slug');
             $created_at = \Carbon\Carbon::now()->toDateTimeString();
             $updated_at = \Carbon\Carbon::now()->toDateTimeString();
@@ -62,19 +63,44 @@ class CompanyController extends Controller
         
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $article = Company::findOrFail($id);
-        $article->update($request->all());
-
-        return $article;
+        $imageData = $request->validate([
+            'file' => 'required|mimes:jpg,jpeg,png',
+            'company_name' => 'required',
+            'company_image' => 'required',
+            'company_slug' => 'required',
+            'id' => 'required',
+         ]);
+ 
+        if(!$imageData) {
+            return response()->json('Error');
+        } else {
+            $file_name = time().'_'.$request->file->getClientOriginalName();
+            $file_path = $request->file('file')->move(public_path('assets/img/companies'), $file_name);
+            $company_name = $request->input('company_name');
+            $companyId = $request->input('id');
+            $company_image = '/assets/img/companies/'.$file_name;
+            // $post_detail = $request->input('post_detail');
+            $slug= $request->input('company_slug');
+            $updated_at = \Carbon\Carbon::now()->toDateTimeString();
+            $result = DB::table('companies')
+            ->where('id', $companyId)
+            ->update([
+                'company_name' => $company_name, 
+                'company_slug' => $slug, 
+                'company_image' => $company_image,
+                'updated_at' => $updated_at
+            ]);
+            return response()->json($result);
+        }
+        
     }
 
     public function delete(Request $request, $id)
     {
-        $article = Company::findOrFail($id);
-        $article->delete();
-
-        return 204;
+        $item = Company::findOrFail($id);
+        $item->delete();
+        return $item;
     }
 }
