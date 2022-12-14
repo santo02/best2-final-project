@@ -56,8 +56,6 @@ export default {
     }
   },
 
-
-
   methods: {
     sanitizeTitle(title) {
       var slug = ""
@@ -88,7 +86,7 @@ export default {
           'Acces-Control-Allow-Origin': '*',
         }
       }).then(response => (
-        this.$router.push({ name: 'home' })
+        this.$router.push({ name: 'company-admin' })
       ))
         .catch(err => console.log(err))
     },

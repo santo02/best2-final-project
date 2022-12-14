@@ -148,17 +148,6 @@ export default {
       slug = slug.replace('\"', '')
       slug = slug.replace('#', '')
       slug = slug.replace(',', '')
-<<<<<<< HEAD
-=======
-      slug = slug.replace('.', '')
-      slug = slug.replace('[', '')
-      slug = slug.replace(']', '')
-      slug = slug.replace('{', '')
-      slug = slug.replace('}', '')
-      slug = slug.replace('|', '')
-      slug = slug.replace('+', '')
-      slug = slug.replace(':', '')
->>>>>>> 4efecd288cd29ee325b74e9f0a4edc00eb635b8f
       return this.blog.slug = slug
     },
     addPost() {
@@ -174,10 +163,7 @@ export default {
       formData.append('preview', this.blog.preview)
       formData.append('user_id', this.user.id)
       formData.append('slug', this.blog.slug)
-<<<<<<< HEAD
       console.log(formData)
-=======
->>>>>>> 4efecd288cd29ee325b74e9f0a4edc00eb635b8f
       this.axios({
         url: '/api/posts/add',
         method: 'post',

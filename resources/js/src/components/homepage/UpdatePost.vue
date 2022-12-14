@@ -2,7 +2,7 @@
     <section class="py-5 mt-5">
       <div class="container py-5">
         <div class="card">
-          <h3 class="text-center mb-4">Tambah Post Baru</h3>
+          <h3 class="text-center mb-4 judul">Update post</h3>
           <div class="card p-3" style="border-width: 3px;border-style: dashed;">
             <div class="card-body">
               <form class="text-start" @submit.prevent="editPost" enctype="multipart/form-data">
@@ -50,8 +50,8 @@
                     @image-added="handleImageAdded" v-model="post.post_detail">
                   </vue-editor>
                 </div>
-  
-  
+
+
                 <div class="mb-3 mt-5">
                   <button class="btn btn-primary d-block w-100" type="submit">Submit</button>
                 </div>
@@ -186,5 +186,5 @@
             }
         }
     }
-    
+
 </script>

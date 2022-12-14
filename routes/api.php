@@ -49,11 +49,13 @@ Route::controller(PostController::class)->group(function () {
     Route::GET('/posts/find/{slug}', 'show');
     Route::delete('/posts/delete/{id}', 'delete');
     Route::GET('/posts/find/id/{id}', 'useid');
+    Route::GET('/posts/{id}', 'singlePost');
     Route::GET('/posts/search/{query}/{slug}', 'search');
     Route::GET('/posts/related/{currentPost}/{category}', 'related');
     Route::POST('/posts/add', 'store');
     Route::POST('/posts/edit', 'update');
     Route::POST('/posts/add/image', 'image');
+
 });
 
 Route::controller(CompanyController::class)->group(function () {
@@ -67,6 +69,9 @@ Route::controller(CategoriesController::class)->group(function(){
   Route::get('/categories/show', 'show');
   Route::get('/categories/count', 'CountCate');
   Route::delete('/categories/delete/{id}', 'delete');
+  Route::get('/posts-by-cate/{id}', 'ShowByCate');
+  Route::get('/get-cate/{id}', 'ShowCate');
+  Route::get('/count-by-cate/{id}', 'CountByCate');
 });
 Route::controller(DashboardAdminController::class)->group(function(){
   Route::get('/TotalUser', 'UserCount');

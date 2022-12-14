@@ -19,7 +19,7 @@ class DashboardAdminController extends Controller
    }
 
    public function CompanyCount(){
-     $TotalCompany = DB::table('company')->select('id')->count();
+     $TotalCompany = DB::table('companies')->select('id')->count();
      return $TotalCompany;
    }
 

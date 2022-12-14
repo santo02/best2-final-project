@@ -22,6 +22,9 @@ import CompanyAdmin from '../src/pages/CompanyAdmin'
 import BlogAdmin from '../src/pages/BlogAdmin'
 import AllUsers from '../src/pages/AllUser'
 import { truncate } from 'lodash'
+import UpdateCompany from '../src/pages/UpdateCompany'
+import Singlepost from '../src/pages/Singlepost'
+import PostByCategori from '../src/pages/PostByCategori'
 
 
 const routes = [{
@@ -61,11 +64,7 @@ const routes = [{
     component: EditProfile,
     name: 'profile-main',
     meta: {
-<<<<<<< HEAD
-      requiresAuth: true,
-=======
-      requiresAuth: truncate
->>>>>>> 4efecd288cd29ee325b74e9f0a4edc00eb635b8f
+      requiresAuth: true
     },
     children: [{
         path: 'name',
@@ -117,6 +116,15 @@ const routes = [{
       isAdmin: true
     }
   },
+  {
+    path: "/company-update",
+    component: UpdateCompany,
+    name: 'company-update',
+    meta: {
+      requiresAuth: true,
+      isAdmin: true
+    }
+  },
 
   {
     path: "/add-categories",
@@ -140,6 +148,22 @@ const routes = [{
     path: "/edit/:id",
     component: UpdateBlog,
     name: 'update-blog',
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/posts/:id",
+    component: Singlepost,
+    name: 'single-post',
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/posts-by-categories/:id",
+    component: PostByCategori,
+    name: 'post-by-categories',
     meta: {
       requiresAuth: true
     }
