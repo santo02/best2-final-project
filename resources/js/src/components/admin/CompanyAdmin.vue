@@ -10,19 +10,19 @@
         </div>
         <div class="container">
           <div class="row m-auto">
-            <div v-for='company in companies' :key="company.company_id" class="col-md-3 mt-4">
+            <div v-for='company in companies' :key="company.id" class="col-md-3 mt-4">
               <div class="card text-center" style="width: 12rem;">
                 <img class="card-img-top" :src="company.company_image" style="height: 12rem;">
                 <div class="card-body">
                   <h5 class="card-title">{{ company.company_name }}</h5>
                   <div class="btn-group" role="group">
-                    <router-link :to="{ name: 'company-update' }" class="btn btn-sm  btn-success">Edit</router-link>
+                    <button class="btn btn-sm  btn-success" @click="updateCompany(company.id)">Edit</button>
                     <!-- Delete -->
                     <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                      :data-bs-target="'#DeleteModal' + company.company_id">Delete</button>
+                      :data-bs-target="'#DeleteModal' + company.id">Delete</button>
                     <!-- modal delete -->
                   </div>
-                  <div class="modal fade" :id="'DeleteModal' + company.company_id" tabindex="-1"
+                  <div class="modal fade" :id="'DeleteModal' + company.id" tabindex="-1"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
@@ -35,7 +35,7 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tidak</button>
-                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Ya</button>
+                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="deleteCompany(company.id)">Ya</button>
                         </div>
                       </div>
                     </div>
@@ -73,13 +73,17 @@ export default {
           console.log(error)
         });
     },
-    // deleteCate(id) {
-    //   axios.delete(`/api/categories/delete/${id}`)
-    //     .then(response => {
-    //       let i = this.categories.map(data => data.id).indexOf(id);
-    //       this.categories.splice(i, 1)
-    //     });
-    // }
+    updateCompany(id) {
+      this.$router.push(`/company-update/${id}`)
+      window.scrollTo(0,0)
+    },
+    deleteCompany(id) {
+      axios.delete(`/api/companies/delete/${id}`)
+        .then(response => {
+          let i = this.companies.map(data => data.id).indexOf(id);
+          this.companies.splice(i, 1)
+        });
+    }
   }
 }
 </script>

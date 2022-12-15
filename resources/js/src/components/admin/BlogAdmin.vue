@@ -35,7 +35,7 @@
                     <td>{{ b.title }}</td>
                     <td>{{ b.Categories_name }}</td>
                     <td>{{ b.username }}</td>
-                    <td>{{ b.post_detail.substring(0, 100) }}...</td>
+                    <td>{{ b.preview.substring(0, 100) }}...</td>
                     <td>
                       <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                         <div>

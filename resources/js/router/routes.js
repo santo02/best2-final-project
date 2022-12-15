@@ -117,7 +117,7 @@ const routes = [{
     }
   },
   {
-    path: "/company-update",
+    path: "/company-update/:id",
     component: UpdateCompany,
     name: 'company-update',
     meta: {

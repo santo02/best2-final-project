@@ -41,9 +41,6 @@
                 </router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" to="/post">Post</router-link>
-              </li>
-              <li class="nav-item">
                 <router-link class="nav-link" :to="{ name: 'categories' }">Kategori</router-link>
               </li>
               <li class="nav-item">

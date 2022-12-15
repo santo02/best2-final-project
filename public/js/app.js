@@ -2369,14 +2369,22 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         console.log(error);
       });
-    } // deleteCate(id) {
-    //   axios.delete(`/api/categories/delete/${id}`)
-    //     .then(response => {
-    //       let i = this.categories.map(data => data.id).indexOf(id);
-    //       this.categories.splice(i, 1)
-    //     });
-    // }
+    },
+    updateCompany: function updateCompany(id) {
+      this.$router.push("/company-update/".concat(id));
+      window.scrollTo(0, 0);
+    },
+    deleteCompany: function deleteCompany(id) {
+      var _this2 = this;
 
+      axios["delete"]("/api/companies/delete/".concat(id)).then(function (response) {
+        var i = _this2.companies.map(function (data) {
+          return data.id;
+        }).indexOf(id);
+
+        _this2.companies.splice(i, 1);
+      });
+    }
   }
 });
 
@@ -2503,12 +2511,24 @@ __webpack_require__.r(__webpack_exports__);
   name: "AddCompanies",
   data: function data() {
     return {
-      company_name: '',
-      slug: '',
+      companies: {},
       file: ''
     };
   },
+  mounted: function mounted() {
+    this.getCompany(this.$route.params.id);
+  },
   methods: {
+    getCompany: function getCompany(id) {
+      var _this = this;
+
+      axios.get("/api/companies/find/".concat(id)).then(function (response) {
+        console.log(response.data);
+        _this.companies = response.data;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
     sanitizeTitle: function sanitizeTitle(title) {
       var slug = "";
       var titleLower = title.toLowerCase();
@@ -2521,18 +2541,29 @@ __webpack_require__.r(__webpack_exports__);
       slug = slug.replace('"', '');
       slug = slug.replace('\"', '');
       slug = slug.replace('#', '');
-      return this.slug = slug;
+      slug = slug.replace(',', '');
+      slug = slug.replace('.', '');
+      slug = slug.replace('[', '');
+      slug = slug.replace(']', '');
+      slug = slug.replace('{', '');
+      slug = slug.replace('}', '');
+      slug = slug.replace('|', '');
+      slug = slug.replace('+', '');
+      slug = slug.replace(':', '');
+      return this.companies.company_slug = slug;
     },
-    addCompany: function addCompany() {
-      var _this = this;
+    editCompany: function editCompany() {
+      var _this2 = this;
 
+      this.user = JSON.parse(localStorage.getItem('user'));
+      this.isLoggedIn = localStorage.getItem('token') != null;
       var formData = new FormData();
+      formData.append('id', this.$route.params.id);
+      formData.append('company_name', this.companies.company_name);
       formData.append('file', this.file);
-      formData.append('company_name', this.company_name);
-      formData.append('slug', this.slug);
-      console.log(this.file);
+      formData.append('company_slug', this.companies.company_slug);
       this.axios({
-        url: '/api/companies/add',
+        url: '/api/companies/edit',
         method: 'post',
         data: formData,
         headers: {
@@ -2540,7 +2571,7 @@ __webpack_require__.r(__webpack_exports__);
           'Acces-Control-Allow-Origin': '*'
         }
       }).then(function (response) {
-        return _this.$router.push({
+        return _this2.$router.push({
           name: 'home'
         });
       })["catch"](function (err) {
@@ -4785,7 +4816,7 @@ var render = function render() {
   }, [_vm._m(0), _vm._v(" "), _c("tbody", _vm._l(_vm.blogs, function (b) {
     return _c("tr", {
       key: b.id
-    }, [_c("td", [_c("small", [_vm._v(_vm._s(b.created_at))])]), _vm._v(" "), _c("td", [_vm._v(_vm._s(b.title))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(b.Categories_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(b.username))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(b.post_detail.substring(0, 100)) + "...")]), _vm._v(" "), _c("td", [_c("div", {
+    }, [_c("td", [_c("small", [_vm._v(_vm._s(b.created_at))])]), _vm._v(" "), _c("td", [_vm._v(_vm._s(b.title))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(b.Categories_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(b.username))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(b.preview.substring(0, 100)) + "...")]), _vm._v(" "), _c("td", [_c("div", {
       staticClass: "btn-group",
       attrs: {
         role: "group",
@@ -5061,7 +5092,7 @@ var render = function render() {
     staticClass: "row m-auto"
   }, _vm._l(_vm.companies, function (company) {
     return _c("div", {
-      key: company.company_id,
+      key: company.id,
       staticClass: "col-md-3 mt-4"
     }, [_c("div", {
       staticClass: "card text-center",
@@ -5085,23 +5116,23 @@ var render = function render() {
       attrs: {
         role: "group"
       }
-    }, [_c("router-link", {
+    }, [_c("button", {
       staticClass: "btn btn-sm btn-success",
-      attrs: {
-        to: {
-          name: "company-update"
+      on: {
+        click: function click($event) {
+          return _vm.updateCompany(company.id);
         }
       }
     }, [_vm._v("Edit")]), _vm._v(" "), _c("button", {
       staticClass: "btn btn-sm btn-danger",
       attrs: {
         "data-bs-toggle": "modal",
-        "data-bs-target": "#DeleteModal" + company.company_id
+        "data-bs-target": "#DeleteModal" + company.id
       }
-    }, [_vm._v("Delete")])], 1), _vm._v(" "), _c("div", {
+    }, [_vm._v("Delete")])]), _vm._v(" "), _c("div", {
       staticClass: "modal fade",
       attrs: {
-        id: "DeleteModal" + company.company_id,
+        id: "DeleteModal" + company.id,
         tabindex: "-1",
         "aria-labelledby": "exampleModalLabel",
         "aria-hidden": "true"
@@ -5112,7 +5143,26 @@ var render = function render() {
       staticClass: "modal-content"
     }, [_vm._m(0, true), _vm._v(" "), _c("div", {
       staticClass: "modal-body"
-    }, [_vm._v("\n                        Apakah anda ingin menghapus company "), _c("b", [_vm._v(_vm._s(company.company_name))]), _vm._v(" ?\n                      ")]), _vm._v(" "), _vm._m(1, true)])])])])])]);
+    }, [_vm._v("\n                        Apakah anda ingin menghapus company "), _c("b", [_vm._v(_vm._s(company.company_name))]), _vm._v(" ?\n                      ")]), _vm._v(" "), _c("div", {
+      staticClass: "modal-footer"
+    }, [_c("button", {
+      staticClass: "btn btn-primary",
+      attrs: {
+        type: "button",
+        "data-bs-dismiss": "modal"
+      }
+    }, [_vm._v("Tidak")]), _vm._v(" "), _c("button", {
+      staticClass: "btn btn-danger",
+      attrs: {
+        type: "button",
+        "data-bs-dismiss": "modal"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.deleteCompany(company.id);
+        }
+      }
+    }, [_vm._v("Ya")])])])])])])])]);
   }), 0)])])]), _vm._v("/\n")]);
 };
 
@@ -5135,25 +5185,6 @@ var staticRenderFns = [function () {
       "aria-label": "Close"
     }
   })]);
-}, function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
-  return _c("div", {
-    staticClass: "modal-footer"
-  }, [_c("button", {
-    staticClass: "btn btn-primary",
-    attrs: {
-      type: "button",
-      "data-bs-dismiss": "modal"
-    }
-  }, [_vm._v("Tidak")]), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-danger",
-    attrs: {
-      type: "button",
-      "data-bs-dismiss": "modal"
-    }
-  }, [_vm._v("Ya")])]);
 }];
 render._withStripped = true;
 
@@ -5438,7 +5469,7 @@ var render = function render() {
     on: {
       submit: function submit($event) {
         $event.preventDefault();
-        return _vm.addCompany.apply(null, arguments);
+        return _vm.editCompany.apply(null, arguments);
       }
     }
   }, [_c("div", {
@@ -5465,8 +5496,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.company_name,
-      expression: "company_name"
+      value: _vm.companies.company_name,
+      expression: "companies.company_name"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5474,14 +5505,15 @@ var render = function render() {
       required: ""
     },
     domProps: {
-      value: _vm.company_name
+      value: _vm.companies.company_name
     },
     on: {
       input: [function ($event) {
         if ($event.target.composing) return;
-        _vm.company_name = $event.target.value;
+
+        _vm.$set(_vm.companies, "company_name", $event.target.value);
       }, function ($event) {
-        return _vm.sanitizeTitle(_vm.company_name);
+        return _vm.sanitizeTitle(_vm.companies.company_name);
       }]
     }
   })]), _vm._v(" "), _c("div", {
@@ -5492,8 +5524,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.slug,
-      expression: "slug"
+      value: _vm.companies.company_slug,
+      expression: "companies.company_slug"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5501,12 +5533,13 @@ var render = function render() {
       readonly: ""
     },
     domProps: {
-      value: _vm.slug
+      value: _vm.companies.company_slug
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.slug = $event.target.value;
+
+        _vm.$set(_vm.companies, "company_slug", $event.target.value);
       }
     }
   })]), _vm._v(" "), _vm._m(0)])])])])])]);
@@ -8203,13 +8236,6 @@ var render = function render() {
   }, [_c("router-link", {
     staticClass: "nav-link",
     attrs: {
-      to: "/post"
-    }
-  }, [_vm._v("Post")])], 1), _vm._v(" "), _c("li", {
-    staticClass: "nav-item"
-  }, [_c("router-link", {
-    staticClass: "nav-link",
-    attrs: {
       to: {
         name: "categories"
       }
@@ -9628,7 +9654,7 @@ var routes = [{
     isAdmin: true
   }
 }, {
-  path: "/company-update",
+  path: "/company-update/:id",
   component: _src_pages_UpdateCompany__WEBPACK_IMPORTED_MODULE_24__["default"],
   name: 'company-update',
   meta: {
@@ -11785,7 +11811,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.card[data-v-c2bba678] {\n  background-color: rgba(245, 245, 245, 0.856);\n  margin: 20px;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n.wellcome[data-v-c2bba678] {\n  color: white;\n  margin-top: -80px;\n  margin-left: 10px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.card[data-v-c2bba678] {\r\n  background-color: rgba(245, 245, 245, 0.856);\r\n  margin: 20px;\r\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n.wellcome[data-v-c2bba678] {\r\n  color: white;\r\n  margin-top: -80px;\r\n  margin-left: 10px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11881,7 +11907,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.form-control-borderless[data-v-785ab796] {\n    border: none;\n}\n.form-control-borderless[data-v-785ab796]:hover,\n.form-control-borderless[data-v-785ab796]:active,\n.form-control-borderless[data-v-785ab796]:focus {\n    border: none;\n    outline: none;\n    box-shadow: none;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.form-control-borderless[data-v-785ab796] {\r\n    border: none;\n}\n.form-control-borderless[data-v-785ab796]:hover,\r\n.form-control-borderless[data-v-785ab796]:active,\r\n.form-control-borderless[data-v-785ab796]:focus {\r\n    border: none;\r\n    outline: none;\r\n    box-shadow: none;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
