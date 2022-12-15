@@ -55,17 +55,25 @@ class UserController extends Controller
     return response()->json($response, $status);
   }
 
-  public function GetUser(){
+  public function GetUser()
+  {
     $user = Auth::user();
     return response()->json($user, 200);
   }
 
-  public function show($query) {
+  public function show($query)
+  {
     $post = User::where('id', $query)->first();
     return response()->json($post);
   }
+  public function AllUser()
+  {
+    $all_user = User::where('role', 'user')->get();
+    return response()->json($all_user);
+  }
 
-  public function name(Request $request) {
+  public function name(Request $request)
+  {
     $request->validate([
       'id' => 'required',
       'name' => 'required'
@@ -82,7 +90,8 @@ class UserController extends Controller
     return response()->json(['message' => 'Edit Name Successful.']);
   }
 
-  public function username(Request $request) {
+  public function username(Request $request)
+  {
     $request->validate([
       'id' => 'required',
       'name' => 'required'
@@ -99,21 +108,21 @@ class UserController extends Controller
     return response()->json(['message' => 'Edit Username Successful.']);
   }
 
-  public function photo(Request $request) {
+  public function photo(Request $request)
+  {
     $request->validate([
       'id' => 'required',
       'file' => 'required|mimes:jpg,jpeg,png'
     ]);
-    $file_name = time().'_'.$request->file->getClientOriginalName();
+    $file_name = time() . '_' . $request->file->getClientOriginalName();
     $file_path = $request->file('file')->move(public_path('assets/img/profile'), $file_name);
-    $post_image = '/assets/img/profile/'.$file_name;
+    $post_image = '/assets/img/profile/' . $file_name;
     $user_id = $request->input('id');
     $result = DB::table('users')
-    ->where('id', $user_id)
-    ->update([
+      ->where('id', $user_id)
+      ->update([
         'image' => $post_image
-    ]);
+      ]);
     return response()->json($result);
   }
-
 }

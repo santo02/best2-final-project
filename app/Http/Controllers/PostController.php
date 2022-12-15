@@ -15,7 +15,6 @@ class PostController extends Controller
             ->join('users', 'users.id', '=', 'posts.user_id')
             ->get();
         return response()->json($post_data);
-
     }
 
     public function indextwo($query)
@@ -27,7 +26,6 @@ class PostController extends Controller
             ->select('posts.id', 'posts.slug', 'posts.title', 'posts.preview', 'categories.Categories_name', 'posts.post_image', 'post_detail', 'posts.created_at', 'posts.updated_at', 'users.username', 'users.name', 'users.image')
             ->get();
         return response()->json($post);
-
     }
 
     public function mypost($query)
@@ -39,7 +37,11 @@ class PostController extends Controller
             ->select('posts.id', 'posts.slug', 'posts.title', 'posts.post_image', 'categories.Categories_name', 'posts.post_detail', 'posts.preview', 'posts.created_at', 'posts.updated_at', 'users.username', 'users.name', 'users.image')
             ->get();
         return response()->json($post_data);
-
+    }
+    public function singlePost($id)
+    {
+        $post = Post::where('posts.id', $id)->join('users', 'users.id', '=', 'posts.user_id')->first();
+        return response()->json($post);
     }
 
     public function useid($query)
@@ -55,11 +57,11 @@ class PostController extends Controller
             ->join('companies', 'companies.id', '=', 'posts.company_id')
             ->join('categories', 'categories.id', '=', 'posts.categori_id')
             ->where('companies.company_slug', '=', $slug)
-            ->where(function($query) use ($search) {
+            ->where(function ($query) use ($search) {
                 $query->where('posts.title', 'LIKE', "%{$search}%")
-                ->orWhere('posts.post_detail', 'LIKE', "%{$search}%")
-                ->orWhere('categories.Categories_name', 'LIKE', "%{$search}%")
-                ->orWhere('users.username', 'LIKE', "%{$search}%");
+                    ->orWhere('posts.post_detail', 'LIKE', "%{$search}%")
+                    ->orWhere('categories.Categories_name', 'LIKE', "%{$search}%")
+                    ->orWhere('users.username', 'LIKE', "%{$search}%");
             })
             ->select('posts.id', 'posts.slug', 'posts.title', 'posts.post_image', 'categories.Categories_name', 'posts.post_detail', 'posts.preview', 'posts.created_at', 'posts.updated_at', 'users.username', 'users.name', 'users.image')
             ->limit(10)
@@ -79,7 +81,16 @@ class PostController extends Controller
             ->get();
         return response()->json($post_data);
     }
+    public function AllPost()
+    {
+        $allPost =  DB::table('posts')
+            ->leftjoin('users', 'users.id', '=', 'posts.user_id')
+            ->leftjoin('categories', 'categories.id', '=', 'posts.categori_id')
+            ->select('posts.*', 'users.username', 'categories.Categories_name')
+            ->get();
 
+        return $allPost;
+    }
     public function show($slug)
     {
         return Post::join('users', 'users.id', '=', 'posts.user_id')
@@ -100,28 +111,27 @@ class PostController extends Controller
             'preview' => 'required',
             'user_id' => 'required',
             'slug' => 'required',
-         ]);
- 
-        if(!$imageData) {
+        ]);
+
+        if (!$imageData) {
             return response()->json('Error');
         } else {
-            $file_name = time().'_'.$request->file->getClientOriginalName();
+            $file_name = time() . '_' . $request->file->getClientOriginalName();
             $file_path = $request->file('file')->move(public_path('assets/img/post'), $file_name);
             $companyId = $request->input('company_id');
             $title = $request->input('title');
             $category = $request->input('category');
-            $post_image = '/assets/img/post/'.$file_name;
+            $post_image = '/assets/img/post/' . $file_name;
             $post_detail = $request->input('post_detail');
             $preview = $request->input('preview');
             $userId = $request->input('user_id');
-            $slug= $request->input('slug');
+            $slug = $request->input('slug');
             $created_at = \Carbon\Carbon::now()->toDateTimeString();
             $updated_at = \Carbon\Carbon::now()->toDateTimeString();
             $values = array('company_id' => $companyId, 'categori_id' => $category, 'title' => $title, 'slug' => $slug, 'post_image' => $post_image, 'post_detail' => $post_detail, 'preview' => $preview, 'user_id' => $userId, 'created_at' => $created_at, 'updated_at' => $updated_at);
             $data_article = DB::table('posts')->insert($values);
             return response()->json($data_article);
         }
-        
     }
 
     public function update(Request $request)
@@ -136,52 +146,51 @@ class PostController extends Controller
             'preview' => 'required',
             'user_id' => 'required',
             'slug' => 'required',
-         ]);
- 
-        if(!$imageData) {
+        ]);
+
+        if (!$imageData) {
             return response()->json('Error');
         } else {
-            $file_name = time().'_'.$request->file->getClientOriginalName();
+            $file_name = time() . '_' . $request->file->getClientOriginalName();
             $file_path = $request->file('file')->move(public_path('assets/img/post'), $file_name);
             $companyId = $request->input('company_id');
             $postId = $request->input('post_id');
             $title = $request->input('title');
             $category = $request->input('category');
-            $post_image = '/assets/img/post/'.$file_name;
+            $post_image = '/assets/img/post/' . $file_name;
             $post_detail = $request->input('post_detail');
             $preview = $request->input('preview');
-            $slug= $request->input('slug');
+            $slug = $request->input('slug');
             $updated_at = \Carbon\Carbon::now()->toDateTimeString();
             $result = DB::table('posts')
-            ->where('posts.id', $postId)
-            ->update([
-                'company_id' => $companyId, 
-                'categori_id' => $category, 
-                'title' => $title, 
-                'slug' => $slug, 
-                'post_image' => $post_image, 
-                'post_detail' => $post_detail, 
-                'preview' => $preview, 
-                'updated_at' => $updated_at
-            ]);
+                ->where('posts.id', $postId)
+                ->update([
+                    'company_id' => $companyId,
+                    'categori_id' => $category,
+                    'title' => $title,
+                    'slug' => $slug,
+                    'post_image' => $post_image,
+                    'post_detail' => $post_detail,
+                    'preview' => $preview,
+                    'updated_at' => $updated_at
+                ]);
             return response()->json($result);
         }
-        
     }
 
     public function image(Request $request)
     {
         $imageData = $request->validate([
             'file' => 'required|mimes:jpg,jpeg,png,gif',
-         ]);
- 
-        if(!$imageData) {
+        ]);
+
+        if (!$imageData) {
             return response()->json('Error');
         } else {
-            $file_name = time().'_'.$request->file->getClientOriginalName();
+            $file_name = time() . '_' . $request->file->getClientOriginalName();
             $file_path = pathinfo($file_name, PATHINFO_FILENAME) . "_" . time();
             $image = base64_encode(file_get_contents($request->file->path()));
-    
+
             $response = Http::asForm()->post(
                 'https://api.imgbb.com/1/upload',
                 [
@@ -192,19 +201,16 @@ class PostController extends Controller
             );
             return $response->json();
         }
-        
     }
 
     public function delete(Request $request, $id)
     {
         $article = DB::table('posts')
-            ->where('posts.id',$id)
+            ->where('posts.id', $id)
             ->delete();
         $comments = DB::table('comments')
-            ->where('post_id',$id)
+            ->where('post_id', $id)
             ->delete();
-        return response()->json("Berhasil hapus");
-
-        return 204;
+        return response()->json(['message' => 'Delete berhasil.'], 201);
     }
 }

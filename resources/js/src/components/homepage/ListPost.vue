@@ -18,7 +18,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="post in posts" :key="post.post_id">
+                    <tr v-for="post in posts" :key="post.id">
                       <td>{{ post.title }}</td>
                       <td>{{ post.Categories_name }}</td>
                       <td>{{ post.username }}</td>
@@ -73,6 +73,7 @@ export default {
         .then(response => {
           let i = this.posts.map(data => data.post_id).indexOf(id);
           this.posts.splice(i, 1)
+          this.message = response.data.message;
         });
     }
   }

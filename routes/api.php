@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\DashboardAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,7 @@ Route::controller(UserController::class)->group(function () {
     Route::POST('/registrasi', 'registrasi');
     Route::POST('/login', 'login');
     Route::GET('/user', 'GetUser');
+    Route::GET('/all-user', 'AllUser');
     Route::GET('/user/find/{id}', 'show');
     Route::POST('/user/change/name', 'name');
     Route::POST('/user/change/username', 'username');
@@ -41,16 +43,19 @@ Route::controller(CommentController::class)->group(function () {
 
 Route::controller(PostController::class)->group(function () {
     Route::GET('/posts', 'index');
+    Route::GET('/all-posts', 'AllPost');
     Route::GET('/posts/my/{id}', 'mypost');
     Route::GET('/posts/companies/{slug}', 'indextwo');
     Route::GET('/posts/find/{slug}', 'show');
     Route::delete('/posts/delete/{id}', 'delete');
     Route::GET('/posts/find/id/{id}', 'useid');
+    Route::GET('/posts/{id}', 'singlePost');
     Route::GET('/posts/search/{query}/{slug}', 'search');
     Route::GET('/posts/related/{currentPost}/{category}', 'related');
     Route::POST('/posts/add', 'store');
     Route::POST('/posts/edit', 'update');
     Route::POST('/posts/add/image', 'image');
+
 });
 
 Route::controller(CompanyController::class)->group(function () {
@@ -64,6 +69,15 @@ Route::controller(CategoriesController::class)->group(function(){
   Route::get('/categories/show', 'show');
   Route::get('/categories/count', 'CountCate');
   Route::delete('/categories/delete/{id}', 'delete');
+  Route::get('/posts-by-cate/{id}', 'ShowByCate');
+  Route::get('/get-cate/{id}', 'ShowCate');
+  Route::get('/count-by-cate/{id}', 'CountByCate');
+});
+Route::controller(DashboardAdminController::class)->group(function(){
+  Route::get('/TotalUser', 'UserCount');
+  Route::get('/TotalPost', 'PostCount');
+  Route::get('/TotalCompany', 'CompanyCount');
+
 });
 
 // Route::apiResource('posts', AddBlog::class);

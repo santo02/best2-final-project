@@ -97,7 +97,7 @@ export default {
     },
     methods: {
         getUser(id) {
-            axios.get(`/api/user/find/${id}`) 
+            axios.get(`/api/user/find/${id}`)
                 .then(response => {
                     this.$store.commit("addUser", response.data)
                     console.log(this.$store.state.user)

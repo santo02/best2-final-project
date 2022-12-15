@@ -18,6 +18,13 @@ import EditProfile from '../src/pages/EditProfile'
 import Name from '../src/components/profile/router/Name'
 import UserName from '../src/components/profile/router/UserName'
 import Photo from '../src/components/profile/router/Profile'
+import CompanyAdmin from '../src/pages/CompanyAdmin'
+import BlogAdmin from '../src/pages/BlogAdmin'
+import AllUsers from '../src/pages/AllUser'
+import { truncate } from 'lodash'
+import UpdateCompany from '../src/pages/UpdateCompany'
+import Singlepost from '../src/pages/Singlepost'
+import PostByCategori from '../src/pages/PostByCategori'
 
 
 const routes = [{
@@ -42,6 +49,9 @@ const routes = [{
     path: "/my-blog",
     component: ListBlog,
     name: '/my-blog',
+    meta: {
+      requiresAuth: true,
+    }
   },
   {
     path: "/add-company",
@@ -56,11 +66,10 @@ const routes = [{
     meta: {
       requiresAuth: true
     },
-    children: [
-      {
-          path: 'name',
-          component: Name,
-          name: 'profile-name'
+    children: [{
+        path: 'name',
+        component: Name,
+        name: 'profile-name'
       },
       {
         path: 'username',
@@ -75,6 +84,16 @@ const routes = [{
     ]
   },
   {
+    path: "/blog-admin",
+    component: BlogAdmin,
+    name: 'blog-admin',
+    meta: {
+      requiresAuth: true,
+      isAdmin: true
+    }
+  },
+
+  {
     path: "/categories",
     component: Categories,
     name: 'categories'
@@ -88,6 +107,25 @@ const routes = [{
       isAdmin: true
     }
   },
+  {
+    path: "/company-admin",
+    component: CompanyAdmin,
+    name: 'company-admin',
+    meta: {
+      requiresAuth: true,
+      isAdmin: true
+    }
+  },
+  {
+    path: "/company-update",
+    component: UpdateCompany,
+    name: 'company-update',
+    meta: {
+      requiresAuth: true,
+      isAdmin: true
+    }
+  },
+
   {
     path: "/add-categories",
     component: AddKategori,
@@ -115,6 +153,22 @@ const routes = [{
     }
   },
   {
+    path: "/posts/:id",
+    component: Singlepost,
+    name: 'single-post',
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/posts-by-categories/:id",
+    component: PostByCategori,
+    name: 'post-by-categories',
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/:id/article',
     component: ArticlePage,
     name: 'article-page'
@@ -122,7 +176,16 @@ const routes = [{
   {
     path: '/:id/article/:slug',
     component: DetailArticle,
-    name: 'detail-article'
+    name: 'detail-article',
+    meta: {
+      requiresAuth: true,
+    }
+  },
+  {
+    path: '/users-all',
+    component: AllUsers,
+    name: 'all-users',
+
   },
   {
     path: '/registrasi',
